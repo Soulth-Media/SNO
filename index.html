@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SNO — News Network</title>
+<link rel="icon" type="image/png" href="SNOTRNSPRNTLOGO.png">
+<link rel="apple-touch-icon" href="SNOTRNSPRNTLOGO.png">
+<meta property="og:site_name" content="SNO News Network">
+<meta property="og:title" content="SNO — News Network">
+<meta property="og:description" content="One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.">
+<meta property="og:image" content="">
+<meta property="og:url" content="">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SNO — News Network">
+<meta name="twitter:description" content="One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.">
+<meta name="twitter:image" content="">
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/coolvetica">
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/telegraf">
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js">
@@ -200,6 +212,11 @@ footer h4{font-size:10px;font-weight:600;text-transform:uppercase;color:var(--ac
 footer a{display:block;color:var(--gray);text-decoration:none;font-size:12px;margin-bottom:8px;transition:color .25s;cursor:pointer}
 footer a:hover{color:var(--white)}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.04);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--gray)}
+.cookie-bar{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(10,10,12,.97);border-top:1px solid rgba(255,255,255,.08);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transform:translateY(100%);opacity:0;transition:all .5s cubic-bezier(.16,1,.3,1)}
+.cookie-bar.show{transform:translateY(0);opacity:1}
+.cookie-bar p{color:var(--gray);max-width:700px}
+.cookie-bar a{color:var(--accent);text-decoration:none}
+.cookie-bar a:hover{text-decoration:underline}
 .social{display:flex;gap:8px}
 .social a{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s;color:var(--gray);font-weight:600;text-decoration:none}
 .social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
@@ -237,6 +254,51 @@ footer a:hover{color:var(--white)}
 .sno-player-vol{font-size:13px}
 .sno-player-vol-slider{width:50px;height:3px;-webkit-appearance:none;background:rgba(255,255,255,.2);border-radius:2px;outline:none;flex-shrink:0}
 .sno-player-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:#fff;cursor:pointer}
+
+/* ===== NETFLIX-STYLE PLAY ===== */
+.play-hero{position:relative;width:100%;min-height:70vh;display:flex;align-items:flex-end;padding:80px 40px 40px;overflow:hidden;background:var(--black2)}
+.play-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.3;transition:opacity .6s}
+.play-hero-vignette{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,12,.95) 0%,rgba(10,10,12,.6) 50%,transparent 70%),linear-gradient(0deg,rgba(10,10,12,1) 0%,transparent 40%)}
+.play-hero-content{position:relative;z-index:2;display:flex;align-items:flex-end;gap:40px;width:100%}
+.play-hero-player{border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.play-hero-info{flex:1;padding-bottom:20px}
+.play-hero-info h1{font-family:'Coolvetica',sans-serif;font-size:clamp(42px,6vw,80px);line-height:.85;margin:8px 0 12px}
+.play-hero-info p{font-size:14px;color:var(--gray);line-height:1.6;max-width:500px}
+.play-rows{padding:40px}
+.play-row{margin-bottom:40px}
+.play-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.play-row-header h3{font-family:'Coolvetica',sans-serif;font-size:22px}
+.play-row-scroll{display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.play-row-scroll::-webkit-scrollbar{height:4px}
+.play-row-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.play-card{flex:0 0 260px;border-radius:var(--radius-sm);overflow:hidden;background:var(--black3);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative}
+.play-card:hover{transform:scale(1.04);z-index:5;border-color:rgba(0,212,84,.2);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.play-card-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--green3)}
+.play-card-body{padding:14px}
+.play-card-body .label-sm{font-size:9px;color:var(--accent)}
+.play-card-body h4{font-size:13px;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.play-card-body p{font-size:11px;color:var(--gray);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.play-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 50%);opacity:0;transition:opacity .35s;display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.play-card:hover .play-card-overlay{opacity:1}
+.play-card-overlay .label-sm{font-size:9px;color:var(--accent)}
+.play-card-overlay h4{font-family:'Coolvetica',sans-serif;font-size:16px}
+/* Subscribe popup */
+.sub-plans{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.sub-plan{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02)}
+.sub-plan:hover{border-color:rgba(0,212,84,.3)}
+.sub-plan.selected{border-color:var(--accent);background:rgba(0,212,84,.06)}
+.sub-plan-info{display:flex;flex-direction:column;gap:2px}
+.sub-plan-info strong{font-size:14px}
+.sub-plan-price{font-size:18px;font-family:'Coolvetica',sans-serif;color:var(--accent)}
+.sub-plan-tag{font-size:10px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-weight:600;width:fit-content}
+.sub-plan-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s}
+.sub-plan.selected .sub-plan-check{border-color:var(--accent);background:var(--accent);color:#000}
+.sub-plan.selected .sub-plan-check::after{content:'✓';font-weight:700}
+.play-header-actions{display:flex;gap:8px;align-items:center}
+.play-user-badge{width:32px;height:32px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.1);transition:border-color .2s}
+.play-user-badge:hover{border-color:var(--accent)}
+.play-user-badge img{width:100%;height:100%;object-fit:cover;display:block}
+
 .btn-listen.playing{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.1)}
 .btn-listen.playing #listen-icon{animation:speakerPulse 1s ease infinite}
 @keyframes speakerPulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -310,19 +372,19 @@ footer a:hover{color:var(--white)}
   <div class="header-inner">
     <img class="logo" id="logo-link" src="SNOTRNSPRNTLOGO.png" alt="SNO">
     <nav>
-      <a class="active" data-page="home">Home</a>
-      <a data-page="news">News</a>
-      <a data-page="live"><span class="live-dot" id="nav-livedot" style="display:none"></span><span id="nav-live-text">Broadcast</span></a>
-      <a data-page="play" class="play-link">SNO Play</a>
-      <a data-page="schedule">Schedule</a>
-      <a data-page="admin" id="admin-nav" style="display:none;color:var(--accent)">Admin</a>
+      <a class="active" data-page="home" data-i18n="nav_home">Home</a>
+      <a data-page="news" data-i18n="nav_news">News</a>
+      <a data-page="live"><span class="live-dot" id="nav-livedot" style="display:none"></span><span id="nav-live-text" data-i18n="nav_broadcast">Broadcast</span></a>
+      <a data-page="play" class="play-link" data-i18n="nav_play">SNO Play</a>
+      <a data-page="schedule" data-i18n="nav_schedule">Schedule</a>
+      <a data-page="admin" id="admin-nav" style="display:none;color:var(--accent)" data-i18n="nav_admin">Admin</a>
     </nav>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="id">ID</button>
       <button class="lang-btn" data-lang="nl">NL</button>
     </div>
-    <button class="auth-btn" id="auth-toggle" onclick="openAuth()">Sign In</button>
+    <button class="auth-btn" id="auth-toggle" onclick="openAuth()" data-i18n="auth_signin">Sign In</button>
     <div class="user-badge" id="user-badge" style="display:none"></div>
   </div>
 </header>
@@ -335,20 +397,20 @@ footer a:hover{color:var(--white)}
       <div class="hero-content">
         <!-- DEFAULT: no broadcast / no upcoming — normal headline + news -->
         <div id="hero-default">
-          <div class="hero-label"><span class="live-dot" id="hero-live-dot" style="display:none"></span><span class="label">LIVE</span></div>
+          <div class="hero-label"><span class="live-dot" id="hero-live-dot" style="display:none"></span><span class="label" data-i18n="hero_label">LIVE</span></div>
           <h1><span class="h-xl">One Media,</span><span class="glow">For All</span></h1>
-          <p id="hero-desc">One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p>
+          <p id="hero-desc" data-i18n="hero_desc">One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p>
           <div class="news-slider-wrap" id="news-slider-wrap">
             <div class="news-slider" id="news-slider"></div>
           </div>
           <div class="hero-actions">
-        <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1">▶ Watch Now</a>
-        <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2">Read Story</a>
+        <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1" data-i18n="watch_now">▶ Watch Now</a>
+        <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2" data-i18n="read_story">Read Story</a>
           </div>
         </div>
         <!-- PRE-LIVE: upcoming broadcast countdown -->
         <div id="hero-prelive" style="display:none">
-          <div class="hero-label"><span class="live-dot pulse"></span><span class="label" id="prelive-label">Starting Soon</span></div>
+          <div class="hero-label"><span class="live-dot pulse"></span><span class="label" id="prelive-label" data-i18n="starting_soon">Starting Soon</span></div>
           <h1 class="h-xl" id="prelive-title" style="margin:4px 0">Broadcast Title</h1>
           <p id="prelive-desc">Description of the upcoming broadcast.</p>
           <div id="hero-countdown" style="font-size:48px;font-weight:300;font-family:Coolvetica,monospace;color:var(--accent);margin:20px 0;letter-spacing:4px">--:--:--</div>
@@ -379,8 +441,8 @@ footer a:hover{color:var(--white)}
 <section class="section live-section" id="page-live-preview">
   <div class="container">
     <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="label" style="margin-bottom:6px">Live Broadcast</div><h2 class="h-lg">Now Playing</h2></div>
-      <button class="btn btn-outline btn-sm" onclick="openOverlay('live')">View All</button>
+      <div><div class="label" style="margin-bottom:6px" data-i18n="section_live">Live Broadcast</div><h2 class="h-lg" data-i18n="live_now">Now Playing</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('live')" data-i18n="view_all">View All</button>
     </div>
     <div class="live-grid">
       <div class="video-player">
@@ -389,7 +451,7 @@ footer a:hover{color:var(--white)}
         <div class="video-info"><h3 id="video-title">Global Climate Summit</h3><p id="video-desc">Live coverage of emergency climate talks.</p></div>
       </div>
       <div>
-        <div class="label-sm" style="margin-bottom:10px">Up Next</div>
+        <div class="label-sm" style="margin-bottom:10px" data-i18n="live_upnext">Up Next</div>
         <div class="up-next" id="upnext-list"></div>
       </div>
     </div>
@@ -399,8 +461,8 @@ footer a:hover{color:var(--white)}
 <section class="section news-section" id="page-news-preview">
   <div class="container">
     <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="label" style="margin-bottom:6px">Latest Stories</div><h2 class="h-lg">Top News</h2></div>
-      <button class="btn btn-outline btn-sm" onclick="openOverlay('news')">View All</button>
+      <div><div class="label" style="margin-bottom:6px" data-i18n="slider_title">Latest Stories</div><h2 class="h-lg" data-i18n="section_news">Top News</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('news')" data-i18n="view_all">View All</button>
     </div>
     <div class="news-grid" id="news-grid"></div>
   </div>
@@ -409,8 +471,8 @@ footer a:hover{color:var(--white)}
 <section class="section schedule-section" id="page-schedule-preview">
   <div class="container">
     <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="label" style="margin-bottom:6px">TV Schedule</div><h2 class="h-lg">Upcoming</h2></div>
-      <button class="btn btn-outline btn-sm" onclick="openOverlay('schedule')">View All</button>
+      <div><div class="label" style="margin-bottom:6px" data-i18n="section_schedule">TV Schedule</div><h2 class="h-lg" data-i18n="section_upcoming">Upcoming</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('schedule')" data-i18n="view_all">View All</button>
     </div>
     <div class="schedule-grid" id="schedule-grid"></div>
   </div>
@@ -420,11 +482,11 @@ footer a:hover{color:var(--white)}
 <!-- ===== NEWS OVERLAY ===== -->
 <div class="overlay-page" id="overlay-news"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
-    <span class="label-sm">News</span>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <span class="label-sm" data-i18n="nav_news">News</span>
   </div>
   <div class="overlay-content">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px"><h1 class="h-lg" style="font-size:clamp(32px,4.5vw,56px)">All Stories</h1><div class="label-sm" id="news-count">0 articles</div></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px"><h1 class="h-lg" style="font-size:clamp(32px,4.5vw,56px)">All Stories</h1><div class="label-sm" id="news-count"></div></div>
     <div class="news-grid" id="news-grid-full"></div>
   </div>
 </div>
@@ -432,11 +494,11 @@ footer a:hover{color:var(--white)}
 <!-- ===== LIVE OVERLAY ===== -->
 <div class="overlay-page" id="overlay-live"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('live')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
-    <span class="label-sm"><span class="live-dot"></span>Live</span>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('live')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <span class="label-sm"><span class="live-dot"></span><span data-i18n="hero_label">Live</span></span>
   </div>
   <div class="overlay-content">
-    <h1 class="h-lg" style="margin-bottom:28px">Live Coverage</h1>
+    <h1 class="h-lg" style="margin-bottom:28px" data-i18n="section_live">Live Coverage</h1>
     <div class="live-grid">
       <div class="video-player">
         <video id="main-video-full" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
@@ -444,7 +506,7 @@ footer a:hover{color:var(--white)}
         <div class="video-info"><h3 id="video-title-full">Global Climate Summit</h3><p id="video-desc-full">Live coverage of emergency climate talks.</p></div>
       </div>
       <div>
-        <div class="label-sm" style="margin-bottom:10px">Up Next</div>
+        <div class="label-sm" style="margin-bottom:10px" data-i18n="live_upnext">Up Next</div>
         <div class="up-next" id="upnext-list-full"></div>
       </div>
     </div>
@@ -454,39 +516,73 @@ footer a:hover{color:var(--white)}
 <!-- ===== PLAY OVERLAY ===== -->
 <div class="overlay-page" id="overlay-play"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"><span style="font-size:10px;color:var(--gray);margin-left:4px"> Play</span></div>
-    <button class="btn btn-primary btn-sm" onclick="alert('Subscribe')">Subscribe</button>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <div class="play-header-actions">
+      <div class="play-user-badge" id="play-user-badge" style="display:none;cursor:pointer" onclick="closeOverlay('play');openProfile()"></div>
+      <button class="btn btn-primary btn-sm" id="play-sub-btn" onclick="openSubscribePopup()" data-i18n="play_subscribe">Subscribe</button>
+    </div>
   </div>
-  <div class="overlay-content">
-    <div class="play-featured" style="border-radius:var(--radius);overflow:hidden;margin-bottom:28px;border:1px solid rgba(255,255,255,.06);background:var(--black3)">
-      <div class="sno-player" id="sno-player">
-        <video id="play-feat-video" class="sno-player-video" playsinline style="width:100%;display:block;aspect-ratio:21/9;background:#000"></video>
-        <img class="sno-player-logo" src="SNOTRNSPRNTLOGO.png" alt="SNO">
-        <div class="sno-player-controls" id="sno-player-controls">
-          <button class="sno-player-btn" id="sno-play-btn" onclick="togglePlayPlayer()">▶</button>
-          <div class="sno-player-progress-wrap" onclick="seekPlayer(event)">
-            <div class="sno-player-progress" id="sno-player-progress"><div class="sno-player-fill" id="sno-player-fill"></div></div>
+  <div class="overlay-content" style="padding:0">
+    <!-- Netflix-style featured hero -->
+    <div class="play-hero" id="play-hero">
+      <div class="play-hero-bg" id="play-hero-bg"></div>
+      <div class="play-hero-vignette"></div>
+      <div class="play-hero-content">
+        <div class="sno-player play-hero-player" id="sno-player" style="width:45%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative">
+          <video id="play-feat-video" class="sno-player-video" playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
+          <img class="sno-player-logo" src="SNOTRNSPRNTLOGO.png" alt="SNO">
+          <div class="sno-player-controls" id="sno-player-controls">
+            <button class="sno-player-btn" id="sno-play-btn" onclick="togglePlayPlayer()">▶</button>
+            <div class="sno-player-progress-wrap" onclick="seekPlayer(event)">
+              <div class="sno-player-progress" id="sno-player-progress"><div class="sno-player-fill" id="sno-player-fill"></div></div>
+            </div>
+            <span class="sno-player-time" id="sno-player-time">0:00 / 0:00</span>
+            <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">🔊</button>
+            <input type="range" class="sno-player-vol-slider" id="sno-vol-slider" min="0" max="1" step="0.05" value="1" oninput="setVolumePlayer(this.value)">
           </div>
-          <span class="sno-player-time" id="sno-player-time">0:00 / 0:00</span>
-          <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">🔊</button>
-          <input type="range" class="sno-player-vol-slider" id="sno-vol-slider" min="0" max="1" step="0.05" value="1" oninput="setVolumePlayer(this.value)">
+        </div>
+        <div class="play-hero-info">
+          <span class="label-sm play-feat-tag" id="play-feat-tag">SNO Original</span>
+          <h1 class="h-xl" id="play-feat-title">The Signal</h1>
+          <p id="play-feat-desc">Award-winning documentary series returns.</p>
         </div>
       </div>
-      <div style="padding:24px"><span class="label-sm play-feat-tag" id="play-feat-tag" style="display:block;margin-bottom:4px">SNO Original</span><h2 class="h-md" id="play-feat-title">The Signal — Season 2</h2><p style="font-size:13px;color:var(--gray);line-height:1.5;max-width:560px" id="play-feat-desc">Award-winning documentary series returns.</p></div>
     </div>
-    <div class="label-sm" style="margin-bottom:16px;display:block">Exclusive Originals</div>
-    <div class="news-grid" id="play-grid-full"></div>
+    <!-- Netflix-style category rows -->
+    <div class="play-rows" id="play-rows"></div>
+  </div>
+</div>
+
+<!-- ===== SUBSCRIBE POPUP ===== -->
+<div class="overlay-fixed" id="subscribe-popup">
+  <div class="modal-box" style="max-width:440px">
+    <img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:32px;margin-bottom:8px">
+    <h2 data-i18n="play_subscribe">Subscribe</h2>
+    <p style="font-size:13px;color:var(--gray);margin:4px 0 20px">Get unlimited access to SNO Originals and exclusive content.</p>
+    <div class="sub-plans">
+      <div class="sub-plan" onclick="selectPlan(this,'Monthly','$4.99')">
+        <div class="sub-plan-info"><strong>Monthly</strong><span class="sub-plan-price">$4.99<span style="font-size:11px;color:var(--gray)">/mo</span></span></div>
+        <span class="sub-plan-check"></span>
+      </div>
+      <div class="sub-plan selected" onclick="selectPlan(this,'Yearly','$39.99')">
+        <div class="sub-plan-info"><strong>Yearly</strong><span class="sub-plan-tag">Save 33%</span><span class="sub-plan-price">$39.99<span style="font-size:11px;color:var(--gray)">/yr</span></span></div>
+        <span class="sub-plan-check"></span>
+      </div>
+    </div>
+    <input class="auth-input" id="sub-email" type="email" placeholder="Email address" value="">
+    <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="submitSubscribe()">Subscribe Now</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeSubscribePopup()">Cancel</button>
   </div>
 </div>
 
 <!-- ===== SCHEDULE OVERLAY ===== -->
 <div class="overlay-page" id="overlay-schedule"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('schedule')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
-    <span class="label-sm">Schedule</span>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('schedule')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <span class="label-sm" data-i18n="nav_schedule">Schedule</span>
   </div>
   <div class="overlay-content">
-    <h1 class="h-lg" style="margin-bottom:28px">Full Schedule</h1>
+    <h1 class="h-lg" style="margin-bottom:28px" data-i18n="schedule_title">Full Schedule</h1>
     <div class="schedule-grid" id="schedule-grid-full"></div>
   </div>
 </div>
@@ -494,7 +590,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== NEWS DETAIL OVERLAY ===== -->
 <div class="overlay-page" id="overlay-news-detail"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news-detail')">← Back to News</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news-detail')" data-i18n="back_news">← Back to News</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
   </div>
   <div class="overlay-content">
     <article>
@@ -515,14 +611,14 @@ footer a:hover{color:var(--white)}
         </div>
         <div class="article-actions">
           <button class="btn-like" id="detail-like-btn" onclick="toggleLike()"><span class="like-icon">♡</span> <span id="like-count">0</span></button>
-          <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">🔊</span> <span id="listen-text">Listen</span></button>
-          <button class="btn-share" onclick="openSharePopup()">↗ Share</button>
+          <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">🔊</span> <span id="listen-text" data-i18n="listen">Listen</span></button>
+          <button class="btn-share" onclick="openSharePopup()">↗ <span data-i18n="share">Share</span></button>
         </div>
       </div>
       <div class="article-body" id="detail-body"></div>
     </article>
     <div class="recommended-section">
-      <h2 class="h-md">Recommended Stories</h2>
+      <h2 class="h-md" data-i18n="recommended">Recommended Stories</h2>
       <div class="news-grid" id="recommended-grid"></div>
     </div>
   </div>
@@ -588,7 +684,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== AUTH MODAL ===== -->
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-modal">
-    <h2 id="auth-title">Sign In</h2>
+    <h2 id="auth-title" data-i18n="auth_signin">Sign In</h2>
     <p class="sub" id="auth-sub">Access your SNO account</p>
     <div class="auth-error" id="auth-error"></div>
     <button class="btn btn-google" onclick="googleAuth()" style="width:100%;justify-content:center">Sign in with Google</button>
@@ -596,7 +692,7 @@ footer a:hover{color:var(--white)}
     <input class="auth-input" id="auth-email" type="email" placeholder="Email">
     <input class="auth-input" id="auth-pass" type="password" placeholder="Password">
     <input class="auth-input" id="auth-name" type="text" placeholder="Display Name" style="display:none">
-    <button class="btn btn-primary" style="width:100%;justify-content:center" id="auth-submit" onclick="handleAuth()">Sign In</button>
+    <button class="btn btn-primary" style="width:100%;justify-content:center" id="auth-submit" onclick="handleAuth()" data-i18n="auth_signin">Sign In</button>
     <div class="auth-switch"><span id="auth-switch-text">Don't have an account?</span> <a onclick="toggleAuthMode()" id="auth-switch-link">Create one</a></div>
   </div>
 </div>
@@ -605,20 +701,26 @@ footer a:hover{color:var(--white)}
 <div class="overlay-fixed" id="demo-overlay">
   <div class="modal-box">
     <img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px">
-    <h2>Under Demo</h2>
-    <p>This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.</p>
-    <button class="btn btn-primary" onclick="closeDemo()">Got it</button>
+    <h2 data-i18n="demo_title">Under Demo</h2>
+    <p data-i18n="demo_desc">This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.</p>
+    <button class="btn btn-primary" onclick="closeDemo()" data-i18n="demo_gotit">Got it</button>
   </div>
+</div>
+
+<!-- ===== COOKIE CONSENT ===== -->
+<div class="cookie-bar" id="cookie-bar">
+  <p>This site uses cookies. By continuing, you agree to our <a href="#" data-i18n="privacy">Privacy Policy</a>.</p>
+  <button class="btn btn-primary btn-sm" onclick="acceptCookies()" id="cookie-accept">Accept</button>
 </div>
 
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px"><p>Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
-      <div><h4>Channels</h4><a onclick="navigate('home')">Home</a><a onclick="openOverlay('news')">News</a><a onclick="openOverlay('live')">Live</a><a onclick="openOverlay('play')">SNO Play</a><a onclick="openOverlay('schedule')">Schedule</a></div>
-      <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Advertise</a></div>
-      <div><h4>Support</h4><a href="#">Help Center</a><a href="#">Accessibility</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+      <div><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px"><p data-i18n="footer_desc">Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
+      <div><h4 data-i18n="footer_channels">Channels</h4><a onclick="navigate('home')" data-i18n="nav_home">Home</a><a onclick="openOverlay('news')" data-i18n="nav_news">News</a><a onclick="openOverlay('live')" data-i18n="nav_broadcast">Live</a><a onclick="openOverlay('play')" data-i18n="nav_play">SNO Play</a><a onclick="openOverlay('schedule')" data-i18n="nav_schedule">Schedule</a></div>
+      <div><h4 data-i18n="footer_company">Company</h4><a href="#" data-i18n="about">About</a><a href="#" data-i18n="careers">Careers</a><a href="#" data-i18n="contact">Contact</a><a href="#" data-i18n="advertise">Advertise</a></div>
+      <div><h4 data-i18n="footer_support">Support</h4><a href="#" data-i18n="help">Help Center</a><a href="#" data-i18n="access">Accessibility</a><a href="#" data-i18n="privacy">Privacy Policy</a><a href="#" data-i18n="terms">Terms of Service</a></div>
     </div>
     <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">𝕏</a><a href="#">◻</a><a href="#">▶</a></div></div>
   </div>
@@ -649,6 +751,8 @@ let overlayStack = [];
 let unsubscribers = [];
 let newsData = [];
 let _scheduleData = [];
+let _heroMuxId = '';
+let _heroVideoUrl = '';
 
 try {
   fbApp = firebase.initializeApp(firebaseConfig);
@@ -681,12 +785,12 @@ const STATIC = {
     {vid:'9bZkp7q19f0',title:'Weather Watch: Storm Tracking',desc:'Latest satellite imagery.',dur:'10:15',time:'Today 8PM'}
   ],
   play: [
-    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a',url:'',vid:'Bfy1HmAC6i8'},
-    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a',url:'',vid:'dQw4w9WgXcQ'},
-    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a',url:'',vid:'jNQXAC9IVRw'},
-    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a',url:'',vid:''},
-    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a',url:'',vid:''},
-    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a',url:'',vid:''}
+    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a',url:'',vid:'Bfy1HmAC6i8',gambar:'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&h=600&fit=crop'},
+    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a',url:'',vid:'dQw4w9WgXcQ',gambar:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop'},
+    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a',url:'',vid:'jNQXAC9IVRw',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop'},
+    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=600&fit=crop'},
+    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&h=600&fit=crop'},
+    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&h=600&fit=crop'}
   ],
   ticker:['Global summit reaches historic agreement','Tech giant unveils AI platform','Championship finals set record','Storm warning for coastal regions','Markets surge on trade agreement'],
   hero:{}
@@ -713,10 +817,11 @@ function openProfile(){
 function toggleAuthMode(){
   authMode = authMode==='login'?'register':'login';
   let l=authMode==='login';
-  document.getElementById('auth-title').textContent=l?'Sign In':'Create Account';
+  let L=LANG[currentLang]||LANG.en;
+  document.getElementById('auth-title').textContent=l?t('auth_signin'):t('auth_signin').replace('In','Up');
   document.getElementById('auth-sub').textContent=l?'Access your SNO account':'Join SNO today';
-  document.getElementById('auth-submit').textContent=l?'Sign In':'Create Account';
-  document.getElementById('auth-switch-link').textContent=l?'Create one':'Sign In';
+  document.getElementById('auth-submit').textContent=l?t('auth_signin'):t('auth_signin').replace('In','Up');
+  document.getElementById('auth-switch-link').textContent=l?t('auth_signin').replace('In','Up'):t('auth_signin');
   document.getElementById('auth-switch-text').textContent=l?"Don't have an account? ":"Already have an account? ";
   document.getElementById('auth-name').style.display=l?'none':'block';
   document.getElementById('auth-error').style.display='none';
@@ -759,8 +864,12 @@ if(fbAuth){
       badge.innerHTML=(user.displayName||user.email)+(isAdmin?' <span style="color:var(--accent);font-size:8px;background:rgba(0,212,84,.12);padding:2px 6px;border-radius:4px">ADMIN</span>':'');
       badge.onclick=()=>{openProfile()};
       adminNav.style.display=isAdmin?'inline':'none';
+      // Play user badge
+      let pub=document.getElementById('play-user-badge');
+      if(pub){pub.style.display='block';pub.innerHTML='<img src="'+(user.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="58" text-anchor="middle" fill="%23fff" font-size="36" font-family="Arial">'+(user.displayName?user.displayName[0].toUpperCase():'U')+'</text></svg>')+'" alt="">';pub.title=user.displayName||user.email}
     } else {
       toggle.style.display='inline-block';badge.style.display='none';adminNav.style.display='none';isAdmin=false;
+      let pub=document.getElementById('play-user-badge');if(pub)pub.style.display='none';
     }
   });
 }
@@ -776,6 +885,10 @@ function closeOverlay(name){
   if(name==='news-detail'){
     if(window.location.hash.startsWith('#/news/')) history.pushState('','','#');
     if(synth && synth.speaking){synth.cancel();stopListenUI()}
+    // Reset OG meta
+    document.querySelector('meta[property="og:title"]').content = 'SNO — News Network';
+    document.querySelector('meta[property="og:description"]').content = 'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.';
+    document.querySelector('meta[property="og:image"]').content = '';
   }
 }
 function closeTopOverlay(){
@@ -791,7 +904,7 @@ document.querySelectorAll('nav a').forEach(a=>{
     if(page==='home'){closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
     else if(page==='play')openOverlay('play');
     else if(page==='news')openOverlay('news');
-    else if(page==='live')openOverlay('live');
+    else     if(page==='live'){openOverlay('live');if(_heroMuxId)initHlsPlayer(_heroMuxId,_heroVideoUrl)}
     else if(page==='schedule')openOverlay('schedule');
     document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
     if(page==='home')this.classList.add('active');
@@ -811,23 +924,24 @@ function navigate(page){
 
 // ===== LANG =====
 const LANG = {
-  en:{hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',slider_title:'Latest News'},
-  id:{hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru'},
-  nl:{hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws'}
+  en:{nav_home:'Home',nav_news:'News',nav_broadcast:'Broadcast',nav_play:'SNO Play',nav_schedule:'Schedule',nav_admin:'Admin',auth_signin:'Sign In',auth_profile:'Profile',auth_signout:'Sign Out',hero_label:'LIVE',hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',slider_title:'Latest News',section_live:'Live Broadcast',section_schedule:'TV Schedule',section_upcoming:'Upcoming',section_news:'Top Stories',section_play:'Exclusive Originals',live_upnext:'Up Next',live_now:'Live Now',play_subscribe:'Subscribe',play_originals:'Exclusive Originals',schedule_title:'Full Schedule',news_count:'articles',footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',footer_channels:'Channels',footer_company:'Company',footer_support:'Support',about:'About',careers:'Careers',contact:'Contact',advertise:'Advertise',help:'Help Center',access:'Accessibility',privacy:'Privacy Policy',terms:'Terms of Service',listen:'Listen',share:'Share',like:'Like',recommended:'Recommended Stories',back_news:'← Back to News',back:'← Back',starting_soon:'Starting Soon',starts_at:'Starts at',now_playing:'NOW',demo_title:'Under Demo',demo_desc:'This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.',demo_gotit:'Got it',view_all:'View All',watch_now:'Watch Now',read_story:'Read Story'},
+  id:{nav_home:'Beranda',nav_news:'Berita',nav_broadcast:'Siaran',nav_play:'SNO Play',nav_schedule:'Jadwal',nav_admin:'Admin',auth_signin:'Masuk',auth_profile:'Profil',auth_signout:'Keluar',hero_label:'LANGSUNG',hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru',section_live:'Siaran Langsung',section_schedule:'Jadwal TV',section_upcoming:'Akan Datang',section_news:'Berita Utama',section_play:'Original Eksklusif',live_upnext:'Selanjutnya',live_now:'Siaran Langsung',play_subscribe:'Berlangganan',play_originals:'Original Eksklusif',schedule_title:'Jadwal Lengkap',news_count:'artikel',footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',footer_channels:'Saluran',footer_company:'Perusahaan',footer_support:'Dukungan',about:'Tentang',careers:'Karir',contact:'Kontak',advertise:'Iklan',help:'Pusat Bantuan',access:'Aksesibilitas',privacy:'Kebijakan Privasi',terms:'Ketentuan Layanan',listen:'Dengarkan',share:'Bagikan',like:'Suka',recommended:'Rekomendasi',back_news:'← Kembali ke Berita',back:'← Kembali',starting_soon:'Segera Mulai',starts_at:'Mulai',now_playing:'SEKARANG',demo_title:'Demo',demo_desc:'Situs ini dalam versi demo. Beberapa fitur mungkin belum berfungsi penuh.',demo_gotit:'Mengerti',view_all:'Lihat Semua',watch_now:'Tonton Sekarang',read_story:'Baca Cerita'},
+  nl:{nav_home:'Home',nav_news:'Nieuws',nav_broadcast:'Uitzending',nav_play:'SNO Play',nav_schedule:'Schema',nav_admin:'Admin',auth_signin:'Inloggen',auth_profile:'Profiel',auth_signout:'Uitloggen',hero_label:'LIVE',hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws',section_live:'Live Uitzending',section_schedule:'TV Schema',section_upcoming:'Binnenkort',section_news:'Top Verhalen',section_play:'Exclusieve Originals',live_upnext:'Volgende',live_now:'Live Nu',play_subscribe:'Abonneren',play_originals:'Exclusieve Originals',schedule_title:'Volledig Schema',news_count:'artikelen',footer_desc:'Global News Network. Betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',footer_channels:'Kanalen',footer_company:'Bedrijf',footer_support:'Ondersteuning',about:'Over ons',careers:'Carrières',contact:'Contact',advertise:'Adverteren',help:'Helpcentrum',access:'Toegankelijkheid',privacy:'Privacybeleid',terms:'Servicevoorwaarden',listen:'Luister',share:'Delen',like:'Vind ik leuk',recommended:'Aanbevolen',back_news:'← Terug naar Nieuws',back:'← Terug',starting_soon:'Binnenkort',starts_at:'Begint om',now_playing:'NU',demo_title:'Demo',demo_desc:'Deze site is een demoversie. Sommige functies werken mogelijk nog niet volledig.',demo_gotit:'Begrepen',view_all:'Alles Bekijken',watch_now:'Kijk Nu',read_story:'Lees Verhaal'}
 };
-let currentLang='en';
-function t(k){return LANG[currentLang]?.[k]||k}
+let currentLang=localStorage.getItem('sno_lang')||'en';
+function t(k){let v=LANG[currentLang]?.[k];return v!==undefined?v:(LANG.en[k]||k)}
+function applyLang(lang){
+  currentLang=lang;localStorage.setItem('sno_lang',lang);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    let k=el.dataset.i18n;let txt=t(k);if(txt&&txt!==k){if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.placeholder=txt;else el.textContent=txt}
+  });
+}
 function setLang(lang){
   if(lang===currentLang)return;
-  currentLang=lang;
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  let h=LANG[lang];
-  if(h){
-    document.getElementById('hero-desc').textContent=h.hero_desc||'';
-    document.getElementById('hero-btn1').textContent=h.hero_btn1||'▶ Watch Now';
-    document.getElementById('hero-btn2').textContent=h.hero_btn2||'Read Story';
-  }
+  applyLang(lang);
 }
+// Apply on load
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',function(){setLang(this.dataset.lang)}));
 
 // ===== NEWS SLIDER =====
@@ -915,7 +1029,21 @@ function openNewsDetail(item){
   body.innerHTML = paragraphs;
   renderRecommended(item);
   window.location.hash = '#/news/'+slugify(item.title||'');
+  setOgMeta(item);
   openOverlay('news-detail');
+}
+function setOgMeta(item){
+  let t = item.title||'SNO News Network';
+  let d = item.desc||'One Media, For All — trusted journalism, breaking stories, and in-depth coverage.';
+  let img = item.gambar||'';
+  let url = window.location.href;
+  document.querySelector('meta[property="og:title"]').content = t;
+  document.querySelector('meta[property="og:description"]').content = d;
+  document.querySelector('meta[property="og:image"]').content = img;
+  document.querySelector('meta[property="og:url"]').content = url;
+  document.querySelector('meta[name="twitter:title"]').content = t;
+  document.querySelector('meta[name="twitter:description"]').content = d;
+  document.querySelector('meta[name="twitter:image"]').content = img;
 }
 function toggleLike(){
   if(!currentArticle) return;
@@ -1165,19 +1293,86 @@ function openPlayDetail(item){
   currentPlay = item;
   let overlay = document.getElementById('overlay-play');
   let content = overlay.querySelector('.overlay-content');
-  // Update featured area
   let feat = content.querySelector('#play-feat-title');
   let featDesc = content.querySelector('#play-feat-desc');
   let featVid = content.querySelector('#play-feat-video');
+  let bg = content.querySelector('#play-hero-bg');
   if(feat) feat.textContent = item.title||'';
   if(featDesc) featDesc.textContent = item.desc||'';
   if(featVid) initPlayPlayer(featVid, item.url||'');
   let tag = content.querySelector('.play-feat-tag');
   if(tag) tag.textContent = item.tag||'SNO Original';
-  // Scroll to featured
-  let featured = content.querySelector('.play-featured');
-  if(featured) featured.scrollIntoView({behavior:'smooth',block:'start'});
+  if(bg && item.gambar) bg.style.backgroundImage = 'url('+item.gambar+')';
   if(!overlay.classList.contains('open')) openOverlay('play');
+}
+
+// ===== PLAY ROWS (Netflix-style) =====
+function renderPlayRows(data){
+  let rows = document.getElementById('play-rows');
+  if(!rows) return;
+  let items = data && data.length ? data : STATIC.play;
+  if(!items || !items.length){rows.innerHTML='<p style="color:var(--gray);padding:20px">No content yet.</p>';return}
+  let categories = [
+    {title:'Exclusive Originals',filter:()=>true},
+    {title:'Trending Now',filter:(i)=>i.tag&&i.tag.match(/trending|hot|popular/i)},
+    {title:'Recently Added',filter:(i,i2,a)=>a.slice(-4).reverse()}
+  ];
+  // Fill featured hero with first item (if none selected)
+  let first = items[0];
+  if(!currentPlay){
+    let featTitle = document.getElementById('play-feat-title');
+    let featDesc = document.getElementById('play-feat-desc');
+    let featVid = document.getElementById('play-feat-video');
+    let featTag = document.querySelector('.play-feat-tag');
+    let bg = document.getElementById('play-hero-bg');
+    if(featTitle) featTitle.textContent = first.title||'';
+    if(featDesc) featDesc.textContent = first.desc||'';
+    if(featTag) featTag.textContent = first.tag||'SNO Original';
+    if(bg && first.gambar) bg.style.backgroundImage = 'url('+first.gambar+')';
+    if(featVid) initPlayPlayer(featVid, first.url||'');
+  }
+  rows.innerHTML = '';
+  categories.forEach(cat=>{
+    let catItems = cat.filter(items);
+    if(!catItems.length) return;
+    let row = document.createElement('div');row.className='play-row';
+    row.innerHTML = '<div class="play-row-header"><h3>'+cat.title+'</h3></div><div class="play-row-scroll"></div>';
+    let scroll = row.querySelector('.play-row-scroll');
+    catItems.forEach(item=>{
+      let card = document.createElement('div');card.className='play-card';
+      let img = item.gambar ? item.gambar : '';
+      card.innerHTML = '<img class="play-card-img" src="'+img+'" loading="lazy" onerror="this.style.display=\'none\'"><div class="play-card-body"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4><p>'+(item.desc||'')+'</p></div><div class="play-card-overlay"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4></div>';
+      card.onclick = ()=>openPlayDetail(item);
+      scroll.appendChild(card);
+    });
+    rows.appendChild(row);
+  });
+}
+
+// ===== SUBSCRIBE POPUP =====
+function openSubscribePopup(){
+  let u = fbAuth && fbAuth.currentUser;
+  let emailInput = document.getElementById('sub-email');
+  if(emailInput && u) emailInput.value = u.email||'';
+  document.getElementById('subscribe-popup').classList.add('show');
+}
+function closeSubscribePopup(){document.getElementById('subscribe-popup').classList.remove('show')}
+function selectPlan(el, name, price){
+  document.querySelectorAll('.sub-plan').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function submitSubscribe(){
+  let email = document.getElementById('sub-email').value.trim();
+  if(!email){alert('Please enter your email.');return}
+  let plan = document.querySelector('.sub-plan.selected .sub-plan-info strong');
+  let planName = plan ? plan.textContent : 'Yearly';
+  if(typeof fbFirestore !== 'undefined' && fbFirestore){
+    fbFirestore.collection('subscribers').add({email,plan:planName,createdAt:new Date()}).then(()=>{alert('Subscribed! Welcome to SNO '+planName+'.');closeSubscribePopup()}).catch(e=>{alert('Subscription saved locally.');localStorage.setItem('sno_subscriber',JSON.stringify({email,plan:planName}));closeSubscribePopup()});
+  } else {
+    localStorage.setItem('sno_subscriber',JSON.stringify({email,plan:planName}));
+    alert('Subscribed! Welcome to SNO '+planName+'.');
+    closeSubscribePopup();
+  }
 }
 
 // ===== YOUTUBE URL HELPER =====
@@ -1275,7 +1470,12 @@ function checkBroadcastState(){
       initHlsPlayer(u.mux_playback_id||'', u.video||'');
     }
   }
-  // If no upcoming or inactive, show default (Breaking News + news slider)
+  // If no upcoming or inactive, show default (headline + news slider)
+  // If a Mux stream is configured in hero settings, show the video too
+  if(_heroMuxId && visEl){
+    visEl.style.display = '';
+    initHlsPlayer(_heroMuxId, _heroVideoUrl);
+  }
 }
 function startCountdown(targetMs){
   if(_countdownInterval) clearInterval(_countdownInterval);
@@ -1314,7 +1514,7 @@ function loadAllData(){
       news: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
         newsData = data;
-        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' articles';console.log('News loaded from Firestore:',data.length)}else fallbackNews();
+        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' '+t('news_count');console.log('News loaded from Firestore:',data.length)}else fallbackNews();
       },
       schedule: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
@@ -1327,7 +1527,7 @@ function loadAllData(){
       },
       play: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
-        if(data.length){renderGrid('play-grid-full',data,'play');console.log('Play loaded from Firestore:',data.length)}else fallbackPlay();
+        if(data.length){renderPlayRows(data);console.log('Play loaded from Firestore:',data.length)}else fallbackPlay();
       },
       ticker: (snap)=>{
         let data=[];snap.forEach(d=>data.push(d.data().text||d.data().title));
@@ -1347,10 +1547,10 @@ function loadAllData(){
         try{
           let localData=JSON.parse(localStorage.getItem(localKey)||'[]');
           if(localData.length){
-            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' articles (backup)'}
+            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' '+t('news_count')+' (backup)'}
             else if(name==='schedule'){_scheduleData=localData;renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule');renderTicker();updateHeroWithSchedule()}
             else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
-            else if(name==='play'){renderGrid('play-grid-full',localData,'play')}
+            else if(name==='play'){renderPlayRows(localData)}
             else if(name==='upcoming'){_upcomingData=localData.length?localData[0]:null;checkBroadcastState()}
           }
         }catch(ex){}
@@ -1362,7 +1562,10 @@ function loadAllData(){
     fbFirestore.collection('settings').doc('hero').get().then(doc=>{
       if(doc.exists){
         let h=doc.data();
-        initHlsPlayer(h.mux_playback_id||'', h.video||'');
+        _heroMuxId = h.mux_playback_id||'';
+        _heroVideoUrl = h.video||'';
+        initHlsPlayer(_heroMuxId, _heroVideoUrl);
+        checkBroadcastState();
       }
     }).catch(()=>{});
     if(!fbFirestore) initHlsPlayer('','');
@@ -1374,11 +1577,11 @@ function fallbackNews(){
   renderGrid('news-grid',STATIC.news,'news');
   renderGrid('news-grid-full',STATIC.news,'news');
   renderNewsSlider(STATIC.news);
-  document.getElementById('news-count').textContent=STATIC.news.length+' articles';
+  document.getElementById('news-count').textContent=STATIC.news.length+' '+t('news_count');
 }
 function fallbackSchedule(){_scheduleData = STATIC.schedule;renderGrid('schedule-grid',STATIC.schedule,'schedule');renderGrid('schedule-grid-full',STATIC.schedule,'schedule');renderTicker();updateHeroWithSchedule()}
 function fallbackUpnext(){renderGrid('upnext-list',STATIC.upnext,'upnext');renderGrid('upnext-list-full',STATIC.upnext,'upnext')}
-function fallbackPlay(){renderGrid('play-grid-full',STATIC.play,'play')}
+function fallbackPlay(){renderPlayRows(STATIC.play)}
 function fallbackUpcoming(){_upcomingData=null;checkBroadcastState()}
 function fallbackAll(){fallbackNews();fallbackSchedule();fallbackUpnext();fallbackPlay();renderTicker();fallbackUpcoming();}
 
@@ -1400,7 +1603,7 @@ function renderAdmin(){
   const panels = [
     {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Short description'},{k:'isi',p:'Full article content'},{k:'writer',p:'Writer name'},{k:'time',p:'Time (e.g. 2h ago)'},{k:'color',p:'Color fallback'}],col:'news'},
     {title:'Schedule',fields:[{k:'time',p:'Time'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
-    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'url',p:'Video URL (Mux .m3u8 / .mp4)'},{k:'vid',p:'YouTube ID (fallback)'},{k:'color',p:'Color'}],col:'play'},
+    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'url',p:'Video URL (Mux .m3u8 / .mp4)'},{k:'vid',p:'YouTube ID (fallback)'},{k:'gambar',p:'Image URL (background)'},{k:'color',p:'Color'}],col:'play'},
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
     {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
     {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'mux_playback_id',p:'Mux Playback ID (for live)'},{k:'video',p:'YouTube embed URL (fallback)'}],col:'settings/hero'},
@@ -1444,7 +1647,7 @@ function adminSubmit(col){
   let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):fbFirestore.collection(col).doc();
   ref.set(data).then(()=>{
     showToast('Data saved to Firestore!','success');console.log('Saved:',col,data);
-    if(col==='settings/hero'){let m=data.mux_playback_id||'';let v=data.video||'';initHlsPlayer(m,v)}
+    if(col==='settings/hero'){_heroMuxId=data.mux_playback_id||'';_heroVideoUrl=data.video||'';initHlsPlayer(_heroMuxId,_heroVideoUrl);checkBroadcastState()}
   }).catch(e=>{
     showToast('Firestore error: '+e.message,'error');
     try{let key='sno_backup_'+col;let existing=JSON.parse(localStorage.getItem(key)||'[]');existing.push(data);localStorage.setItem(key,JSON.stringify(existing));showToast('Firestore gagal. Data disimpan lokal (backup)','success')}catch(ex){}
@@ -1491,6 +1694,15 @@ if(!localStorage.getItem('sno_demo_seen')){
   setTimeout(()=>{let d=document.getElementById('demo-overlay');if(d)d.classList.add('show')},600);
 }
 function closeDemo(){document.getElementById('demo-overlay').classList.remove('show');localStorage.setItem('sno_demo_seen','1')}
+
+// ===== COOKIE CONSENT =====
+if(!localStorage.getItem('sno_cookie_consent')){
+  setTimeout(()=>document.getElementById('cookie-bar').classList.add('show'),1000);
+}
+function acceptCookies(){
+  document.getElementById('cookie-bar').classList.remove('show');
+  localStorage.setItem('sno_cookie_consent','1');
+}
 
 renderAdmin();
 loadAllData();
