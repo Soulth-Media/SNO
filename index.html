@@ -6,43 +6,21 @@
 <title>SNO — News Network</title>
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/coolvetica">
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/telegraf">
-
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js">
 </script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth-compat.js">
 </script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js">
 </script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:#0a0a0a}
 ::-webkit-scrollbar-thumb{background:#1a3a2a;border-radius:10px}
 ::selection{background:#0d5e2e;color:#fff}
-
-:root{
-  --green:#0a1a10;--green2:#0d2215;--green3:#0f2d1a;--green4:#0d5e2e;
-  --accent:#00d454;--accent2:#00a843;
-  --black:#000;--black2:#080808;--black3:#0e0e0e;--black4:#141414;
-  --white:#fff;--gray:#777;--gray2:#aaa;
-  --radius:16px;--radius-sm:10px;
-}
-
-body{
-  background:var(--black);color:var(--white);
-  font-family:'Telegraf',sans-serif;overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
-
-.grain{
-  pointer-events:none;position:fixed;inset:0;z-index:999;
-  opacity:.03;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat:repeat;background-size:256px 256px;
-}
-
+:root{--green:#0a1a10;--green2:#0d2215;--green3:#0f2d1a;--accent:#00d454;--accent2:#00a843;--black:#000;--black2:#080808;--black3:#0e0e0e;--black4:#141414;--white:#fff;--gray:#777;--gray2:#aaa;--radius:16px;--radius-sm:10px}
+body{background:var(--black);color:var(--white);font-family:'Telegraf',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.grain{pointer-events:none;position:fixed;inset:0;z-index:999;opacity:.03;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
 h1,h2,h3,.h{font-family:'Coolvetica',sans-serif;letter-spacing:.01em;font-weight:400}
 .h-xl{font-size:clamp(48px,9vw,130px);line-height:.82}
 .h-lg{font-size:clamp(36px,5.5vw,72px);line-height:.88}
@@ -50,68 +28,29 @@ h1,h2,h3,.h{font-family:'Coolvetica',sans-serif;letter-spacing:.01em;font-weight
 .h-sm{font-size:clamp(18px,2vw,28px)}
 .label{font-size:10px;font-weight:500;text-transform:uppercase;color:var(--accent)}
 .label-sm{font-size:9px;font-weight:400;text-transform:uppercase;color:var(--gray)}
-
 .container{max-width:1200px;margin:0 auto;padding:0 28px}
-.section{padding:100px 0;scroll-margin-top:80px}
-.section-title{margin-bottom:48px}
-
-/* HEADER */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(0,0,0,.8);backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.header-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  height:64px;padding:0 28px;max-width:1200px;margin:0 auto;gap:20px;
-}
-.logo{
-  font-family:'Coolvetica',sans-serif;
-  font-size:32px;letter-spacing:3px;text-decoration:none;
-  color:var(--accent);transition:opacity .2s;flex-shrink:0;
-}
+.section{padding:80px 0;scroll-margin-top:80px}
+.section-title{margin-bottom:36px}
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.04)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 28px;max-width:1200px;margin:0 auto;gap:16px}
+.logo{font-family:'Coolvetica',sans-serif;font-size:32px;letter-spacing:3px;text-decoration:none;color:var(--accent);transition:opacity .2s;flex-shrink:0;cursor:pointer}
 .logo:hover{opacity:.8}
-nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-nav a{
-  color:var(--gray2);text-decoration:none;font-size:11px;
-  font-weight:500;text-transform:uppercase;
-  transition:color .25s;cursor:pointer;position:relative;
-  padding:4px 0;background:none;border:none;font-family:'Telegraf',sans-serif;
-}
+nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+nav a{color:var(--gray2);text-decoration:none;font-size:11px;font-weight:500;text-transform:uppercase;transition:color .25s;cursor:pointer;padding:4px 0;background:none;border:none;font-family:'Telegraf',sans-serif}
 nav a:hover{color:var(--white)}
 nav a.active{color:var(--accent)}
 nav a.play-link{color:var(--accent);opacity:.7}
 nav a.play-link:hover{opacity:1}
 .lang-toggle{display:flex;gap:2px;flex-shrink:0}
-.lang-btn{
-  padding:4px 8px;font-size:10px;font-weight:600;text-transform:uppercase;
-  background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--gray);
-  border-radius:6px;cursor:pointer;font-family:'Telegraf',sans-serif;
-  transition:all .2s;line-height:1;
-}
+.lang-btn{padding:4px 8px;font-size:10px;font-weight:600;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--gray);border-radius:6px;cursor:pointer;font-family:'Telegraf',sans-serif;transition:all .2s;line-height:1}
 .lang-btn:hover{border-color:var(--gray2);color:var(--white)}
 .lang-btn.active{background:var(--accent);color:var(--black);border-color:var(--accent)}
-.auth-btn{
-  padding:6px 12px;font-size:10px;font-weight:600;text-transform:uppercase;
-  background:var(--accent);color:var(--black);border:none;
-  border-radius:6px;cursor:pointer;font-family:'Telegraf',sans-serif;
-  transition:all .2s;line-height:1;flex-shrink:0;
-}
+.auth-btn{padding:6px 12px;font-size:10px;font-weight:600;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;border-radius:6px;cursor:pointer;font-family:'Telegraf',sans-serif;transition:all .2s;line-height:1;flex-shrink:0}
 .auth-btn:hover{background:var(--accent2)}
-.user-badge{font-size:10px;color:var(--accent);font-weight:600;flex-shrink:0}
-.live-dot{
-  display:inline-block;width:6px;height:6px;
-  background:#ff3333;border-radius:50%;margin-right:4px;
-  animation:pulse 1.4s ease infinite;
-}
+.user-badge{font-size:10px;color:var(--accent);font-weight:600;flex-shrink:0;cursor:pointer;display:flex;align-items:center;gap:8px}
+.live-dot{display:inline-block;width:6px;height:6px;background:#ff3333;border-radius:50%;margin-right:4px;animation:pulse 1.4s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
-
-/* HERO */
-.hero{
-  min-height:100vh;display:flex;align-items:flex-end;
-  position:relative;overflow:hidden;padding:120px 0 80px;
-  background:linear-gradient(180deg,var(--black) 0%,var(--green) 100%);
-}
+.hero{min-height:100vh;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:120px 0 80px;background:linear-gradient(180deg,var(--black) 0%,var(--green) 100%)}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
 .hero-content{z-index:2}
 .hero-label{display:flex;align-items:center;gap:8px;margin-bottom:20px}
@@ -121,534 +60,368 @@ nav a.play-link:hover{opacity:1}
 .hero h1 .glow{color:var(--accent);display:block;text-shadow:0 0 60px rgba(0,212,84,.15)}
 .hero p{font-size:15px;color:var(--gray);line-height:1.7;max-width:460px;margin-bottom:32px;font-weight:300}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:16px 36px;border-radius:var(--radius);
-  font-size:12px;font-weight:600;text-transform:uppercase;
-  text-decoration:none;cursor:pointer;border:none;transition:all .3s;
-  font-family:'Telegraf',sans-serif;
-}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);font-size:12px;font-weight:600;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .3s;font-family:'Telegraf',sans-serif}
 .btn-primary{background:var(--accent);color:var(--black)}
 .btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,84,.2)}
 .btn-outline{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.15)}
 .btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
 .btn-sm{padding:10px 20px;font-size:10px}
+.btn-danger{background:#ff3333;color:#fff}
+.btn-danger:hover{background:#cc0000}
+.btn-ghost{background:transparent;color:var(--gray2);border:1px solid rgba(255,255,255,.08)}
+.btn-ghost:hover{border-color:var(--gray2);color:var(--white)}
 .hero-visual{z-index:2;position:relative}
-.hero-video-wrap{
-  border-radius:var(--radius);overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,.5);
-}
+.hero-video-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
 .hero-video-wrap iframe{width:100%;display:block;aspect-ratio:16/9}
-.hero-stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-  background:rgba(255,255,255,.04);margin-top:24px;border-radius:var(--radius-sm);overflow:hidden;
-}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin-top:24px;border-radius:var(--radius-sm);overflow:hidden}
 .hero-stat{background:var(--green2);padding:20px 16px;text-align:center}
 .hero-stat .h-sm{color:var(--accent)}
 .hero-stat p{font-size:10px;color:var(--gray);margin:0;font-weight:500;text-transform:uppercase}
-
-/* TICKER */
-.ticker{
-  background:var(--green3);border-top:1px solid rgba(0,212,84,.08);border-bottom:1px solid rgba(0,212,84,.08);
-  padding:12px 0;overflow:hidden;position:relative;
-}
+.ticker{background:var(--green3);border-top:1px solid rgba(0,212,84,.08);border-bottom:1px solid rgba(0,212,84,.08);padding:12px 0;overflow:hidden;position:relative}
 .ticker-inner{display:flex;animation:scroll 35s linear infinite;white-space:nowrap}
 .ticker-item{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;margin-right:60px;flex-shrink:0}
 .ticker-item .label{font-size:9px}
 .ticker-item span{color:var(--gray2)}
 @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* LIVE */
 .live-section{background:var(--black2)}
 .live-grid{display:grid;grid-template-columns:2fr 1fr;gap:40px}
-.video-player{
-  background:var(--black3);border-radius:var(--radius);overflow:hidden;
-  border:1px solid rgba(255,255,255,.04);
-}
+.video-player{background:var(--black3);border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.04)}
 .video-player iframe{width:100%;display:block;aspect-ratio:16/9}
-.video-info{padding:24px}
-.video-info h3{font-size:18px;margin-bottom:6px;font-family:'Telegraf',sans-serif;font-weight:600}
-.video-info p{font-size:13px;color:var(--gray);line-height:1.6}
-.up-next{display:flex;flex-direction:column;gap:10px}
-.up-next-item{
-  display:flex;gap:14px;padding:14px;border-radius:var(--radius-sm);
-  background:var(--black3);cursor:pointer;transition:all .25s;
-  border:1px solid transparent;
-}
+.video-info{padding:20px}
+.video-info h3{font-size:16px;margin-bottom:4px;font-family:'Telegraf',sans-serif;font-weight:600}
+.video-info p{font-size:12px;color:var(--gray);line-height:1.5}
+.up-next{display:flex;flex-direction:column;gap:8px}
+.up-next-item{display:flex;gap:12px;padding:12px;border-radius:var(--radius-sm);background:var(--black3);cursor:pointer;transition:all .25s;border:1px solid transparent}
 .up-next-item:hover{border-color:rgba(0,212,84,.25);background:rgba(0,212,84,.03)}
 .up-next-item.active{border-color:var(--accent);background:rgba(0,212,84,.06)}
-.up-next-thumb{
-  width:130px;height:74px;border-radius:8px;overflow:hidden;flex-shrink:0;
-  background:var(--green3);position:relative;
-}
-.up-next-thumb .dur{
-  position:absolute;bottom:5px;right:5px;background:rgba(0,0,0,.85);
-  font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;
-}
+.up-next-thumb{width:120px;height:68px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--green3);position:relative}
+.up-next-thumb .dur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.85);font-size:9px;padding:2px 5px;border-radius:4px;font-weight:600}
 .up-next-info{flex:1}
-.up-next-info h4{font-size:14px;font-weight:600;margin-bottom:4px;line-height:1.3}
-.up-next-info p{font-size:11px;color:var(--gray);line-height:1.4}
-.up-next-info .label-sm{margin-top:6px;display:block}
-
-/* NEWS */
+.up-next-info h4{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.up-next-info p{font-size:11px;color:var(--gray);line-height:1.3}
+.up-next-info .label-sm{margin-top:4px;display:block}
 .news-section{background:var(--black)}
-.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.news-card{
-  background:var(--black3);border-radius:var(--radius);overflow:hidden;
-  border:1px solid rgba(255,255,255,.04);transition:all .35s;cursor:pointer;
-}
-.news-card:hover{transform:translateY(-6px);border-color:rgba(0,212,84,.15);box-shadow:0 16px 48px rgba(0,0,0,.4)}
-.news-card-img{
-  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;
-  background:var(--green3);position:relative;overflow:hidden;
-}
-.news-card-img .icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px}
-.news-card-body{padding:20px}
-.news-card-body .label-sm{margin-bottom:6px;display:block}
-.news-card-body h3{font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.35;font-family:'Telegraf',sans-serif}
-.news-card-body p{font-size:12px;color:var(--gray);line-height:1.6}
-
-/* SCHEDULE */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.news-card{background:var(--black3);border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.04);transition:all .35s;cursor:pointer}
+.news-card:hover{transform:translateY(-4px);border-color:rgba(0,212,84,.15);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+.news-card-img{width:100%;aspect-ratio:16/9;display:block;background:var(--green3);position:relative;overflow:hidden}
+.news-card-img .icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px}
+.news-card-body{padding:16px}
+.news-card-body .label-sm{margin-bottom:4px;display:block}
+.news-card-body h3{font-size:15px;font-weight:600;margin-bottom:6px;line-height:1.3;font-family:'Telegraf',sans-serif}
+.news-card-body p{font-size:12px;color:var(--gray);line-height:1.5}
 .schedule-section{background:var(--green)}
-.schedule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.schedule-card{
-  display:flex;align-items:center;gap:16px;padding:20px 24px;
-  background:rgba(255,255,255,.03);border-radius:var(--radius-sm);
-  border:1px solid rgba(255,255,255,.04);transition:all .25s;cursor:pointer;
-}
+.schedule-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.schedule-card{display:flex;align-items:center;gap:14px;padding:16px 20px;background:rgba(255,255,255,.03);border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.04);transition:all .25s;cursor:pointer}
 .schedule-card:hover{background:rgba(255,255,255,.06);border-color:rgba(0,212,84,.15)}
-.schedule-time{font-family:'Coolvetica',sans-serif;font-size:26px;color:var(--accent);min-width:56px}
+.schedule-time{font-family:'Coolvetica',sans-serif;font-size:24px;color:var(--accent);min-width:50px}
 .schedule-info{flex:1}
-.schedule-info h4{font-size:14px;font-weight:600;margin-bottom:2px}
+.schedule-info h4{font-size:13px;font-weight:600;margin-bottom:2px}
 .schedule-info p{font-size:11px;color:var(--gray)}
-.schedule-tag{
-  font-size:9px;font-weight:600;text-transform:uppercase;
-  padding:4px 10px;border-radius:6px;background:rgba(0,212,84,.12);color:var(--accent);
-}
+.schedule-tag{font-size:9px;font-weight:600;text-transform:uppercase;padding:3px 8px;border-radius:5px;background:rgba(0,212,84,.12);color:var(--accent)}
 
-/* ===== SNO PLAY FULL PAGE ===== */
-.play-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:var(--black);
-  overflow-y:auto;
-  transform:translateX(100%);
-  transition:transform .5s cubic-bezier(.77,0,.18,1);
-}
-.play-overlay.open{transform:translateX(0)}
-.play-overlay .grain{z-index:0}
-.play-header{
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 32px;gap:16px;flex-wrap:wrap;
-  background:rgba(0,0,0,.85);backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.play-header-left{display:flex;align-items:center;gap:20px}
-.play-header .back-btn{
-  background:none;border:1px solid rgba(255,255,255,.1);
-  color:var(--white);padding:8px 16px;border-radius:8px;
-  cursor:pointer;font-size:11px;font-weight:500;text-transform:uppercase;
-  font-family:'Telegraf',sans-serif;transition:all .2s;
-}
-.play-header .back-btn:hover{border-color:var(--accent);color:var(--accent)}
-.play-header .logo{font-size:28px}
-.play-header .logo span{font-size:10px;color:var(--gray);margin-left:4px}
-.play-header-right{display:flex;align-items:center;gap:12px}
-.play-search{
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);
-  border-radius:8px;padding:8px 14px;color:var(--white);
-  font-size:12px;font-family:'Telegraf',sans-serif;width:200px;
-  outline:none;transition:border .2s;
-}
-.play-search::placeholder{color:var(--gray)}
-.play-search:focus{border-color:var(--accent)}
+/* ===== OVERLAYS ===== */
+.overlay-page{position:fixed;inset:0;z-index:200;background:var(--black);overflow-y:auto;transform:translateX(100%);transition:transform .45s cubic-bezier(.77,0,.18,1)}
+.overlay-page.open{transform:translateX(0)}
+.overlay-page .grain-overlay{position:fixed;inset:0;z-index:0;pointer-events:none}
+.overlay-page > *:not(.grain-overlay){position:relative;z-index:1}
+.overlay-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;gap:12px;flex-wrap:wrap;background:rgba(0,0,0,.88);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.04)}
+.overlay-header-left{display:flex;align-items:center;gap:16px}
+.overlay-back-btn{background:none;border:1px solid rgba(255,255,255,.1);color:var(--white);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:10px;font-weight:500;text-transform:uppercase;font-family:'Telegraf',sans-serif;transition:all .2s}
+.overlay-back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.overlay-header .logo{font-size:26px}
+.overlay-content{max-width:1200px;margin:0 auto;padding:40px 28px}
 
-.play-hero{
-  position:relative;overflow:hidden;
-  min-height:70vh;display:flex;align-items:flex-end;
-  background:linear-gradient(180deg,var(--black4) 0%,var(--green) 100%);
-  padding:80px 32px 60px;
-}
-.play-hero-content{max-width:1200px;margin:0 auto;width:100%;z-index:2}
-.play-hero .label-sm{margin-bottom:10px;display:block}
-.play-hero h1{font-size:clamp(36px,6vw,80px);line-height:.85;margin-bottom:12px}
-.play-hero p{font-size:15px;color:var(--gray);line-height:1.7;max-width:520px;margin-bottom:24px}
-.play-hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.play-hero-video{
-  position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;
-}
-.play-hero-video iframe{
-  width:100%;height:100%;object-fit:cover;
-  filter:brightness(.4) saturate(.8);
-  pointer-events:none;
-}
-.play-hero-video::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 40%,var(--black) 100%);
-}
+/* Admin */
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.admin-card{background:var(--black3);border-radius:var(--radius);padding:24px;border:1px solid rgba(255,255,255,.04)}
+.admin-card h3{font-size:16px;margin-bottom:16px;font-family:'Telegraf',sans-serif;font-weight:600}
+.admin-form{display:flex;flex-direction:column;gap:10px}
+.admin-input{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s}
+.admin-input:focus{border-color:var(--accent)}
+.admin-input::placeholder{color:var(--gray)}
+.admin-textarea{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s;resize:vertical;min-height:60px}
+.admin-textarea:focus{border-color:var(--accent)}
+.admin-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.admin-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.admin-list-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:6px;font-size:12px;gap:8px}
+.admin-list-item .del-btn{background:none;border:none;color:#ff4444;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:background .2s}
+.admin-list-item .del-btn:hover{background:rgba(255,68,68,.15)}
 
-.play-section{padding:48px 32px}
-.play-section-inner{max-width:1200px;margin:0 auto}
-.play-section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;flex-wrap:wrap;gap:12px;
-}
-.play-section-header h2{font-size:clamp(20px,2.5vw,32px)}
-.play-categories{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
-.play-cat{
-  padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.1);
-  background:transparent;color:var(--gray2);font-size:11px;
-  cursor:pointer;font-weight:500;text-transform:uppercase;
-  font-family:'Telegraf',sans-serif;transition:all .2s;
-}
-.play-cat:hover{border-color:var(--accent);color:var(--white)}
-.play-cat.active{background:var(--accent);color:var(--black);border-color:var(--accent)}
-.play-grid{
-  display:grid;gap:16px;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-}
-.play-card{
-  background:var(--black3);border-radius:var(--radius-sm);overflow:hidden;
-  border:1px solid rgba(255,255,255,.04);transition:all .3s;cursor:pointer;
-}
-.play-card:hover{transform:translateY(-4px);border-color:rgba(0,212,84,.15);box-shadow:0 12px 36px rgba(0,0,0,.3)}
-.play-card-thumb{
-  width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;font-size:40px;
-}
-.play-card-info{padding:16px}
-.play-card-info h4{font-size:14px;font-weight:600;margin-bottom:4px;line-height:1.3}
-.play-card-info p{font-size:11px;color:var(--gray);line-height:1.4}
-.play-card-info .label-sm{margin-top:6px;display:block}
-
-/* FOOTER */
-footer{
-  background:var(--black2);border-top:1px solid rgba(255,255,255,.04);
-  padding:80px 0 32px;
-}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-footer .logo{font-size:40px}
-footer p{font-size:13px;color:var(--gray);line-height:1.7;margin-top:12px;max-width:320px}
-footer h4{font-size:11px;font-weight:600;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
-footer a{display:block;color:var(--gray);text-decoration:none;font-size:13px;margin-bottom:10px;transition:color .25s;cursor:pointer}
-footer a:hover{color:var(--white)}
-.footer-bottom{
-  border-top:1px solid rgba(255,255,255,.04);padding-top:24px;
-  display:flex;justify-content:space-between;align-items:center;
-  font-size:12px;color:var(--gray);
-}
-.social{display:flex;gap:10px}
-.social a{
-  width:40px;height:40px;border-radius:var(--radius-sm);
-  border:1px solid rgba(255,255,255,.08);display:flex;
-  align-items:center;justify-content:center;
-  font-size:12px;transition:all .3s;color:var(--gray);
-  font-weight:600;text-decoration:none;
-}
-.social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
-
-/* AUTH MODAL */
-.auth-overlay{
-  position:fixed;inset:0;z-index:500;
-  background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
-  display:none;align-items:center;justify-content:center;
-}
+/* Auth modal */
+.auth-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center}
 .auth-overlay.open{display:flex}
-.auth-modal{
-  background:var(--black3);border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,.08);
-  padding:40px;max-width:400px;width:90%;
-  box-shadow:0 32px 80px rgba(0,0,0,.6);
-}
-.auth-modal h2{font-size:22px;margin-bottom:4px}
-.auth-modal .sub{font-size:13px;color:var(--gray);margin-bottom:24px}
-.auth-input{
-  width:100%;padding:14px 16px;border-radius:var(--radius-sm);
-  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);
-  color:var(--white);font-size:14px;margin-bottom:12px;
-  font-family:'Telegraf',sans-serif;outline:none;transition:border .2s;
-}
+.auth-modal{background:var(--black3);border-radius:var(--radius);border:1px solid rgba(255,255,255,.08);padding:36px;max-width:380px;width:90%;box-shadow:0 32px 80px rgba(0,0,0,.6)}
+.auth-modal h2{font-size:20px;margin-bottom:4px}
+.auth-modal .sub{font-size:13px;color:var(--gray);margin-bottom:20px}
+.auth-input{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;margin-bottom:10px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s}
 .auth-input:focus{border-color:var(--accent)}
 .auth-input::placeholder{color:var(--gray)}
-.auth-error{color:#ff4444;font-size:12px;margin-bottom:12px;display:none}
-.auth-switch{font-size:12px;color:var(--gray);margin-top:16px;text-align:center}
+.auth-error{color:#ff4444;font-size:12px;margin-bottom:10px;display:none}
+.auth-divider{text-align:center;font-size:11px;color:var(--gray);margin:14px 0;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:rgba(255,255,255,.08)}
+.auth-divider::before{left:0}
+.auth-divider::after{right:0}
+.btn-google{width:100%;justify-content:center;background:var(--white);color:var(--black);border:1px solid rgba(255,255,255,.15)}
+.btn-google:hover{background:#f0f0f0}
+.auth-switch{font-size:12px;color:var(--gray);margin-top:14px;text-align:center}
 .auth-switch a{color:var(--accent);cursor:pointer;text-decoration:underline}
 
 /* DEMO POPUP */
-.overlay{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .4s;
-}
-.overlay.show{opacity:1;pointer-events:auto}
-.modal{
-  background:var(--black3);border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,.08);
-  padding:48px;max-width:440px;width:90%;text-align:center;
-  box-shadow:0 32px 80px rgba(0,0,0,.6);
-  transform:translateY(20px);transition:transform .4s;
-}
-.overlay.show .modal{transform:translateY(0)}
-.modal .logo{font-size:36px;display:inline-block;margin-bottom:16px}
-.modal h2{font-size:22px;margin-bottom:8px}
-.modal p{font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:28px}
+.overlay-fixed{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.overlay-fixed.show{opacity:1;pointer-events:auto}
+.modal-box{background:var(--black3);border-radius:var(--radius);border:1px solid rgba(255,255,255,.08);padding:40px;max-width:400px;width:90%;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.6);transform:translateY(20px);transition:transform .4s}
+.overlay-fixed.show .modal-box{transform:translateY(0)}
+.modal-box .logo{font-size:32px;display:inline-block;margin-bottom:12px}
+.modal-box h2{font-size:20px;margin-bottom:6px}
+.modal-box p{font-size:13px;color:var(--gray);line-height:1.6;margin-bottom:24px}
+
+/* FOOTER */
+footer{background:var(--black2);border-top:1px solid rgba(255,255,255,.04);padding:60px 0 24px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+footer .logo{font-size:36px}
+footer p{font-size:13px;color:var(--gray);line-height:1.6;margin-top:10px;max-width:300px}
+footer h4{font-size:10px;font-weight:600;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+footer a{display:block;color:var(--gray);text-decoration:none;font-size:12px;margin-bottom:8px;transition:color .25s;cursor:pointer}
+footer a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.04);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--gray)}
+.social{display:flex;gap:8px}
+.social a{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s;color:var(--gray);font-weight:600;text-decoration:none}
+.social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
 
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:40px}
   .news-grid{grid-template-columns:1fr 1fr}
   .live-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
-  .play-search{width:140px}
-  .play-hero h1{font-size:clamp(28px,5vw,50px)}
+  .admin-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-  .news-grid{grid-template-columns:1fr}
+  .news-grid,.play-grid{grid-template-columns:1fr}
   .hero-stats{grid-template-columns:1fr}
-  nav{gap:12px}
-  nav a{font-size:10px}
+  nav{gap:10px}
+  nav a{font-size:9px}
   .schedule-grid{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr;gap:32px}
-  .section{padding:60px 0}
-  .header-inner{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px}
-  .play-header{padding:16px}
-  .play-hero{padding:60px 16px 40px}
-  .play-section{padding:32px 16px}
-  .modal{padding:32px 24px}
+  .footer-grid{grid-template-columns:1fr;gap:24px}
+  .section{padding:50px 0}
+  .header-inner{flex-wrap:wrap;height:auto;padding:10px 14px;gap:8px}
+  .overlay-header{padding:12px 16px}
+  .overlay-content{padding:24px 16px}
+  .modal-box{padding:28px 20px}
+  .admin-card{padding:16px}
 }
 </style>
 </head>
 <body>
 <div class="grain"></div>
 
-<!-- HEADER -->
+<!-- ===== HEADER ===== -->
 <header>
   <div class="header-inner">
-    <a href="#" class="logo" id="logo-link">SNO</a>
+    <div class="logo" id="logo-link">SNO</div>
     <nav>
-      <a class="active" data-page="home" data-i18n="nav_news">News</a>
-      <a data-page="live"><span class="live-dot"></span><span data-i18n="nav_live">Live</span></a>
-      <a data-page="play" class="play-link" data-i18n="nav_play">SNO Play</a>
-      <a data-page="schedule" data-i18n="nav_schedule">Schedule</a>
+      <a class="active" data-page="home">Home</a>
+      <a data-page="news">News</a>
+      <a data-page="live"><span class="live-dot"></span>Live</a>
+      <a data-page="play" class="play-link">SNO Play</a>
+      <a data-page="schedule">Schedule</a>
+      <a data-page="admin" id="admin-nav" style="display:none;color:var(--accent)">Admin</a>
     </nav>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="id">ID</button>
       <button class="lang-btn" data-lang="nl">NL</button>
     </div>
-    <button class="auth-btn" id="auth-toggle" onclick="openAuth()" data-i18n="auth_login">Sign In</button>
-    <span class="user-badge" id="user-badge" style="display:none"></span>
+    <button class="auth-btn" id="auth-toggle" onclick="openAuth()">Sign In</button>
+    <div class="user-badge" id="user-badge" style="display:none"></div>
   </div>
 </header>
 
-<!-- MAIN SITE -->
+<!-- ===== MAIN SITE ===== -->
 <div id="main-site">
 <section class="hero" id="page-home">
   <div class="container" style="width:100%">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="hero-label">
-          <span class="live-dot"></span>
-          <span class="label" data-i18n="hero_label">Live Now</span>
-        </div>
-        <h1>
-          <span class="h-xl" data-i18n="hero_title1">Breaking</span>
-          <span class="glow" data-i18n="hero_title2">News.</span>
-        </h1>
-        <p data-i18n="hero_desc">Global summit addresses climate crisis as world leaders convene for emergency talks. Exclusive coverage from SNO correspondents on the ground.</p>
+        <div class="hero-label"><span class="live-dot"></span><span class="label" id="hero-label-text">Live Now</span></div>
+        <h1><span class="h-xl" id="hero-title1">Breaking</span><span class="glow" id="hero-title2">News.</span></h1>
+        <p id="hero-desc">Global summit addresses climate crisis as world leaders convene for emergency talks.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" onclick="scrollToSection('live')" data-i18n="hero_btn1">▶ Watch Now</a>
-          <a class="btn btn-outline" onclick="showStory(this)" data-i18n="hero_btn2">Read Story</a>
+      <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1">▶ Watch Now</a>
+      <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2">Read Story</a>
         </div>
       </div>
       <div class="hero-visual">
         <div class="hero-video-wrap">
-          <iframe src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <iframe id="hero-video" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         <div class="hero-stats">
-          <div class="hero-stat"><div class="h-sm">12.4K</div><p data-i18n="hero_stat1">Watching Now</p></div>
-          <div class="hero-stat"><div class="h-sm">24/7</div><p data-i18n="hero_stat2">Live Coverage</p></div>
-          <div class="hero-stat"><div class="h-sm">189</div><p data-i18n="hero_stat3">Countries</p></div>
+          <div class="hero-stat"><div class="h-sm" id="stat-num1">12.4K</div><p id="stat-label1">Watching Now</p></div>
+          <div class="hero-stat"><div class="h-sm" id="stat-num2">24/7</div><p id="stat-label2">Live Coverage</p></div>
+          <div class="hero-stat"><div class="h-sm" id="stat-num3">189</div><p id="stat-label3">Countries</p></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="ticker">
-  <div class="ticker-inner" id="ticker-wrap"></div>
-</div>
+<div class="ticker"><div class="ticker-inner" id="ticker-wrap"></div></div>
 
-<section class="section live-section" id="page-live">
+<section class="section live-section" id="page-live-preview">
   <div class="container">
-    <div class="section-title">
-      <div class="label" style="margin-bottom:8px" data-i18n="live_label">Live Broadcast</div>
-      <h2 class="h-lg" data-i18n="live_title">Now Playing</h2>
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <div><div class="label" style="margin-bottom:6px">Live Broadcast</div><h2 class="h-lg">Now Playing</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('live')">View All</button>
     </div>
     <div class="live-grid">
-      <div class="video-player" id="main-player">
+      <div class="video-player">
         <iframe id="main-video" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <div class="video-info">
-          <h3 id="video-title">Global Climate Summit — Emergency Session</h3>
-          <p id="video-desc">Live from Geneva, world leaders debate the most ambitious climate pact in history.</p>
-        </div>
+        <div class="video-info"><h3 id="video-title">Global Climate Summit</h3><p id="video-desc">Live coverage of emergency climate talks.</p></div>
       </div>
       <div>
-        <div class="label-sm" style="margin-bottom:14px" data-i18n="upnext_label">Up Next</div>
+        <div class="label-sm" style="margin-bottom:10px">Up Next</div>
         <div class="up-next" id="upnext-list"></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section news-section" id="page-news">
+<section class="section news-section" id="page-news-preview">
   <div class="container">
-    <div class="section-title">
-      <div class="label" style="margin-bottom:8px" data-i18n="news_label">Latest Stories</div>
-      <h2 class="h-lg" style="font-size:clamp(36px,5vw,64px);" data-i18n="news_title">Top News</h2>
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <div><div class="label" style="margin-bottom:6px">Latest Stories</div><h2 class="h-lg">Top News</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('news')">View All</button>
     </div>
     <div class="news-grid" id="news-grid"></div>
   </div>
 </section>
 
-<section class="section schedule-section" id="page-schedule">
+<section class="section schedule-section" id="page-schedule-preview">
   <div class="container">
-    <div class="section-title">
-      <div class="label" style="margin-bottom:8px" data-i18n="schedule_label">TV Schedule</div>
-      <h2 class="h-lg" data-i18n="schedule_title">Today's Programming</h2>
+    <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
+      <div><div class="label" style="margin-bottom:6px">TV Schedule</div><h2 class="h-lg">Today's Programming</h2></div>
+      <button class="btn btn-outline btn-sm" onclick="openOverlay('schedule')">View All</button>
     </div>
     <div class="schedule-grid" id="schedule-grid"></div>
   </div>
 </section>
 </div>
 
-<!-- ===== SNO PLAY FULL PAGE ===== -->
-<div class="play-overlay" id="play-overlay">
-  <div class="grain" style="position:fixed"></div>
-  <div class="play-header">
-    <div class="play-header-left">
-      <button class="back-btn" onclick="closePlay()">← <span data-i18n="play_back">Back to SNO</span></button>
-      <span class="logo">SNO <span data-i18n="play_brand">Play</span></span>
-    </div>
-    <div class="play-header-right">
-      <input class="play-search" type="text" placeholder="Search..." data-i18n="play_search" id="play-search">
-      <button class="btn btn-primary btn-sm" onclick="alert('Playing: Featured Content')" data-i18n="play_subscribe">Subscribe</button>
-    </div>
+<!-- ===== NEWS OVERLAY ===== -->
+<div class="overlay-page" id="overlay-news"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news')">← Back</button><span class="logo">SNO</span></div>
+    <span class="label-sm">News</span>
   </div>
-
-  <div class="play-hero">
-    <div class="play-hero-video">
-      <iframe src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8&controls=0" allow="autoplay; encrypted-media"></iframe>
-    </div>
-    <div class="play-hero-content">
-      <span class="label-sm" data-i18n="play_feat_tag">SNO Original</span>
-      <h1 data-i18n="play_feat_title">The Signal — Season 2</h1>
-      <p data-i18n="play_feat_desc">Award-winning documentary series returns with an exclusive look at the future of global communication and its hidden costs.</p>
-      <div class="play-hero-btns">
-        <button class="btn btn-primary" onclick="playFeature()">▶ <span data-i18n="play_play">Play Now</span></button>
-        <button class="btn btn-outline" onclick="alert('+ My List')" data-i18n="play_mylist">+ My List</button>
-      </div>
-    </div>
+  <div class="overlay-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px"><h1 class="h-lg" style="font-size:clamp(32px,4.5vw,56px)">All Stories</h1><div class="label-sm" id="news-count">0 articles</div></div>
+    <div class="news-grid" id="news-grid-full"></div>
   </div>
+</div>
 
-  <div class="play-section">
-    <div class="play-section-inner">
-      <div class="play-section-header">
-        <h2 data-i18n="play_sec1">Exclusive Originals</h2>
-        <span class="label-sm" data-i18n="play_sec1_tag">View All</span>
-      </div>
-      <div class="play-categories">
-        <button class="play-cat active" data-i18n="play_cat_all">All</button>
-        <button class="play-cat" data-i18n="play_cat_doc">Documentary</button>
-        <button class="play-cat" data-i18n="play_cat_series">Series</button>
-        <button class="play-cat" data-i18n="play_cat_film">Film</button>
-        <button class="play-cat" data-i18n="play_cat_tech">Tech</button>
-      </div>
-      <div class="play-grid" id="play-grid"></div>
-    </div>
+<!-- ===== LIVE OVERLAY ===== -->
+<div class="overlay-page" id="overlay-live"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('live')">← Back</button><span class="logo">SNO</span></div>
+    <span class="label-sm"><span class="live-dot"></span>Live</span>
   </div>
-
-  <div class="play-section" style="padding-top:0">
-    <div class="play-section-inner">
-      <div class="play-section-header">
-        <h2 data-i18n="play_sec2">Continue Watching</h2>
+  <div class="overlay-content">
+    <h1 class="h-lg" style="margin-bottom:28px">Live Coverage</h1>
+    <div class="live-grid">
+      <div class="video-player">
+        <iframe id="main-video-full" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="video-info"><h3 id="video-title-full">Global Climate Summit</h3><p id="video-desc-full">Live coverage of emergency climate talks.</p></div>
       </div>
-      <div class="play-grid" id="play-continue"></div>
+      <div>
+        <div class="label-sm" style="margin-bottom:10px">Up Next</div>
+        <div class="up-next" id="upnext-list-full"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ===== PLAY OVERLAY ===== -->
+<div class="overlay-page" id="overlay-play"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')">← Back</button><span class="logo">SNO <span style="font-size:10px;color:var(--gray);margin-left:4px">Play</span></span></div>
+    <button class="btn btn-primary btn-sm" onclick="alert('Subscribe')">Subscribe</button>
+  </div>
+  <div class="overlay-content">
+    <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:28px;border:1px solid rgba(255,255,255,.06);background:var(--black3)">
+      <iframe style="width:100%;aspect-ratio:21/9" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=0&mute=1" allow="encrypted-media" allowfullscreen></iframe>
+      <div style="padding:24px"><span class="label-sm" style="display:block;margin-bottom:4px">SNO Original</span><h2 class="h-md" id="play-feat-title">The Signal — Season 2</h2><p style="font-size:13px;color:var(--gray);line-height:1.5;max-width:560px" id="play-feat-desc">Award-winning documentary series returns.</p></div>
+    </div>
+    <div class="label-sm" style="margin-bottom:16px;display:block">Exclusive Originals</div>
+    <div class="news-grid" id="play-grid-full"></div>
+  </div>
+</div>
+
+<!-- ===== SCHEDULE OVERLAY ===== -->
+<div class="overlay-page" id="overlay-schedule"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('schedule')">← Back</button><span class="logo">SNO</span></div>
+    <span class="label-sm">Schedule</span>
+  </div>
+  <div class="overlay-content">
+    <h1 class="h-lg" style="margin-bottom:28px">Full Schedule</h1>
+    <div class="schedule-grid" id="schedule-grid-full"></div>
+  </div>
+</div>
+
+<!-- ===== ADMIN OVERLAY ===== -->
+<div class="overlay-page" id="overlay-admin"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('admin')">← Back</button><span class="logo">SNO</span></div>
+    <span class="label-sm" style="color:var(--accent)">Admin Panel</span>
+  </div>
+  <div class="overlay-content">
+    <h1 class="h-lg" style="margin-bottom:8px">Dashboard</h1>
+    <p style="font-size:13px;color:var(--gray);margin-bottom:32px">Manage content — changes sync to all users instantly.</p>
+    <div class="admin-grid" id="admin-panels"></div>
+  </div>
+</div>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <h2 id="auth-title">Sign In</h2>
+    <p class="sub" id="auth-sub">Access your SNO account</p>
+    <div class="auth-error" id="auth-error"></div>
+    <button class="btn btn-google" onclick="googleAuth()" style="width:100%;justify-content:center">Sign in with Google</button>
+    <div class="auth-divider">or</div>
+    <input class="auth-input" id="auth-email" type="email" placeholder="Email">
+    <input class="auth-input" id="auth-pass" type="password" placeholder="Password">
+    <input class="auth-input" id="auth-name" type="text" placeholder="Display Name" style="display:none">
+    <button class="btn btn-primary" style="width:100%;justify-content:center" id="auth-submit" onclick="handleAuth()">Sign In</button>
+    <div class="auth-switch"><span id="auth-switch-text">Don't have an account?</span> <a onclick="toggleAuthMode()" id="auth-switch-link">Create one</a></div>
+  </div>
+</div>
+
+<!-- ===== DEMO POPUP ===== -->
+<div class="overlay-fixed" id="demo-overlay">
+  <div class="modal-box">
+    <div class="logo">SNO</div>
+    <h2>Under Demo</h2>
+    <p>This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.</p>
+    <button class="btn btn-primary" onclick="closeDemo()">Got it</button>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
 <footer>
   <div class="container">
-    <div class="footer-grid" id="main-site">
-      <div>
-        <a href="#" class="logo" id="footer-logo">SNO</a>
-        <p data-i18n="footer_desc">Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world. Available 24/7.</p>
-      </div>
-      <div>
-        <h4 data-i18n="footer_channels">Channels</h4>
-        <a onclick="navigate('home')" data-i18n="nav_news">News</a>
-        <a onclick="navigate('live')" data-i18n="nav_live">Live</a>
-        <a onclick="openPlay()" data-i18n="nav_play" style="color:var(--accent)">SNO Play</a>
-        <a onclick="navigate('schedule')" data-i18n="nav_schedule">Schedule</a>
-      </div>
-      <div>
-        <h4 data-i18n="footer_company">Company</h4>
-        <a href="#" data-i18n="footer_about">About</a>
-        <a href="#" data-i18n="footer_careers">Careers</a>
-        <a href="#" data-i18n="footer_contact">Contact</a>
-        <a href="#" data-i18n="footer_advertise">Advertise</a>
-      </div>
-      <div>
-        <h4 data-i18n="footer_support">Support</h4>
-        <a href="#" data-i18n="footer_help">Help Center</a>
-        <a href="#" data-i18n="footer_access">Accessibility</a>
-        <a href="#" data-i18n="footer_privacy">Privacy Policy</a>
-        <a href="#" data-i18n="footer_terms">Terms of Service</a>
-      </div>
+    <div class="footer-grid">
+      <div><div class="logo">SNO</div><p>Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
+      <div><h4>Channels</h4><a onclick="navigate('home')">Home</a><a onclick="openOverlay('news')">News</a><a onclick="openOverlay('live')">Live</a><a onclick="openOverlay('play')">SNO Play</a><a onclick="openOverlay('schedule')">Schedule</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Advertise</a></div>
+      <div><h4>Support</h4><a href="#">Help Center</a><a href="#">Accessibility</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
     </div>
-    <div class="footer-bottom">
-      <span data-i18n="footer_copy">&copy; 2026 SNO News Network. All rights reserved.</span>
-      <div class="social">
-        <a href="#">𝕏</a>
-        <a href="#">◻</a>
-        <a href="#">▶</a>
-      </div>
-    </div>
+    <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">𝕏</a><a href="#">◻</a><a href="#">▶</a></div></div>
   </div>
 </footer>
 
-<!-- AUTH MODAL -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-modal">
-    <h2 id="auth-title" data-i18n="auth_login_title">Sign In</h2>
-    <p class="sub" id="auth-sub" data-i18n="auth_login_sub">Access your SNO account</p>
-    <div class="auth-error" id="auth-error"></div>
-    <input class="auth-input" id="auth-email" type="email" placeholder="Email" autocomplete="email">
-    <input class="auth-input" id="auth-pass" type="password" placeholder="Password" autocomplete="current-password">
-    <input class="auth-input" id="auth-name" type="text" placeholder="Display Name" style="display:none">
-    <button class="btn btn-primary" style="width:100%;justify-content:center" id="auth-submit" onclick="handleAuth()" data-i18n="auth_login">Sign In</button>
-    <div class="auth-switch">
-      <span data-i18n="auth_noaccount">Don't have an account?</span>
-      <a onclick="toggleAuthMode()" id="auth-switch-link" data-i18n="auth_register">Create one</a>
-    </div>
-  </div>
-</div>
-
-<!-- DEMO POPUP -->
-<div class="overlay" id="demo-overlay">
-  <div class="modal">
-    <span class="logo">SNO</span>
-    <h2 data-i18n="demo_title">Under Demo</h2>
-    <p data-i18n="demo_desc">This site is currently a demo version. Some features may not be fully functional yet. Thank you for your understanding.</p>
-    <button class="btn btn-primary" onclick="closeDemo()" data-i18n="demo_btn">Got it</button>
-  </div>
-</div>
-
 <script>
-// ===== FIREBASE CONFIG =====
-// TODO: Ganti dengan config dari project Firebase-mu
+// ===== FIREBASE =====
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -658,503 +431,376 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
+// Ganti dengan email admin-mu
+const ADMIN_EMAIL = "admin@sno.com";
+
 let fbApp, fbAuth, fbFirestore;
-let authMode = 'login';
-let currentUser = null;
-let isPlayOpen = false;
+let authMode = 'login', currentUser = null, isAdmin = false;
+let overlayStack = [];
+let unsubscribers = [];
 
 try {
   fbApp = firebase.initializeApp(firebaseConfig);
   fbAuth = firebase.auth(fbApp);
   fbFirestore = firebase.firestore(fbApp);
-  console.log('Firebase initialized');
-} catch(e) {
-  console.warn('Firebase not configured yet. See instructions above.');
-}
+  console.log('Firebase OK');
+} catch(e) { console.warn('Firebase not configured. Using static data.'); }
+
+// ===== STATIC FALLBACK DATA =====
+const STATIC = {
+  news: [
+    {icon:'🌍',cat:'Global',time:'2h ago',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)'},
+    {icon:'🤖',cat:'Technology',time:'5h ago',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)'},
+    {icon:'⚽',cat:'Sports',time:'8h ago',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)'},
+    {icon:'📈',cat:'Economy',time:'12h ago',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)'},
+    {icon:'🌊',cat:'Weather',time:'14h ago',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)'},
+    {icon:'🎬',cat:'Culture',time:'1d ago',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)'}
+  ],
+  schedule: [
+    {time:'06:00',title:'Morning Briefing',desc:'Overnight news recap',tag:'Live'},
+    {time:'09:00',title:'Global Report',desc:'International news and analysis',tag:'New'},
+    {time:'12:00',title:'Midday Update',desc:'Breaking stories and market report',tag:'Live'},
+    {time:'15:00',title:'Tech Today',desc:'Innovation and digital culture',tag:''},
+    {time:'18:00',title:'Sports Desk',desc:'Live scores and analysis',tag:'Live'},
+    {time:'21:00',title:'Nightly News',desc:"Day's top stories in depth",tag:'New'}
+  ],
+  upnext: [
+    {vid:'Bfy1HmAC6i8',title:'Global Climate Summit',desc:'Live coverage of climate talks.',dur:'8:24',time:'In 15 min'},
+    {vid:'dQw4w9WgXcQ',title:'Tech Review: AI Revolution',desc:'How AI is reshaping industries.',dur:'12:00',time:'Next Hour'},
+    {vid:'jNQXAC9IVRw',title:'Sports Desk: Championship Preview',desc:'Expert analysis.',dur:'6:42',time:'Today 6PM'},
+    {vid:'9bZkp7q19f0',title:'Weather Watch: Storm Tracking',desc:'Latest satellite imagery.',dur:'10:15',time:'Today 8PM'}
+  ],
+  play: [
+    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a'},
+    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a'},
+    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a'},
+    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a'},
+    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a'},
+    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a'}
+  ],
+  ticker:['Global summit reaches historic agreement','Tech giant unveils AI platform','Championship finals set record','Storm warning for coastal regions','Markets surge on trade agreement'],
+  hero:{title1:'Breaking',title2:'News.',desc:'Global summit addresses climate crisis.',stat1:'12.4K',stat2:'24/7',stat3:'189',s1:'Watching Now',s2:'Live Coverage',s3:'Countries'}
+};
 
 // ===== AUTH =====
-function openAuth(){
-  document.getElementById('auth-overlay').classList.add('open');
-}
-function closeAuth(){
-  document.getElementById('auth-overlay').classList.remove('open');
-}
+function openAuth(){document.getElementById('auth-overlay').classList.add('open')}
+function closeAuth(){document.getElementById('auth-overlay').classList.remove('open')}
 
 function toggleAuthMode(){
-  authMode = authMode === 'login' ? 'register' : 'login';
-  let isLogin = authMode === 'login';
-  document.getElementById('auth-title').textContent = isLogin ? t('auth_login_title')||'Sign In' : t('auth_register_title')||'Create Account';
-  document.getElementById('auth-sub').textContent = isLogin ? t('auth_login_sub')||'Access your SNO account' : t('auth_register_sub')||'Join SNO today';
-  document.getElementById('auth-submit').textContent = isLogin ? t('auth_login')||'Sign In' : t('auth_register')||'Create Account';
-  document.getElementById('auth-switch-link').textContent = isLogin ? (t('auth_register')||'Create one') : (t('auth_login')||'Sign In');
-  document.getElementById('auth-switch-link').previousElementSibling.textContent = isLogin ? (t('auth_noaccount')||"Don't have an account? ") : (t('auth_hasaccount')||"Already have an account? ");
-  document.getElementById('auth-name').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('auth-error').style.display = 'none';
+  authMode = authMode==='login'?'register':'login';
+  let l=authMode==='login';
+  document.getElementById('auth-title').textContent=l?'Sign In':'Create Account';
+  document.getElementById('auth-sub').textContent=l?'Access your SNO account':'Join SNO today';
+  document.getElementById('auth-submit').textContent=l?'Sign In':'Create Account';
+  document.getElementById('auth-switch-link').textContent=l?'Create one':'Sign In';
+  document.getElementById('auth-switch-text').textContent=l?"Don't have an account? ":"Already have an account? ";
+  document.getElementById('auth-name').style.display=l?'none':'block';
+  document.getElementById('auth-error').style.display='none';
 }
 
 function handleAuth(){
-  let email = document.getElementById('auth-email').value.trim();
-  let pass = document.getElementById('auth-pass').value;
-  let name = document.getElementById('auth-name').value.trim();
-  let errEl = document.getElementById('auth-error');
-  errEl.style.display = 'none';
-
-  if(!email||!pass){errEl.textContent='Please fill all fields';errEl.style.display='block';return}
-
-  let promise;
-  if(authMode === 'login'){
-    promise = fbAuth.signInWithEmailAndPassword(email, pass);
-  } else {
-    if(pass.length < 6){errEl.textContent='Password must be at least 6 characters';errEl.style.display='block';return}
-    promise = fbAuth.createUserWithEmailAndPassword(email, pass);
+  let email=document.getElementById('auth-email').value.trim();
+  let pass=document.getElementById('auth-pass').value;
+  let name=document.getElementById('auth-name').value.trim();
+  let err=document.getElementById('auth-error');err.style.display='none';
+  if(!email||!pass){err.textContent='Please fill all fields';err.style.display='block';return}
+  let p;
+  if(authMode==='login') p=fbAuth.signInWithEmailAndPassword(email,pass);
+  else{
+    if(pass.length<6){err.textContent='Password must be 6+ characters';err.style.display='block';return}
+    p=fbAuth.createUserWithEmailAndPassword(email,pass);
   }
+  p.then(r=>{if(authMode==='register'&&name){r.user.updateProfile({displayName:name});if(fbFirestore)fbFirestore.collection('users').doc(r.user.uid).set({name,email,createdAt:new Date(),role:email===ADMIN_EMAIL?'admin':'user'})} closeAuth()}).catch(e=>{err.textContent=e.message;err.style.display='block'});
+}
 
-  promise.then(result=>{
-    if(authMode==='register'&&name){
-      result.user.updateProfile({displayName:name});
-      fbFirestore.collection('users').doc(result.user.uid).set({
-        name:name, email:email, createdAt:new Date()
-      });
-    }
+function googleAuth(){
+  if(!fbAuth) return alert('Configure Firebase first!');
+  let provider = new firebase.auth.GoogleAuthProvider();
+  fbAuth.signInWithPopup(provider).then(r=>{
+    let u=r.user;
+    if(fbFirestore) fbFirestore.collection('users').doc(u.uid).set({name:u.displayName,email:u.email,lastLogin:new Date(),role:u.email===ADMIN_EMAIL?'admin':'user'},{merge:true});
     closeAuth();
-  }).catch(err=>{
-    errEl.textContent=err.message;errEl.style.display='block';
-  });
+  }).catch(e=>{let err=document.getElementById('auth-error');err.textContent=e.message;err.style.display='block'});
 }
 
-function signOut(){
-  fbAuth.signOut();
-}
+function signOut(){fbAuth.signOut()}
 
-// Listen auth state
 if(fbAuth){
   fbAuth.onAuthStateChanged(user=>{
-    currentUser = user;
-    let toggle = document.getElementById('auth-toggle');
-    let badge = document.getElementById('user-badge');
+    currentUser=user;
+    isAdmin=user&&user.email===ADMIN_EMAIL;
+    let toggle=document.getElementById('auth-toggle'),badge=document.getElementById('user-badge'),adminNav=document.getElementById('admin-nav');
     if(user){
-      toggle.style.display = 'none';
-      badge.style.display = 'inline';
-      badge.textContent = user.displayName || user.email;
-      badge.onclick = function(){
-        if(confirm('Sign out?')) signOut();
-      };
+      toggle.style.display='none';badge.style.display='flex';
+      badge.innerHTML=(user.displayName||user.email)+(isAdmin?' <span style="color:var(--accent);font-size:8px;background:rgba(0,212,84,.12);padding:2px 6px;border-radius:4px">ADMIN</span>':'');
+      badge.onclick=()=>{if(confirm('Sign out?'))signOut()};
+      adminNav.style.display=isAdmin?'inline':'none';
     } else {
-      toggle.style.display = 'inline-block';
-      badge.style.display = 'none';
+      toggle.style.display='inline-block';badge.style.display='none';adminNav.style.display='none';isAdmin=false;
     }
   });
 }
 
-// ===== SNO PLAY =====
-function openPlay(){
-  isPlayOpen = true;
-  document.getElementById('play-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+// ===== OVERLAYS =====
+function openOverlay(name){
+  let el=document.getElementById('overlay-'+name);
+  if(el){el.classList.add('open');overlayStack.push(name);document.body.style.overflow='hidden'}
 }
-
-function closePlay(){
-  isPlayOpen = false;
-  document.getElementById('play-overlay').classList.remove('open');
-  document.body.style.overflow = '';
+function closeOverlay(name){
+  let el=document.getElementById('overlay-'+name);
+  if(el){el.classList.remove('open');overlayStack=overlayStack.filter(o=>o!==name);if(!overlayStack.length)document.body.style.overflow=''}
 }
-
-function playFeature(){
-  alert('Playing: The Signal — Season 2');
-  // Save to continue watching in Firestore
-  if(fbFirestore && currentUser){
-    fbFirestore.collection('users').doc(currentUser.uid).collection('history').add({
-      title: t('play_feat_title')||'The Signal — Season 2',
-      watchedAt: new Date()
-    });
-  }
+function closeTopOverlay(){
+  if(overlayStack.length){let last=overlayStack.pop();closeOverlay(last);if(!overlayStack.length)document.body.style.overflow=''}
 }
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopOverlay()});
 
-document.getElementById('play-search')?.addEventListener('input', function(){
-  let q = this.value.toLowerCase();
-  document.querySelectorAll('.play-card').forEach(card=>{
-    let match = card.textContent.toLowerCase().includes(q);
-    card.style.display = match ? '' : 'none';
-  });
-});
-
-// ===== LANG =====
-const LANG = {
-  en: {
-    nav_news:'News', nav_live:'Live', nav_play:'SNO Play', nav_schedule:'Schedule',
-    hero_label:'Live Now', hero_title1:'Breaking', hero_title2:'News.',
-    hero_desc:'Global summit addresses climate crisis as world leaders convene for emergency talks. Exclusive coverage from SNO correspondents on the ground.',
-    hero_btn1:'▶ Watch Now', hero_btn2:'Read Story',
-    hero_stat1:'Watching Now', hero_stat2:'Live Coverage', hero_stat3:'Countries',
-    live_label:'Live Broadcast', live_title:'Now Playing',
-    live_vid1_title:'Global Climate Summit — Emergency Session',
-    live_vid1_desc:'Live from Geneva, world leaders debate the most ambitious climate pact in history.',
-    upnext_label:'Up Next',
-    news_label:'Latest Stories', news_title:'Top News',
-    schedule_label:'TV Schedule', schedule_title:"Today's Programming",
-    footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world. Available 24/7.',
-    footer_channels:'Channels', footer_company:'Company', footer_support:'Support',
-    footer_about:'About', footer_careers:'Careers', footer_contact:'Contact', footer_advertise:'Advertise',
-    footer_help:'Help Center', footer_access:'Accessibility', footer_privacy:'Privacy Policy', footer_terms:'Terms of Service',
-    footer_copy:'\u00a9 2026 SNO News Network. All rights reserved.',
-    demo_title:'Under Demo', demo_desc:'This site is currently a demo version. Some features may not be fully functional yet. Thank you for your understanding.',
-    demo_btn:'Got it',
-    auth_login:'Sign In', auth_login_title:'Sign In', auth_login_sub:'Access your SNO account',
-    auth_register:'Create Account', auth_register_title:'Create Account', auth_register_sub:'Join SNO today',
-    auth_noaccount:"Don't have an account? ", auth_hasaccount:"Already have an account? ",
-    play_back:'Back to SNO', play_search:'Search...', play_subscribe:'Subscribe',
-    play_feat_tag:'SNO Original', play_feat_title:'The Signal — Season 2',
-    play_feat_desc:'Award-winning documentary series returns with an exclusive look at the future of global communication and its hidden costs.',
-    play_play:'Play Now', play_mylist:'+ My List',
-    play_sec1:'Exclusive Originals', play_sec1_tag:'View All',
-    play_sec2:'Continue Watching',
-    play_cat_all:'All', play_cat_doc:'Documentary', play_cat_series:'Series', play_cat_film:'Film', play_cat_tech:'Tech',
-    ticker:['Global climate summit reaches historic agreement','Tech giant unveils revolutionary AI platform','Championship finals set record viewership','Severe storm warning for coastal regions','Markets surge on new trade agreement']
-  },
-  id: {
-    nav_news:'Berita', nav_live:'Langsung', nav_play:'SNO Play', nav_schedule:'Jadwal',
-    hero_label:'Siaran Langsung', hero_title1:'Terkini', hero_title2:'Berita.',
-    hero_desc:'KTT iklim global membahas krisis iklim saat para pemimpin dunia berkumpul untuk perundingan darurat. Liputan eksklusif dari koresponden SNO di lapangan.',
-    hero_btn1:'▶ Tonton Langsung', hero_btn2:'Baca Berita',
-    hero_stat1:'Sedang Menonton', hero_stat2:'Liputan 24/7', hero_stat3:'Negara',
-    live_label:'Siaran Langsung', live_title:'Sedang Diputar',
-    live_vid1_title:'KTT Iklim Global — Sidang Darurat',
-    live_vid1_desc:'Langsung dari Jenewa, para pemimpin dunia membahas pakta iklim paling ambisius dalam sejarah.',
-    upnext_label:'Selanjutnya',
-    news_label:'Berita Terbaru', news_title:'Berita Utama',
-    schedule_label:'Jadwal TV', schedule_title:'Acara Hari Ini',
-    footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme terpercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia. Tersedia 24/7.',
-    footer_channels:'Saluran', footer_company:'Perusahaan', footer_support:'Dukungan',
-    footer_about:'Tentang', footer_careers:'Karir', footer_contact:'Kontak', footer_advertise:'Iklan',
-    footer_help:'Pusat Bantuan', footer_access:'Aksesibilitas', footer_privacy:'Kebijakan Privasi', footer_terms:'Ketentuan Layanan',
-    footer_copy:'\u00a9 2026 SNO News Network. Hak cipta dilindungi.',
-    demo_title:'Dalam Demo', demo_desc:'Situs ini saat ini adalah versi demo. Beberapa fitur mungkin belum berfungsi sepenuhnya. Terima kasih atas pengertian Anda.',
-    demo_btn:'Mengerti',
-    auth_login:'Masuk', auth_login_title:'Masuk', auth_login_sub:'Akses akun SNO-mu',
-    auth_register:'Buat Akun', auth_register_title:'Buat Akun', auth_register_sub:'Gabung SNO hari ini',
-    auth_noaccount:'Belum punya akun? ', auth_hasaccount:'Sudah punya akun? ',
-    play_back:'Kembali ke SNO', play_search:'Cari...', play_subscribe:'Berlangganan',
-    play_feat_tag:'Original SNO', play_feat_title:'The Signal — Musim 2',
-    play_feat_desc:'Serial dokumenter pemenang penghargaan kembali dengan pandangan eksklusif tentang masa depan komunikasi global dan biaya tersembunyinya.',
-    play_play:'Putar', play_mylist:'+ Daftar Saya',
-    play_sec1:'Karya Orisinal Eksklusif', play_sec1_tag:'Lihat Semua',
-    play_sec2:'Lanjutkan Menonton',
-    play_cat_all:'Semua', play_cat_doc:'Dokumenter', play_cat_series:'Seri', play_cat_film:'Film', play_cat_tech:'Tekno',
-    ticker:['KTT iklim global capai kesepakatan bersejarah','Raksasa teknologi luncurkan platform AI revolusioner','Final kejuaraan catat rekor jumlah penonton','Peringatan badai besar untuk wilayah pesisir','Pasar melonjak akibat perjanjian dagang baru']
-  },
-  nl: {
-    nav_news:'Nieuws', nav_live:'Live', nav_play:'SNO Play', nav_schedule:'Programma',
-    hero_label:'Live Nu', hero_title1:'Breaking', hero_title2:'Nieuws.',
-    hero_desc:'Wereldtop over klimaatcrisis terwijl wereldleiders bijeenkomen voor noodoverleg. Exclusieve berichtgeving van SNO-correspondenten ter plaatse.',
-    hero_btn1:'▶ Kijk Live', hero_btn2:'Lees Verhaal',
-    hero_stat1:'Kijken Nu', hero_stat2:'24/7 Verslaggeving', hero_stat3:'Landen',
-    live_label:'Live Uitzending', live_title:'Nu Te Zien',
-    live_vid1_title:'Klimaattop — Noodzitting',
-    live_vid1_desc:'Live vanuit Genève debatteren wereldleiders over het meest ambitieuze klimaatpact ooit.',
-    upnext_label:'Volgende',
-    news_label:'Laatste Verhalen', news_title:'Topnieuws',
-    schedule_label:'TV Programma', schedule_title:'Programma Vandaag',
-    footer_desc:'Global News Network. Brengt u betrouwbare journalistiek, breaking stories en diepgaande berichtgeving vanuit elke hoek van de wereld. 24/7 beschikbaar.',
-    footer_channels:'Kanalen', footer_company:'Bedrijf', footer_support:'Ondersteuning',
-    footer_about:'Over ons', footer_careers:'Carrières', footer_contact:'Contact', footer_advertise:'Adverteren',
-    footer_help:'Helpcentrum', footer_access:'Toegankelijkheid', footer_privacy:'Privacybeleid', footer_terms:'Gebruiksvoorwaarden',
-    footer_copy:'\u00a9 2026 SNO News Network. Alle rechten voorbehouden.',
-    demo_title:'In Demo', demo_desc:'Deze site is momenteel een demoversie. Sommige functies werken mogelijk nog niet volledig. Dank u voor uw begrip.',
-    demo_btn:'Begrepen',
-    auth_login:'Inloggen', auth_login_title:'Inloggen', auth_login_sub:'Toegang tot uw SNO-account',
-    auth_register:'Account Aanmaken', auth_register_title:'Account Aanmaken', auth_register_sub:'Word vandaag lid van SNO',
-    auth_noaccount:'Nog geen account? ', auth_hasaccount:'Al een account? ',
-    play_back:'Terug naar SNO', play_search:'Zoeken...', play_subscribe:'Abonneren',
-    play_feat_tag:'SNO Original', play_feat_title:'The Signal — Seizoen 2',
-    play_feat_desc:'Het bekroonde documentaireserie keert terug met een exclusieve blik op de toekomst van wereldwijde communicatie en de verborgen kosten ervan.',
-    play_play:'Speel Nu', play_mylist:'+ Mijn Lijst',
-    play_sec1:'Exclusieve Originelen', play_sec1_tag:'Bekijk Alles',
-    play_sec2:'Verder Kijken',
-    play_cat_all:'Alles', play_cat_doc:'Documentaire', play_cat_series:'Series', play_cat_film:'Film', play_cat_tech:'Tech',
-    ticker:['Klimaattop bereikt historisch akkoord','Techreus onthult revolutionair AI-platform','Kampioenschapsfinale breekt kijkcijferrecord','Zware stormwaarschuwing voor kustgebieden','Markten stijgen door nieuwe handelsovereenkomst']
-  }
-};
-
-const CONTENT = {
-  en: {
-    news: [
-      {icon:'🌍',cat:'Global',time:'2h ago',title:'Climate Summit Reaches Landmark Agreement on Emissions',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)'},
-      {icon:'🤖',cat:'Technology',time:'5h ago',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers announce a system that achieves unprecedented accuracy in medical diagnosis.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)'},
-      {icon:'⚽',cat:'Sports',time:'8h ago',title:'Championship Final Draws Record Global Audience',desc:'The most-watched sporting event in history captivates over 2 billion viewers.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)'},
-      {icon:'📈',cat:'Economy',time:'12h ago',title:'Markets Rally as Trade Agreement Boosts Investor Confidence',desc:'Global indices surge following announcement of a comprehensive trade framework.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)'},
-      {icon:'🌊',cat:'Weather',time:'14h ago',title:'Severe Weather Warning Issued for Coastal Communities',desc:'Meteorologists track a developing storm system expected to impact millions.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)'},
-      {icon:'🎬',cat:'Culture',time:'1d ago',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)'}
-    ],
-    schedule: [
-      {time:'06:00',title:'Morning Briefing',desc:'Overnight news recap and weather',tag:'Live'},
-      {time:'09:00',title:'Global Report',desc:'International news and analysis',tag:'New'},
-      {time:'12:00',title:'Midday Update',desc:'Breaking stories and market report',tag:'Live'},
-      {time:'15:00',title:'Tech Today',desc:'Innovation and digital culture',tag:''},
-      {time:'18:00',title:'Sports Desk',desc:'Live scores, highlights and analysis',tag:'Live'},
-      {time:'21:00',title:'Nightly News',desc:"Day's top stories in depth",tag:'New'}
-    ],
-    upnext: [
-      {vid:'Bfy1HmAC6i8',title:'Global Climate Summit',desc:'Live coverage of emergency climate talks.',dur:'8:24',time:'In 15 min'},
-      {vid:'dQw4w9WgXcQ',title:'Tech Review: AI Revolution',desc:'How AI is reshaping industries.',dur:'12:00',time:'Next Hour'},
-      {vid:'jNQXAC9IVRw',title:'Sports Desk: Championship Preview',desc:'Expert analysis ahead of the biggest game.',dur:'6:42',time:'Today 6PM'},
-      {vid:'9bZkp7q19f0',title:'Weather Watch: Storm Tracking',desc:'Latest satellite imagery and forecasts.',dur:'10:15',time:'Today 8PM'}
-    ],
-    play: [
-      {icon:'🎬',title:'The Signal — S2 E1',desc:'Season premiere of award-winning docu-series.',tag:'New',color:'#1a1a2a'},
-      {icon:'🌍',title:'Borders: A World Divided',desc:'Exploring the geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a'},
-      {icon:'🔬',title:'Beyond the Code',desc:'Inside the minds shaping the future of AI.',tag:'',color:'#1a1a3a'},
-      {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity and connects us.',tag:'New',color:'#2a1a2a'},
-      {icon:'📷',title:'Frames of War',desc:'Unseen footage from global conflict zones.',tag:'Popular',color:'#2a1a1a'},
-      {icon:'🌌',title:'Nightfall',desc:'A cinematic journey through the last dark skies.',tag:'',color:'#0a1a2a'}
-    ],
-    ticker_labels:['Breaking','Update','Sports','Weather','Economy']
-  },
-  id: {
-    news: [
-      {icon:'🌍',cat:'Global',time:'2 jam',title:'KTT Iklim Capai Kesepakatan Bersejarah',desc:'Lebih dari 190 negara tanda tangani pakta bersejarah.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)'},
-      {icon:'🤖',cat:'Teknologi',time:'5 jam',title:'Terobosan AI: Model Baru Lampaui Manusia',desc:'Peneliti umumkan sistem dengan akurasi belum pernah terjadi.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)'},
-      {icon:'⚽',cat:'Olahraga',time:'8 jam',title:'Final Kejuaraan Raih Rekor Penonton',desc:'Acara olahraga paling banyak ditonton sepanjang sejarah.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)'},
-      {icon:'📈',cat:'Ekonomi',time:'12 jam',title:'Pasar Menguat, Perjanjian Dagang Tingkatkan Kepercayaan',desc:'Indeks global melonjak setelah pengumuman kerangka perdagangan.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)'},
-      {icon:'🌊',cat:'Cuaca',time:'14 jam',title:'Peringatan Cuaca Buruk untuk Pesisir',desc:'Meteorolog lacak sistem badai yang berdampak pada jutaan orang.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)'},
-      {icon:'🎬',cat:'Budaya',time:'1 hari',title:'Penghargaan Festival Film Diumumkan',desc:'Film terobosan dari sutradara baru raih penghargaan tertinggi.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)'}
-    ],
-    schedule: [
-      {time:'06:00',title:'Briefing Pagi',desc:'Rekap berita semalam dan cuaca',tag:'Langsung'},
-      {time:'09:00',title:'Laporan Global',desc:'Berita dan analisis internasional',tag:'Baru'},
-      {time:'12:00',title:'Update Tengah Hari',desc:'Berita terkini dan laporan pasar',tag:'Langsung'},
-      {time:'15:00',title:'Tekno Hari Ini',desc:'Inovasi dan budaya digital',tag:''},
-      {time:'18:00',title:'Meja Olahraga',desc:'Skor langsung, sorotan dan analisis',tag:'Langsung'},
-      {time:'21:00',title:'Berita Malam',desc:'Berita utama hari ini secara mendalam',tag:'Baru'}
-    ],
-    upnext: [
-      {vid:'Bfy1HmAC6i8',title:'KTT Iklim Global',desc:'Liputan langsung perundingan iklim darurat.',dur:'8:24',time:'15 menit'},
-      {vid:'dQw4w9WgXcQ',title:'Review Tekno: Revolusi AI',desc:'Bagaimana AI mengubah industri.',dur:'12:00',time:'Jam depan'},
-      {vid:'jNQXAC9IVRw',title:'Meja Olahraga: Pratinjau Final',desc:'Analisis ahli menjelang pertandingan terbesar.',dur:'6:42',time:'Jam 6 sore'},
-      {vid:'9bZkp7q19f0',title:'Cuaca: Pelacakan Badai',desc:'Citra satelit dan prakiraan terbaru.',dur:'10:15',time:'Jam 8 malam'}
-    ],
-    play: [
-      {icon:'🎬',title:'The Signal — S2 E1',desc:'Premier musim dari serial dokumenter.',tag:'Baru',color:'#1a1a2a'},
-      {icon:'🌍',title:'Batas: Dunia Terbagi',desc:'Garis geopolitik yang menentukan dunia kita.',tag:'Populer',color:'#0a2a1a'},
-      {icon:'🔬',title:'Di Balik Kode',desc:'Pikiran yang membentuk masa depan AI.',tag:'',color:'#1a1a3a'},
-      {icon:'🎵',title:'Gema: Musik & Memori',desc:'Suara membentuk identitas dan menghubungkan kita.',tag:'Baru',color:'#2a1a2a'},
-      {icon:'📷',title:'Bingkai Perang',desc:'Rekaman dari zona konflik global.',tag:'Populer',color:'#2a1a1a'},
-      {icon:'🌌',title:'Senja',desc:'Perjalanan sinematik langit gelap terakhir.',tag:'',color:'#0a1a2a'}
-    ],
-    ticker_labels:['Terkini','Update','Olahraga','Cuaca','Ekonomi']
-  },
-  nl: {
-    news: [
-      {icon:'🌍',cat:'Global',time:'2u geleden',title:'Klimaattop Bereikt Historisch Akkoord',desc:'Meer dan 190 landen tekenen historisch klimaatpact.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)'},
-      {icon:'🤖',cat:'Technologie',time:'5u geleden',title:'AI-doorbraak: Model Overtreft Mensen',desc:'Onderzoekers bereiken ongekende nauwkeurigheid.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)'},
-      {icon:'⚽',cat:'Sport',time:'8u geleden',title:'Recordaantal Kijkers voor Finale',desc:'Meest bekeken sportevenement ooit.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)'},
-      {icon:'📈',cat:'Economie',time:'12u geleden',title:'Markten Stijgen door Handelsakkoord',desc:'Wereldwijde indices stijgen.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)'},
-      {icon:'🌊',cat:'Weer',time:'14u geleden',title:'Zware Stormwaarschuwing voor Kust',desc:'Storm bedreigt miljoenen mensen.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)'},
-      {icon:'🎬',cat:'Cultuur',time:'1d geleden',title:'Filmfestivalprijzen Bekendgemaakt',desc:'Baanbrekende films winnen prijzen.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)'}
-    ],
-    schedule: [
-      {time:'06:00',title:'Ochtendbriefing',desc:'Nachtnieuws en weer',tag:'Live'},
-      {time:'09:00',title:'Global Rapport',desc:'Internationaal nieuws en analyse',tag:'Nieuw'},
-      {time:'12:00',title:'Middagupdate',desc:'Breaking stories en marktrapport',tag:'Live'},
-      {time:'15:00',title:'Tech Vandaag',desc:'Innovatie en digitale cultuur',tag:''},
-      {time:'18:00',title:'Sportdesk',desc:'Live scores en hoogtepunten',tag:'Live'},
-      {time:'21:00',title:'Avondnieuws',desc:"Hoofdverhalen van de dag",tag:'Nieuw'}
-    ],
-    upnext: [
-      {vid:'Bfy1HmAC6i8',title:'Klimaattop',desc:'Live verslag noodklimaatoverleg.',dur:'8:24',time:'Over 15 min'},
-      {vid:'dQw4w9WgXcQ',title:'Tech Review: AI Revolutie',desc:'Hoe AI industrieën hervormt.',dur:'12:00',time:'Volgend uur'},
-      {vid:'jNQXAC9IVRw',title:'Sportdesk: Kampioenschap Preview',desc:'Analyse voor grootste wedstrijd.',dur:'6:42',time:'Vandaag 18:00'},
-      {vid:'9bZkp7q19f0',title:'Weer: Storm Volgen',desc:'Nieuwste satellietbeelden.',dur:'10:15',time:'Vandaag 20:00'}
-    ],
-    play: [
-      {icon:'🎬',title:'The Signal — S2 A1',desc:'Première van bekroonde docu-serie.',tag:'Nieuw',color:'#1a1a2a'},
-      {icon:'🌍',title:'Grenzen: Verdeelde Wereld',desc:'Geopolitieke lijnen die onze wereld bepalen.',tag:'Populair',color:'#0a2a1a'},
-      {icon:'🔬',title:'Achter de Code',desc:'De geesten achter de toekomst van AI.',tag:'',color:'#1a1a3a'},
-      {icon:'🎵',title:'Echo\'s: Muziek & Herinnering',desc:'Hoe geluid ons verbindt.',tag:'Nieuw',color:'#2a1a2a'},
-      {icon:'📷',title:'Oorlogsbeelden',desc:'Ongezien materiaal van conflictgebieden.',tag:'Populair',color:'#2a1a1a'},
-      {icon:'🌌',title:'Nachtval',desc:'Cinematografische reis door donkere luchten.',tag:'',color:'#0a1a2a'}
-    ],
-    ticker_labels:['Breaking','Update','Sport','Weer','Economie']
-  }
-};
-
-let currentLang = 'en';
-let currentVidIndex = 0;
-
-function t(key){return LANG[currentLang][key]||LANG.en[key]||key}
-
-function setLang(lang){
-  if(lang===currentLang) return;
-  currentLang = lang;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    el.textContent = t(el.dataset.i18n);
-  });
-  document.querySelectorAll('.lang-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.lang === lang);
-  });
-  renderNews();renderSchedule();renderUpNext();renderPlay();renderTicker();
-  document.title = 'SNO — ' + t('nav_news');
-  let activeVid = document.querySelector('.up-next-item.active');
-  if(activeVid){
-    let idx = Array.from(document.querySelectorAll('.up-next-item')).indexOf(activeVid);
-    if(idx>=0){currentVidIndex=idx;updateMainVideo(idx);}
-  }
-  // update auth texts
-  if(authMode==='login'){
-    document.getElementById('auth-title').textContent = t('auth_login_title');
-    document.getElementById('auth-sub').textContent = t('auth_login_sub');
-    document.getElementById('auth-submit').textContent = t('auth_login');
-  } else {
-    document.getElementById('auth-title').textContent = t('auth_register_title');
-    document.getElementById('auth-sub').textContent = t('auth_register_sub');
-    document.getElementById('auth-submit').textContent = t('auth_register');
-  }
-}
-
-function renderNews(){
-  let g=document.getElementById('news-grid');g.innerHTML='';
-  let data=CONTENT[currentLang].news;
-  data.forEach(n=>{
-    let c=document.createElement('article');c.className='news-card';
-    c.innerHTML='<div class="news-card-img" style="background:'+n.color+'"><div class="icon">'+n.icon+'</div></div><div class="news-card-body"><span class="label-sm">'+n.cat+' · '+n.time+'</span><h3>'+n.title+'</h3><p>'+n.desc+'</p></div>';
-    c.onclick=function(){alert(t('hero_btn2')+': '+n.title)};
-    g.appendChild(c);
-  });
-}
-
-function renderSchedule(){
-  let g=document.getElementById('schedule-grid');g.innerHTML='';
-  let data=CONTENT[currentLang].schedule;
-  data.forEach(s=>{
-    let c=document.createElement('div');c.className='schedule-card';
-    c.innerHTML='<div class="schedule-time">'+s.time+'</div><div class="schedule-info"><h4>'+s.title+'</h4><p>'+s.desc+'</p></div>'+(s.tag?'<span class="schedule-tag">'+s.tag+'</span>':'');
-    c.onclick=function(){alert(t('nav_schedule')+': '+s.title+' — '+s.time)};
-    g.appendChild(c);
-  });
-}
-
-function renderUpNext(){
-  let g=document.getElementById('upnext-list');g.innerHTML='';
-  let data=CONTENT[currentLang].upnext;
-  data.forEach((item,i)=>{
-    let c=document.createElement('div');c.className='up-next-item'+(i===currentVidIndex?' active':'');
-    c.dataset.video=item.vid;c.dataset.index=i;
-    c.innerHTML='<div class="up-next-thumb"><div class="dur">'+item.dur+'</div></div><div class="up-next-info"><h4>'+item.title+'</h4><p>'+item.desc+'</p><span class="label-sm">'+item.time+'</span></div>';
-    c.addEventListener('click',function(){
-      document.querySelectorAll('.up-next-item').forEach(x=>x.classList.remove('active'));
-      this.classList.add('active');
-      currentVidIndex=parseInt(this.dataset.index);
-      updateMainVideo(currentVidIndex);
-    });
-    g.appendChild(c);
-  });
-}
-
-function updateMainVideo(idx){
-  let data=CONTENT[currentLang].upnext;
-  if(!data[idx]) return;
-  let item=data[idx];
-  document.getElementById('main-video').src='https://www.youtube.com/embed/'+item.vid+'?autoplay=1&mute=1';
-  document.getElementById('video-title').textContent=item.title;
-  document.getElementById('video-desc').textContent=item.desc;
-}
-
-function renderPlay(){
-  let g=document.getElementById('play-grid');g.innerHTML='';
-  let data=CONTENT[currentLang].play;
-  data.forEach(p=>{
-    let c=document.createElement('div');c.className='play-card';
-    c.innerHTML='<div class="play-card-thumb" style="background:'+(p.color||'var(--green3)')+'">'+p.icon+'</div><div class="play-card-info"><h4>'+p.title+'</h4><p>'+p.desc+'</p>'+(p.tag?'<span class="label-sm">'+p.tag+'</span>':'')+'</div>';
-    c.onclick=function(){alert('▶ '+p.title)};
-    g.appendChild(c);
-  });
-  // continue watching
-  let cg=document.getElementById('play-continue');cg.innerHTML='';
-  for(let i=0;i<2;i++){
-    let p=data[i%data.length];
-    let c=document.createElement('div');c.className='play-card';
-    c.innerHTML='<div class="play-card-thumb" style="background:'+(p.color||'var(--green3)')+'">'+p.icon+'</div><div class="play-card-info"><h4>'+p.title+'</h4><p>'+p.desc+'</p><span class="label-sm">'+'75%'+'</span></div>';
-    c.onclick=function(){alert('▶ '+p.title)};
-    cg.appendChild(c);
-  }
-}
-
-function renderTicker(){
-  let g=document.getElementById('ticker-wrap');g.innerHTML='';
-  let data=CONTENT[currentLang].ticker;
-  let labels=CONTENT[currentLang].ticker_labels;
-  let items=[];
-  for(let i=0;i<2;i++){
-    labels.forEach((l,idx)=>{
-      items.push('<div class="ticker-item"><span class="label">'+l+'</span><span>'+data[idx%data.length]+'</span></div>');
-    });
-  }
-  g.innerHTML=items.join('');
-}
-
-function navigate(page){
-  let el=document.getElementById('page-'+page);
-  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
-  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-  let navLink=document.querySelector('nav a[data-page="'+page+'"]');
-  if(navLink)navLink.classList.add('active');
-}
-
-function scrollToSection(id){
-  let el=document.getElementById('page-'+id);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-function showStory(el){alert(t('hero_btn2')+'...')}
-function closeDemo(){
-  document.getElementById('demo-overlay').classList.remove('show');
-  localStorage.setItem('sno_demo_seen','1');
-}
-
-// init nav
+// ===== NAV =====
 document.querySelectorAll('nav a').forEach(a=>{
   a.addEventListener('click',function(){
     let page=this.dataset.page;
-    if(page==='play'){openPlay();return}
-    if(isPlayOpen) closePlay();
-    if(page==='home'){window.scrollTo({top:0,behavior:'smooth'});}
-    else{navigate(page);}
+    if(page==='admin'){if(isAdmin)openOverlay('admin');return}
+    if(page==='home'){closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
+    else if(page==='play')openOverlay('play');
+    else if(page==='news')openOverlay('news');
+    else if(page==='live')openOverlay('live');
+    else if(page==='schedule')openOverlay('schedule');
     document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
-    this.classList.add('active');
+    if(page==='home')this.classList.add('active');
   });
 });
 
-document.querySelectorAll('.lang-btn').forEach(b=>{
-  b.addEventListener('click',function(){setLang(this.dataset.lang);});
-});
-
-document.getElementById('logo-link').addEventListener('click',function(e){
-  e.preventDefault();if(isPlayOpen)closePlay();
+document.getElementById('logo-link').addEventListener('click',()=>{
+  while(overlayStack.length)closeTopOverlay();
   window.scrollTo({top:0,behavior:'smooth'});
   document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
   document.querySelector('nav a[data-page="home"]').classList.add('active');
 });
 
-document.getElementById('footer-logo').addEventListener('click',function(e){
-  e.preventDefault();if(isPlayOpen)closePlay();
-  window.scrollTo({top:0,behavior:'smooth'});
-});
-
-// close auth on overlay click
-document.getElementById('auth-overlay')?.addEventListener('click',function(e){
-  if(e.target===this) closeAuth();
-});
-
-// Keyboard shortcut for play overlay
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape' && isPlayOpen) closePlay();
-});
-
-// init
-renderTicker();renderUpNext();renderNews();renderSchedule();renderPlay();
-
-if(!localStorage.getItem('sno_demo_seen')){
-  setTimeout(()=>{document.getElementById('demo-overlay').classList.add('show')},600);
+function navigate(page){
+  if(page==='home'){while(overlayStack.length)closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
 }
+
+// ===== LANG =====
+const LANG = {
+  en:{hero_label:'Live Now',hero_title1:'Breaking',hero_title2:'News.',hero_desc:'Global summit addresses climate crisis as world leaders convene for emergency talks.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',hero_stat1:'Watching Now',hero_stat2:'Live Coverage',hero_stat3:'Countries'},
+  id:{hero_label:'Siaran Langsung',hero_title1:'Terkini',hero_title2:'Berita.',hero_desc:'KTT iklim global membahas krisis iklim saat para pemimpin dunia berkumpul.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',hero_stat1:'Sedang Menonton',hero_stat2:'Liputan 24/7',hero_stat3:'Negara'},
+  nl:{hero_label:'Live Nu',hero_title1:'Breaking',hero_title2:'Nieuws.',hero_desc:'Wereldtop over klimaatcrisis terwijl wereldleiders bijeenkomen.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',hero_stat1:'Kijken Nu',hero_stat2:'24/7 Verslaggeving',hero_stat3:'Landen'}
+};
+let currentLang='en';
+function t(k){return LANG[currentLang]?.[k]||k}
+function setLang(lang){
+  if(lang===currentLang)return;
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  let h=LANG[lang];
+  if(h){
+    document.getElementById('hero-label-text').textContent=h.hero_label||'Live Now';
+    document.getElementById('hero-title1').textContent=h.hero_title1||'Breaking';
+    document.getElementById('hero-title2').textContent=h.hero_title2||'News.';
+    document.getElementById('hero-desc').textContent=h.hero_desc||'';
+    document.getElementById('hero-btn1').textContent=h.hero_btn1||'▶ Watch Now';
+    document.getElementById('hero-btn2').textContent=h.hero_btn2||'Read Story';
+    document.getElementById('stat-label1').textContent=h.hero_stat1||'Watching Now';
+    document.getElementById('stat-label2').textContent=h.hero_stat2||'Live Coverage';
+    document.getElementById('stat-label3').textContent=h.hero_stat3||'Countries';
+  }
+}
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',function(){setLang(this.dataset.lang)}));
+
+// ===== RENDER =====
+function renderGrid(gridId, data, type){
+  let g=document.getElementById(gridId);if(!g)return;g.innerHTML='';
+  data.forEach(item=>{
+    let el;
+    if(type==='news'){
+      el=document.createElement('article');el.className='news-card';
+      el.innerHTML='<div class="news-card-img" style="background:'+item.color+'"><div class="icon">'+item.icon+'</div></div><div class="news-card-body"><span class="label-sm">'+item.cat+' · '+item.time+'</span><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p></div>';
+      el.onclick=()=>{openOverlay('news')};
+    } else if(type==='schedule'){
+      el=document.createElement('div');el.className='schedule-card';
+      el.innerHTML='<div class="schedule-time">'+item.time+'</div><div class="schedule-info"><h4>'+item.title+'</h4><p>'+item.desc+'</p></div>'+(item.tag?'<span class="schedule-tag">'+item.tag+'</span>':'');
+      el.onclick=()=>{openOverlay('schedule')};
+    } else if(type==='play'){
+      el=document.createElement('div');el.className='news-card';
+      el.innerHTML='<div class="news-card-img" style="background:'+(item.color||'var(--green3)')+'"><div class="icon">'+item.icon+'</div></div><div class="news-card-body"><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p>'+(item.tag?'<span class="label-sm">'+item.tag+'</span>':'')+'</div>';
+      el.onclick=()=>{openOverlay('play')};
+    } else if(type==='upnext'){
+      el=document.createElement('div');el.className='up-next-item';
+      el.innerHTML='<div class="up-next-thumb"><div class="dur">'+(item.dur||'')+'</div></div><div class="up-next-info"><h4>'+item.title+'</h4><p>'+(item.desc||'')+'</p><span class="label-sm">'+(item.time||'')+'</span></div>';
+      el.onclick=function(){
+        document.querySelectorAll('#'+gridId+' .up-next-item').forEach(x=>x.classList.remove('active'));
+        this.classList.add('active');
+        let v=item.vid;
+        ['main-video','main-video-full'].forEach(id=>{
+          let e=document.getElementById(id);if(e)e.src='https://www.youtube.com/embed/'+v+'?autoplay=1&mute=1';
+        });
+        ['video-title','video-title-full'].forEach(id=>{
+          let e=document.getElementById(id);if(e)e.textContent=item.title;
+        });
+        ['video-desc','video-desc-full'].forEach(id=>{
+          let e=document.getElementById(id);if(e)e.textContent=item.desc;
+        });
+      };
+    }
+    if(el)g.appendChild(el);
+  });
+}
+
+function renderTicker(items){
+  let g=document.getElementById('ticker-wrap');if(!g)return;g.innerHTML='';
+  let data=items||STATIC.ticker;
+  let html=[];
+  for(let i=0;i<2;i++)data.forEach(t=>{html.push('<div class="ticker-item"><span class="label">'+(i===0?'News':'')+'</span><span>'+t+'</span></div>')});
+  g.innerHTML=html.join('');
+}
+
+function loadAllData(){
+  // Try Firestore first
+  if(fbFirestore){
+    // Unsubscribe old listeners
+    unsubscribers.forEach(u=>u());unsubscribers=[];
+
+    const collections = {
+      news: (snap)=>{
+        let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
+        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');document.getElementById('news-count').textContent=data.length+' articles'}else fallbackNews();
+      },
+      schedule: (snap)=>{
+        let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
+        if(data.length){renderGrid('schedule-grid',data,'schedule');renderGrid('schedule-grid-full',data,'schedule')}else fallbackSchedule();
+      },
+      upnext: (snap)=>{
+        let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
+        if(data.length){renderGrid('upnext-list',data,'upnext');renderGrid('upnext-list-full',data,'upnext')}else fallbackUpnext();
+      },
+      play: (snap)=>{
+        let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
+        if(data.length)renderGrid('play-grid-full',data,'play');else fallbackPlay();
+      },
+      ticker: (snap)=>{
+        let data=[];snap.forEach(d=>data.push(d.data().text||d.data().title));
+        if(data.length)renderTicker(data);else renderTicker();
+      }
+    };
+
+    Object.entries(collections).forEach(([name,cb])=>{
+      let unsub = fbFirestore.collection(name).onSnapshot(cb, err=>{
+        console.warn('Firestore error for '+name,err);
+        fallbackAll();
+      });
+      unsubscribers.push(unsub);
+    });
+
+    // Hero settings
+    fbFirestore.collection('settings').doc('hero').get().then(doc=>{
+      if(doc.exists){
+        let h=doc.data();
+        document.getElementById('hero-title1').textContent=h.title1||STATIC.hero.title1;
+        document.getElementById('hero-title2').textContent=h.title2||STATIC.hero.title2;
+        document.getElementById('hero-desc').textContent=h.desc||STATIC.hero.desc;
+        document.getElementById('stat-num1').textContent=h.stat1||STATIC.hero.stat1;
+        document.getElementById('stat-num2').textContent=h.stat2||STATIC.hero.stat2;
+        document.getElementById('stat-num3').textContent=h.stat3||STATIC.hero.stat3;
+        document.getElementById('stat-label1').textContent=h.s1||STATIC.hero.s1;
+        document.getElementById('stat-label2').textContent=h.s2||STATIC.hero.s2;
+        document.getElementById('stat-label3').textContent=h.s3||STATIC.hero.s3;
+        if(h.video) document.getElementById('hero-video').src=h.video;
+      }
+    }).catch(()=>{});
+  } else {
+    fallbackAll();
+  }
+}
+
+function fallbackNews(){
+  renderGrid('news-grid',STATIC.news,'news');
+  renderGrid('news-grid-full',STATIC.news,'news');
+  document.getElementById('news-count').textContent=STATIC.news.length+' articles';
+}
+function fallbackSchedule(){renderGrid('schedule-grid',STATIC.schedule,'schedule');renderGrid('schedule-grid-full',STATIC.schedule,'schedule')}
+function fallbackUpnext(){renderGrid('upnext-list',STATIC.upnext,'upnext');renderGrid('upnext-list-full',STATIC.upnext,'upnext')}
+function fallbackPlay(){renderGrid('play-grid-full',STATIC.play,'play')}
+function fallbackAll(){fallbackNews();fallbackSchedule();fallbackUpnext();fallbackPlay();renderTicker();}
+
+// ===== ADMIN PANELS =====
+function renderAdmin(){
+  let container=document.getElementById('admin-panels');if(!container)return;
+  container.innerHTML='';
+
+  const panels = [
+    {title:'News Articles',fields:[{k:'icon',p:'Icon (emoji)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'color',p:'Color (gradient)'}],col:'news'},
+    {title:'Schedule',fields:[{k:'time',p:'Time (e.g. 06:00)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
+    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'color',p:'Color'}],col:'play'},
+    {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
+    {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
+    {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'stat1',p:'Stat 1 number'},{k:'stat2',p:'Stat 2 number'},{k:'stat3',p:'Stat 3 number'},{k:'s1',p:'Stat 1 label'},{k:'s2',p:'Stat 2 label'},{k:'s3',p:'Stat 3 label'},{k:'video',p:'YouTube embed URL'}],col:'settings/hero'}
+  ];
+
+  panels.forEach(p=>{
+    let card=document.createElement('div');card.className='admin-card';
+    let fieldsHtml='';
+    p.fields.forEach(f=>{fieldsHtml+='<input class="admin-input" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'">'});
+    card.innerHTML='<h3>'+p.title+'</h3><div class="admin-form">'+fieldsHtml+'<button class="btn btn-primary btn-sm" onclick="adminSubmit(\''+p.col+'\')">Add to '+p.title+'</button></div><div class="admin-list" id="admin-list-'+p.col+'"></div>';
+    container.appendChild(card);
+    adminList(p.col);
+  });
+}
+
+function adminSubmit(col){
+  if(!fbFirestore||!isAdmin){alert('Configure Firebase and sign in as admin!');return}
+  let fields={
+    news:['icon','cat','title','desc','color'],
+    schedule:['time','title','desc','tag'],
+    play:['icon','title','desc','tag','color'],
+    upnext:['vid','title','desc','dur','time'],
+    ticker:['text'],
+    'settings/hero':['title1','title2','desc','stat1','stat2','stat3','s1','s2','s3','video']
+  };
+  let data={};
+  (fields[col]||[]).forEach(k=>{
+    let el=document.getElementById('af-'+col+'-'+k);
+    if(el&&el.value.trim()){data[k]=el.value.trim();el.value=''}
+  });
+  if(!Object.keys(data).length){alert('Fill at least one field');return}
+  data.createdAt=new Date();
+
+  let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):fbFirestore.collection(col).doc();
+  ref.set(data).then(()=>{console.log('Saved:',col,data)}).catch(e=>alert('Error:'+e.message));
+}
+
+function adminList(col){
+  if(!fbFirestore)return;
+  let container=document.getElementById('admin-list-'+col);if(!container)return;
+  if(col==='settings/hero'){container.innerHTML='<span style="font-size:11px;color:var(--gray)">Hero settings update in real-time.</span>';return}
+  fbFirestore.collection(col).onSnapshot(snap=>{
+    container.innerHTML='';
+    snap.forEach(doc=>{
+      let d=doc.data();
+      let text=d.title||d.text||d.time||'(no title)';
+      let div=document.createElement('div');div.className='admin-list-item';
+      div.innerHTML='<span>'+text.substring(0,50)+'</span><button class="del-btn" onclick="adminDelete(\''+col+'\',\''+doc.id+'\')">✕</button>';
+      container.appendChild(div);
+    });
+  });
+}
+
+function adminDelete(col,id){
+  if(!fbFirestore||!isAdmin)return;
+  if(confirm('Delete this item?')){
+    fbFirestore.collection(col).doc(id).delete();
+  }
+}
+
+// ===== INIT =====
+document.getElementById('demo-overlay')?.classList.remove('show');
+if(!localStorage.getItem('sno_demo_seen')){
+  setTimeout(()=>{let d=document.getElementById('demo-overlay');if(d)d.classList.add('show')},600);
+}
+function closeDemo(){document.getElementById('demo-overlay').classList.remove('show');localStorage.setItem('sno_demo_seen','1')}
+
+renderAdmin();
+loadAllData();
 </script>
 </body>
 </html>
