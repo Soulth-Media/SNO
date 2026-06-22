@@ -148,6 +148,11 @@ nav a.play-link:hover{opacity:1}
 .admin-list-item .del-btn{background:none;border:none;color:#ff4444;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:background .2s}
 .admin-list-item .del-btn:hover{background:rgba(255,68,68,.15)}
 
+/* Profile */
+.overlay-content.profile{max-width:500px;margin:0 auto;padding:40px 28px;text-align:center}
+.profile-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 16px;border:2px solid var(--accent);overflow:hidden;background:var(--green4);display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;font-family:'Coolvetica',sans-serif}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+
 /* Auth modal */
 .auth-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center}
 .auth-overlay.open{display:flex}
@@ -381,6 +386,26 @@ footer a:hover{color:var(--white)}
   </div>
 </div>
 
+<!-- ===== PROFILE OVERLAY ===== -->
+<div class="overlay-page" id="overlay-profile"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('profile')">← Back</button><span class="logo">SNO</span></div>
+  </div>
+  <div class="overlay-content" style="max-width:500px">
+    <div style="text-align:center;padding:40px 0">
+      <img id="pfp-img" src="" style="width:80px;height:80px;border-radius:50%;margin-bottom:16px;border:2px solid var(--accent);object-fit:cover">
+      <h2 id="pfp-name" style="font-size:22px;margin-bottom:4px">User</h2>
+      <p id="pfp-email" style="font-size:13px;color:var(--gray);margin-bottom:6px"></p>
+      <span id="pfp-role" style="font-size:10px;font-weight:600;text-transform:uppercase;background:rgba(0,212,84,.1);padding:4px 12px;border-radius:6px;color:var(--accent)">Member</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <button id="pfp-admin-link" class="btn btn-primary" style="width:100%;justify-content:center;display:none" onclick="closeOverlay('profile');openOverlay('admin')">⚙ Admin Panel</button>
+      <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="alert('Coming soon')">📊 My Activity</button>
+      <button id="pfp-signout" class="btn btn-outline" style="width:100%;justify-content:center;border-color:rgba(255,68,68,.3);color:#ff6666">Sign Out</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== AUTH MODAL ===== -->
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-modal">
@@ -433,7 +458,7 @@ const firebaseConfig = {
 };
 
 // Ganti dengan email admin-mu
-const ADMIN_EMAIL = "admin@sno.com";
+const ADMIN_EMAIL = "tychinf.co.id@gmail.com";
 
 let fbApp, fbAuth, fbFirestore;
 let authMode = 'login', currentUser = null, isAdmin = false;
@@ -450,12 +475,12 @@ try {
 // ===== STATIC FALLBACK DATA =====
 const STATIC = {
   news: [
-    {icon:'🌍',cat:'Global',time:'2h ago',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)'},
-    {icon:'🤖',cat:'Technology',time:'5h ago',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)'},
-    {icon:'⚽',cat:'Sports',time:'8h ago',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)'},
-    {icon:'📈',cat:'Economy',time:'12h ago',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)'},
-    {icon:'🌊',cat:'Weather',time:'14h ago',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)'},
-    {icon:'🎬',cat:'Culture',time:'1d ago',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)'}
+    {icon:'🌍',cat:'Global',time:'2h ago',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1566386228769-24560e9a8b0f?w=600&h=338&fit=crop'},
+    {icon:'🤖',cat:'Technology',time:'5h ago',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=338&fit=crop'},
+    {icon:'⚽',cat:'Sports',time:'8h ago',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=600&h=338&fit=crop'},
+    {icon:'📈',cat:'Economy',time:'12h ago',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=338&fit=crop'},
+    {icon:'🌊',cat:'Weather',time:'14h ago',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)',gambar:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=600&h=338&fit=crop'},
+    {icon:'🎬',cat:'Culture',time:'1d ago',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=338&fit=crop'}
   ],
   schedule: [
     {time:'06:00',title:'Morning Briefing',desc:'Overnight news recap',tag:'Live'},
@@ -486,6 +511,20 @@ const STATIC = {
 // ===== AUTH =====
 function openAuth(){document.getElementById('auth-overlay').classList.add('open')}
 function closeAuth(){document.getElementById('auth-overlay').classList.remove('open')}
+
+function openProfile(){
+  if(!currentUser)return;
+  let o=document.getElementById('overlay-profile');
+  let isAdm=currentUser.email===ADMIN_EMAIL;
+  document.getElementById('pfp-name').textContent=currentUser.displayName||'User';
+  document.getElementById('pfp-email').textContent=currentUser.email;
+  document.getElementById('pfp-role').textContent=isAdm?'Admin':'Member';
+  document.getElementById('pfp-role').style.color=isAdm?'var(--accent)':'var(--gray)';
+  document.getElementById('pfp-img').src=currentUser.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="58" text-anchor="middle" fill="%23fff" font-size="36" font-family="Arial">'+(currentUser.displayName?currentUser.displayName[0].toUpperCase():'U')+'</text></svg>';
+  document.getElementById('pfp-admin-link').style.display=isAdm?'block':'none';
+  document.getElementById('pfp-signout').onclick=function(){closeOverlay('profile');signOut()};
+  openOverlay('profile');
+}
 
 function toggleAuthMode(){
   authMode = authMode==='login'?'register':'login';
@@ -534,7 +573,7 @@ if(fbAuth){
     if(user){
       toggle.style.display='none';badge.style.display='flex';
       badge.innerHTML=(user.displayName||user.email)+(isAdmin?' <span style="color:var(--accent);font-size:8px;background:rgba(0,212,84,.12);padding:2px 6px;border-radius:4px">ADMIN</span>':'');
-      badge.onclick=()=>{if(confirm('Sign out?'))signOut()};
+      badge.onclick=()=>{openProfile()};
       adminNav.style.display=isAdmin?'inline':'none';
     } else {
       toggle.style.display='inline-block';badge.style.display='none';adminNav.style.display='none';isAdmin=false;
@@ -616,7 +655,9 @@ function renderGrid(gridId, data, type){
     let el;
     if(type==='news'){
       el=document.createElement('article');el.className='news-card';
-      el.innerHTML='<div class="news-card-img" style="background:'+item.color+'"><div class="icon">'+item.icon+'</div></div><div class="news-card-body"><span class="label-sm">'+item.cat+' · '+item.time+'</span><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p></div>';
+      let imgBg=item.gambar?'url('+item.gambar+') center/cover no-repeat, ':'';
+      let imgEl=item.gambar?'<img src="'+item.gambar+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" onerror="this.style.display=\'none\'" alt="">':'';
+      el.innerHTML='<div class="news-card-img" style="background:'+imgBg+item.color+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+item.cat+' · '+item.time+'</span><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p></div>';
       el.onclick=()=>{openOverlay('news')};
     } else if(type==='schedule'){
       el=document.createElement('div');el.className='schedule-card';
@@ -730,7 +771,7 @@ function renderAdmin(){
   container.innerHTML='';
 
   const panels = [
-    {title:'News Articles',fields:[{k:'icon',p:'Icon (emoji)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'color',p:'Color (gradient)'}],col:'news'},
+    {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'color',p:'Color fallback'}],col:'news'},
     {title:'Schedule',fields:[{k:'time',p:'Time (e.g. 06:00)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
     {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'color',p:'Color'}],col:'play'},
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
@@ -751,7 +792,7 @@ function renderAdmin(){
 function adminSubmit(col){
   if(!fbFirestore||!isAdmin){alert('Configure Firebase and sign in as admin!');return}
   let fields={
-    news:['icon','cat','title','desc','color'],
+    news:['gambar','icon','cat','title','desc','color'],
     schedule:['time','title','desc','tag'],
     play:['icon','title','desc','tag','color'],
     upnext:['vid','title','desc','dur','time'],
