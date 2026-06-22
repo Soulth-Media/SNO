@@ -737,6 +737,17 @@ function loadAllData(){
     Object.entries(collections).forEach(([name,cb])=>{
       let unsub = fbFirestore.collection(name).onSnapshot(cb, err=>{
         console.warn('Firestore error for '+name,err);
+        // Try localStorage backup
+        let localKey='sno_backup_'+name;
+        try{
+          let localData=JSON.parse(localStorage.getItem(localKey)||'[]');
+          if(localData.length){
+            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');document.getElementById('news-count').textContent=localData.length+' articles (backup)'}
+            else if(name==='schedule'){renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule')}
+            else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
+            else if(name==='play'){renderGrid('play-grid-full',localData,'play')}
+          }
+        }catch(ex){}
         fallbackAll();
         if(name==='news')showToast('Firestore terblokir! Matiin adblocker atau cek Firestore Console','error');
       });
@@ -777,6 +788,19 @@ function renderAdmin(){
   let container=document.getElementById('admin-panels');if(!container)return;
   container.innerHTML='';
 
+  // Firestore status
+  let statusEl=document.createElement('div');
+  statusEl.style.cssText='padding:10px 14px;margin-bottom:16px;border-radius:6px;font-size:12px;border:1px solid rgba(255,255,255,.06)';
+  if(fbFirestore){
+    statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#00d454">● Connected</span>';
+    fbFirestore.collection('_test').doc('_test').get().then(()=>{}).catch(e=>{
+      let msg=e.message||'';
+      if(msg.includes('database does not exist'))statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#ff4444">● Database not created</span><br><span style="color:#ff8800;font-size:11px">→ Go to Firebase Console → Firestore → Create database (test mode)</span>';
+      else statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#ff4444">● Error — '+msg.substring(0,80)+'</span>';
+    });
+  } else statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#ff4444">● Not initialized</span>';
+  container.appendChild(statusEl);
+
   const panels = [
     {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'time',p:'Time (e.g. 2h ago)'},{k:'color',p:'Color fallback'}],col:'news'},
     {title:'Schedule',fields:[{k:'time',p:'Time (e.g. 06:00)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
@@ -816,7 +840,12 @@ function adminSubmit(col){
   data.createdAt=new Date();
 
   let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):fbFirestore.collection(col).doc();
-  ref.set(data).then(()=>{showToast('Data saved to Firestore!','success');console.log('Saved:',col,data)}).catch(e=>{showToast('Firestore error: '+e.message,'error');alert('Upload gagal: '+e.message+'\n\nCek: 1) Adblocker dimatiin 2) Firestore udh dibuat 3) Koneksi internet')});
+  ref.set(data).then(()=>{showToast('Data saved to Firestore!','success');console.log('Saved:',col,data)}).catch(e=>{
+    showToast('Firestore error: '+e.message,'error');
+    // Backup ke localStorage
+    try{let key='sno_backup_'+col;let existing=JSON.parse(localStorage.getItem(key)||'[]');existing.push(data);localStorage.setItem(key,JSON.stringify(existing));showToast('Firestore gagal. Data disimpan lokal (backup)','success')}catch(ex){}
+    alert('Upload gagal: '+e.message+'\n\nCek: 1) Adblocker dimatiin\n2) Firestore Database: https://console.firebase.google.com → Firestore → Create database\n3) Koneksi internet')
+  });
 }
 
 function showToast(msg,type){
