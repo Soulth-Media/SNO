@@ -12,6 +12,8 @@
 </script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js">
 </script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.js">
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 ::-webkit-scrollbar{width:5px}
@@ -33,8 +35,9 @@ h1,h2,h3,.h{font-family:'Coolvetica',sans-serif;letter-spacing:.01em;font-weight
 .section-title{margin-bottom:36px}
 header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.04)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 28px;max-width:1200px;margin:0 auto;gap:16px}
-.logo{font-family:'Coolvetica',sans-serif;font-size:32px;letter-spacing:3px;text-decoration:none;color:var(--accent);transition:opacity .2s;flex-shrink:0;cursor:pointer}
+.logo{height:32px;width:auto;flex-shrink:0;cursor:pointer;transition:opacity .2s;display:inline-block;vertical-align:middle}
 .logo:hover{opacity:.8}
+.logo-text{font-family:'Coolvetica',sans-serif;font-size:32px;letter-spacing:3px;color:var(--accent);flex-shrink:0;cursor:pointer;text-decoration:none}
 nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 nav a{color:var(--gray2);text-decoration:none;font-size:11px;font-weight:500;text-transform:uppercase;transition:color .25s;cursor:pointer;padding:4px 0;background:none;border:none;font-family:'Telegraf',sans-serif}
 nav a:hover{color:var(--white)}
@@ -48,6 +51,15 @@ nav a.play-link:hover{opacity:1}
 .auth-btn{padding:6px 12px;font-size:10px;font-weight:600;text-transform:uppercase;background:var(--accent);color:var(--black);border:none;border-radius:6px;cursor:pointer;font-family:'Telegraf',sans-serif;transition:all .2s;line-height:1;flex-shrink:0}
 .auth-btn:hover{background:var(--accent2)}
 .user-badge{font-size:10px;color:var(--accent);font-weight:600;flex-shrink:0;cursor:pointer;display:flex;align-items:center;gap:8px}
+.news-slider-wrap{overflow:hidden;margin:20px 0 16px;position:relative}
+.news-slider{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px;scrollbar-width:none}
+.news-slider::-webkit-scrollbar{display:none}
+.news-slide{flex:0 0 240px;scroll-snap-align:start;border-radius:var(--radius-sm);overflow:hidden;background:var(--black3);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .2s;text-decoration:none;color:inherit}
+.news-slide:hover{border-color:rgba(0,212,84,.2);transform:translateY(-2px)}
+.news-slide-img{width:100%;height:100px;object-fit:cover;display:block;background:var(--green3)}
+.news-slide-body{padding:10px 12px 12px}
+.news-slide-body .label-sm{font-size:9px;color:var(--gray2)}
+.news-slide-body h4{font-size:13px;font-weight:500;margin:4px 0 0;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .live-dot{display:inline-block;width:6px;height:6px;background:#ff3333;border-radius:50%;margin-right:4px;animation:pulse 1.4s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 .hero{min-height:100vh;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:120px 0 80px;background:linear-gradient(180deg,var(--black) 0%,var(--green) 100%)}
@@ -72,11 +84,8 @@ nav a.play-link:hover{opacity:1}
 .btn-ghost:hover{border-color:var(--gray2);color:var(--white)}
 .hero-visual{z-index:2;position:relative}
 .hero-video-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
-.hero-video-wrap iframe{width:100%;display:block;aspect-ratio:16/9}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);margin-top:24px;border-radius:var(--radius-sm);overflow:hidden}
-.hero-stat{background:var(--green2);padding:20px 16px;text-align:center}
-.hero-stat .h-sm{color:var(--accent)}
-.hero-stat p{font-size:10px;color:var(--gray);margin:0;font-weight:500;text-transform:uppercase}
+.hero-video-wrap iframe,.hero-video-wrap video,.hls-video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
+
 .ticker{background:var(--green3);border-top:1px solid rgba(0,212,84,.08);border-bottom:1px solid rgba(0,212,84,.08);padding:12px 0;overflow:hidden;position:relative}
 .ticker-inner{display:flex;animation:scroll 35s linear infinite;white-space:nowrap}
 .ticker-item{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;margin-right:60px;flex-shrink:0}
@@ -195,6 +204,82 @@ footer a:hover{color:var(--white)}
 .social a{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s;color:var(--gray);font-weight:600;text-decoration:none}
 .social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
 
+/* ===== ARTICLE DETAIL ===== */
+.article-hero{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:32px;background:var(--green3);border:1px solid rgba(255,255,255,.04)}
+.article-hero img{width:100%;aspect-ratio:21/9;object-fit:cover;display:block}
+.article-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:60px 32px 28px;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,transparent 100%)}
+.article-hero-overlay .label{display:inline-block;margin-bottom:8px;background:rgba(0,212,84,.15);padding:4px 10px;border-radius:4px;font-size:9px}
+.article-hero-overlay h1{font-size:clamp(28px,4vw,52px);line-height:.9;max-width:800px}
+.article-meta{display:flex;justify-content:space-between;align-items:center;padding:16px 0 24px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);gap:16px;flex-wrap:wrap}
+.writer-info{display:flex;align-items:center;gap:12px}
+.writer-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Coolvetica',sans-serif;font-size:18px;color:var(--black);flex-shrink:0}
+.writer-name{font-size:13px;font-weight:600;display:block}
+.writer-date{font-size:11px;color:var(--gray);display:block;margin-top:2px}
+.article-actions{display:flex;gap:8px}
+.btn-like{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--gray2);font-size:12px;font-weight:500;cursor:pointer;font-family:'Telegraf',sans-serif;transition:all .25s}
+.btn-like:hover{border-color:rgba(255,68,68,.3);color:#ff6666}
+.btn-like.liked{border-color:#ff4444;background:rgba(255,68,68,.1);color:#ff4444}
+.btn-like .like-icon{font-size:16px;transition:transform .25s}
+.btn-like.liked .like-icon{animation:likePop .35s}
+@keyframes likePop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.btn-share,.btn-listen{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--gray2);font-size:12px;font-weight:500;cursor:pointer;font-family:'Telegraf',sans-serif;transition:all .25s}
+.btn-share:hover,.btn-listen:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.05)}
+.sno-player{position:relative;background:#000;overflow:hidden;cursor:pointer}
+.sno-player-video{width:100%;display:block;aspect-ratio:21/9;background:#000}
+.sno-player-logo{position:absolute;top:16px;left:16px;height:22px;opacity:.6;pointer-events:none;z-index:2;filter:brightness(0) invert(1)}
+.sno-player-controls{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;gap:10px;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.8));opacity:0;transition:opacity .3s;z-index:3}
+.sno-player:hover .sno-player-controls,.sno-player.show-controls .sno-player-controls{opacity:1}
+.sno-player-btn{background:none;border:none;color:#fff;font-size:16px;cursor:pointer;padding:4px 6px;font-family:monospace;line-height:1;flex-shrink:0}
+.sno-player-progress-wrap{flex:1;cursor:pointer;padding:4px 0}
+.sno-player-progress{height:4px;background:rgba(255,255,255,.2);border-radius:2px;position:relative}
+.sno-player-fill{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .1s}
+.sno-player-time{font-size:11px;color:rgba(255,255,255,.7);font-family:monospace;white-space:nowrap;flex-shrink:0}
+.sno-player-vol{font-size:13px}
+.sno-player-vol-slider{width:50px;height:3px;-webkit-appearance:none;background:rgba(255,255,255,.2);border-radius:2px;outline:none;flex-shrink:0}
+.sno-player-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:#fff;cursor:pointer}
+.btn-listen.playing{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.1)}
+.btn-listen.playing #listen-icon{animation:speakerPulse 1s ease infinite}
+@keyframes speakerPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.article-body{padding:0 0 32px}
+.article-body p{font-size:16px;line-height:1.8;color:var(--gray2);margin-bottom:20px;font-weight:300}
+.article-body p:first-child::first-letter{font-size:52px;font-weight:700;float:left;line-height:.8;margin-right:10px;margin-top:4px;color:var(--accent);font-family:'Coolvetica',sans-serif}
+.article-body h2{font-family:'Coolvetica',sans-serif;font-size:clamp(24px,3vw,36px);margin:36px 0 16px;line-height:.9}
+.article-body blockquote{border-left:3px solid var(--accent);padding:16px 24px;margin:24px 0;background:rgba(0,212,84,.03);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:18px;line-height:1.6;color:var(--white);font-style:italic}
+.article-body img{width:100%;border-radius:var(--radius-sm);margin:24px 0}
+.share-popup,.listen-popup{position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--black3);border-radius:var(--radius) var(--radius) 0 0;padding:28px 24px 32px;border-top:1px solid rgba(255,255,255,.08);transform:translateY(100%);transition:transform .35s cubic-bezier(.77,0,.18,1);max-width:400px;margin:0 auto}
+.share-popup.open,.listen-popup.open{transform:translateY(0)}
+.share-popup h4,.listen-popup h4{font-size:14px;margin-bottom:16px;font-family:'Telegraf',sans-serif;font-weight:600;text-align:center}
+.share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.share-option{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px;border-radius:var(--radius-sm);background:rgba(255,255,255,.03);cursor:pointer;border:1px solid transparent;transition:all .2s;color:var(--gray2);font-size:11px;font-weight:500;text-decoration:none;font-family:'Telegraf',sans-serif}
+.share-option:hover{border-color:rgba(0,212,84,.2);background:rgba(0,212,84,.04);color:var(--white)}
+.share-option .share-icon{font-size:24px}
+.listen-voices{display:flex;gap:8px;margin-bottom:16px}
+.listen-voice-btn{flex:1;padding:12px 8px;border-radius:var(--radius-sm);background:rgba(255,255,255,.03);border:1px solid transparent;color:var(--gray2);cursor:pointer;text-align:center;font-family:'Telegraf',sans-serif;font-size:11px;font-weight:500;transition:all .2s;line-height:1.3}
+.listen-voice-btn:hover{border-color:rgba(0,212,84,.2);background:rgba(0,212,84,.04);color:var(--white)}
+.listen-voice-btn.active{border-color:var(--accent);background:rgba(0,212,84,.1);color:var(--accent)}
+.voice-badge{display:inline-flex;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:rgba(255,255,255,.06);color:var(--gray);margin:0 auto 4px}
+.voice-badge.active{background:rgba(0,212,84,.15);color:var(--accent)}
+.voice-symbol{color:var(--accent);font-size:18px;margin-right:4px}
+.listen-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.listen-control-row{display:flex;align-items:center;gap:12px}
+.listen-control-row label{font-size:11px;color:var(--gray);min-width:50px;font-family:'Telegraf',sans-serif}
+.listen-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.1);outline:none}
+.listen-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer}
+.listen-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.listen-val{font-size:12px;color:var(--gray2);min-width:28px;text-align:right;font-family:'Telegraf',sans-serif}
+.listen-popup .listen-play-btn{width:100%;justify-content:center}
+.recommended-section{padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.recommended-section h2{margin-bottom:20px}
+
+/* ===== SCHEDULE DETAIL ===== */
+.detail-card{background:var(--black3);border-radius:var(--radius);padding:32px;border:1px solid rgba(255,255,255,.04);margin-bottom:24px}
+.detail-card-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.detail-card-time{font-family:'Coolvetica',sans-serif;font-size:36px;color:var(--accent);line-height:1}
+.detail-card-info{flex:1}
+.detail-card-info h2{font-size:20px;margin-bottom:4px;font-family:'Telegraf',sans-serif;font-weight:600}
+.detail-card-info p{font-size:13px;color:var(--gray)}
+.detail-card-body{font-size:14px;color:var(--gray2);line-height:1.8}
+
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:40px}
   .news-grid{grid-template-columns:1fr 1fr}
@@ -204,7 +289,6 @@ footer a:hover{color:var(--white)}
 }
 @media(max-width:600px){
   .news-grid,.play-grid{grid-template-columns:1fr}
-  .hero-stats{grid-template-columns:1fr}
   nav{gap:10px}
   nav a{font-size:9px}
   .schedule-grid{grid-template-columns:1fr}
@@ -224,11 +308,11 @@ footer a:hover{color:var(--white)}
 <!-- ===== HEADER ===== -->
 <header>
   <div class="header-inner">
-    <div class="logo" id="logo-link">SNO</div>
+    <img class="logo" id="logo-link" src="SNOTRNSPRNTLOGO.png" alt="SNO">
     <nav>
       <a class="active" data-page="home">Home</a>
       <a data-page="news">News</a>
-      <a data-page="live"><span class="live-dot"></span>Live</a>
+      <a data-page="live"><span class="live-dot" id="nav-livedot" style="display:none"></span><span id="nav-live-text">Broadcast</span></a>
       <a data-page="play" class="play-link">SNO Play</a>
       <a data-page="schedule">Schedule</a>
       <a data-page="admin" id="admin-nav" style="display:none;color:var(--accent)">Admin</a>
@@ -249,23 +333,42 @@ footer a:hover{color:var(--white)}
   <div class="container" style="width:100%">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="hero-label"><span class="live-dot"></span><span class="label" id="hero-label-text">Live Now</span></div>
-        <h1><span class="h-xl" id="hero-title1">Breaking</span><span class="glow" id="hero-title2">News.</span></h1>
-        <p id="hero-desc">Global summit addresses climate crisis as world leaders convene for emergency talks.</p>
-        <div class="hero-actions">
-      <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1">▶ Watch Now</a>
-      <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2">Read Story</a>
+        <!-- DEFAULT: no broadcast / no upcoming — normal headline + news -->
+        <div id="hero-default">
+          <div class="hero-label"><span class="live-dot" id="hero-live-dot" style="display:none"></span><span class="label">LIVE</span></div>
+          <h1><span class="h-xl">Breaking</span><span class="glow">News.</span></h1>
+          <p id="hero-desc">One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p>
+          <div class="news-slider-wrap" id="news-slider-wrap">
+            <div class="news-slider" id="news-slider"></div>
+          </div>
+          <div class="hero-actions">
+        <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1">▶ Watch Now</a>
+        <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2">Read Story</a>
+          </div>
+        </div>
+        <!-- PRE-LIVE: upcoming broadcast countdown -->
+        <div id="hero-prelive" style="display:none">
+          <div class="hero-label"><span class="live-dot pulse"></span><span class="label" id="prelive-label">Starting Soon</span></div>
+          <h1 class="h-xl" id="prelive-title" style="margin:4px 0">Broadcast Title</h1>
+          <p id="prelive-desc">Description of the upcoming broadcast.</p>
+          <div id="hero-countdown" style="font-size:48px;font-weight:300;font-family:Coolvetica,monospace;color:var(--accent);margin:20px 0;letter-spacing:4px">--:--:--</div>
+          <span class="label-sm" id="prelive-starttime" style="color:var(--gray2)"></span>
         </div>
       </div>
+      <div class="hero-visual" id="hero-visual">
+        <div class="hero-video-wrap" id="hero-video-wrap">
+          <video id="hero-video" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
+          <iframe id="hero-video-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
+        </div>
+      </div>
+    </div>
+      </div>
       <div class="hero-visual">
-        <div class="hero-video-wrap">
-          <iframe id="hero-video" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="hero-video-wrap" id="hero-video-wrap">
+          <video id="hero-video" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
+          <iframe id="hero-video-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat"><div class="h-sm" id="stat-num1">12.4K</div><p id="stat-label1">Watching Now</p></div>
-          <div class="hero-stat"><div class="h-sm" id="stat-num2">24/7</div><p id="stat-label2">Live Coverage</p></div>
-          <div class="hero-stat"><div class="h-sm" id="stat-num3">189</div><p id="stat-label3">Countries</p></div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -281,7 +384,8 @@ footer a:hover{color:var(--white)}
     </div>
     <div class="live-grid">
       <div class="video-player">
-        <iframe id="main-video" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <video id="main-video" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
+        <iframe id="main-video-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
         <div class="video-info"><h3 id="video-title">Global Climate Summit</h3><p id="video-desc">Live coverage of emergency climate talks.</p></div>
       </div>
       <div>
@@ -305,7 +409,7 @@ footer a:hover{color:var(--white)}
 <section class="section schedule-section" id="page-schedule-preview">
   <div class="container">
     <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="label" style="margin-bottom:6px">TV Schedule</div><h2 class="h-lg">Today's Programming</h2></div>
+      <div><div class="label" style="margin-bottom:6px">TV Schedule</div><h2 class="h-lg">Upcoming</h2></div>
       <button class="btn btn-outline btn-sm" onclick="openOverlay('schedule')">View All</button>
     </div>
     <div class="schedule-grid" id="schedule-grid"></div>
@@ -316,7 +420,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== NEWS OVERLAY ===== -->
 <div class="overlay-page" id="overlay-news"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news')">← Back</button><span class="logo">SNO</span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
     <span class="label-sm">News</span>
   </div>
   <div class="overlay-content">
@@ -328,14 +432,15 @@ footer a:hover{color:var(--white)}
 <!-- ===== LIVE OVERLAY ===== -->
 <div class="overlay-page" id="overlay-live"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('live')">← Back</button><span class="logo">SNO</span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('live')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
     <span class="label-sm"><span class="live-dot"></span>Live</span>
   </div>
   <div class="overlay-content">
     <h1 class="h-lg" style="margin-bottom:28px">Live Coverage</h1>
     <div class="live-grid">
       <div class="video-player">
-        <iframe id="main-video-full" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <video id="main-video-full" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
+        <iframe id="main-video-full-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
         <div class="video-info"><h3 id="video-title-full">Global Climate Summit</h3><p id="video-desc-full">Live coverage of emergency climate talks.</p></div>
       </div>
       <div>
@@ -349,13 +454,25 @@ footer a:hover{color:var(--white)}
 <!-- ===== PLAY OVERLAY ===== -->
 <div class="overlay-page" id="overlay-play"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')">← Back</button><span class="logo">SNO <span style="font-size:10px;color:var(--gray);margin-left:4px">Play</span></span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"><span style="font-size:10px;color:var(--gray);margin-left:4px"> Play</span></div>
     <button class="btn btn-primary btn-sm" onclick="alert('Subscribe')">Subscribe</button>
   </div>
   <div class="overlay-content">
-    <div style="border-radius:var(--radius);overflow:hidden;margin-bottom:28px;border:1px solid rgba(255,255,255,.06);background:var(--black3)">
-      <iframe style="width:100%;aspect-ratio:21/9" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=0&mute=1" allow="encrypted-media" allowfullscreen></iframe>
-      <div style="padding:24px"><span class="label-sm" style="display:block;margin-bottom:4px">SNO Original</span><h2 class="h-md" id="play-feat-title">The Signal — Season 2</h2><p style="font-size:13px;color:var(--gray);line-height:1.5;max-width:560px" id="play-feat-desc">Award-winning documentary series returns.</p></div>
+    <div class="play-featured" style="border-radius:var(--radius);overflow:hidden;margin-bottom:28px;border:1px solid rgba(255,255,255,.06);background:var(--black3)">
+      <div class="sno-player" id="sno-player">
+        <video id="play-feat-video" class="sno-player-video" playsinline style="width:100%;display:block;aspect-ratio:21/9;background:#000"></video>
+        <img class="sno-player-logo" src="SNOTRNSPRNTLOGO.png" alt="SNO">
+        <div class="sno-player-controls" id="sno-player-controls">
+          <button class="sno-player-btn" id="sno-play-btn" onclick="togglePlayPlayer()">▶</button>
+          <div class="sno-player-progress-wrap" onclick="seekPlayer(event)">
+            <div class="sno-player-progress" id="sno-player-progress"><div class="sno-player-fill" id="sno-player-fill"></div></div>
+          </div>
+          <span class="sno-player-time" id="sno-player-time">0:00 / 0:00</span>
+          <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">🔊</button>
+          <input type="range" class="sno-player-vol-slider" id="sno-vol-slider" min="0" max="1" step="0.05" value="1" oninput="setVolumePlayer(this.value)">
+        </div>
+      </div>
+      <div style="padding:24px"><span class="label-sm play-feat-tag" id="play-feat-tag" style="display:block;margin-bottom:4px">SNO Original</span><h2 class="h-md" id="play-feat-title">The Signal — Season 2</h2><p style="font-size:13px;color:var(--gray);line-height:1.5;max-width:560px" id="play-feat-desc">Award-winning documentary series returns.</p></div>
     </div>
     <div class="label-sm" style="margin-bottom:16px;display:block">Exclusive Originals</div>
     <div class="news-grid" id="play-grid-full"></div>
@@ -365,7 +482,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== SCHEDULE OVERLAY ===== -->
 <div class="overlay-page" id="overlay-schedule"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('schedule')">← Back</button><span class="logo">SNO</span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('schedule')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
     <span class="label-sm">Schedule</span>
   </div>
   <div class="overlay-content">
@@ -374,10 +491,71 @@ footer a:hover{color:var(--white)}
   </div>
 </div>
 
+<!-- ===== NEWS DETAIL OVERLAY ===== -->
+<div class="overlay-page" id="overlay-news-detail"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news-detail')">← Back to News</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+  </div>
+  <div class="overlay-content">
+    <article>
+      <div class="article-hero">
+        <img id="detail-image" src="" alt="" onerror="this.style.display='none'">
+        <div class="article-hero-overlay">
+          <span class="label" id="detail-category"></span>
+          <h1 id="detail-title"></h1>
+        </div>
+      </div>
+      <div class="article-meta">
+        <div class="writer-info">
+          <div class="writer-avatar" id="detail-avatar">U</div>
+          <div>
+            <span class="writer-name" id="detail-writer"></span>
+            <span class="writer-date" id="detail-date"></span>
+          </div>
+        </div>
+        <div class="article-actions">
+          <button class="btn-like" id="detail-like-btn" onclick="toggleLike()"><span class="like-icon">♡</span> <span id="like-count">0</span></button>
+          <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">🔊</span> <span id="listen-text">Listen</span></button>
+          <button class="btn-share" onclick="openSharePopup()">↗ Share</button>
+        </div>
+      </div>
+      <div class="article-body" id="detail-body"></div>
+    </article>
+    <div class="recommended-section">
+      <h2 class="h-md">Recommended Stories</h2>
+      <div class="news-grid" id="recommended-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SHARE POPUP ===== -->
+<div class="share-popup" id="share-popup">
+  <h4>Share this story</h4>
+  <div class="share-grid">
+    <a class="share-option" id="share-twitter" href="#" target="_blank"><span class="share-icon">𝕏</span>Twitter</a>
+    <a class="share-option" id="share-facebook" href="#" target="_blank"><span class="share-icon">f</span>Facebook</a>
+    <a class="share-option" id="share-whatsapp" href="#" target="_blank"><span class="share-icon">💬</span>WhatsApp</a>
+    <a class="share-option" id="share-copy" href="#" onclick="copyShareLink();return false"><span class="share-icon">🔗</span>Copy Link</a>
+  </div>
+  <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:12px" onclick="closeSharePopup()">Cancel</button>
+</div>
+
+<!-- ===== LISTEN POPUP ===== -->
+<div class="listen-popup" id="listen-popup">
+  <h4><span class="voice-symbol">♪</span> Listen to this article</h4>
+  <div class="listen-voices" id="listen-voices"></div>
+  <div class="listen-controls">
+    <div class="listen-control-row"><label>Speed</label><input type="range" class="listen-slider" id="listen-rate" min="0.5" max="2" step="0.1" value="1"><span class="listen-val" id="listen-rate-val">1x</span></div>
+    <div class="listen-control-row"><label>Pitch</label><input type="range" class="listen-slider" id="listen-pitch" min="0.5" max="2" step="0.1" value="1"><span class="listen-val" id="listen-pitch-val">1x</span></div>
+  </div>
+  <button class="btn btn-primary listen-play-btn" id="listen-play-btn" onclick="listenPlay()">▶ Play</button>
+  <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeListenPopup()">Cancel</button>
+</div>
+
 <!-- ===== ADMIN OVERLAY ===== -->
 <div class="overlay-page" id="overlay-admin"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('admin')">← Back</button><span class="logo">SNO</span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('admin')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
     <span class="label-sm" style="color:var(--accent)">Admin Panel</span>
   </div>
   <div class="overlay-content">
@@ -390,7 +568,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== PROFILE OVERLAY ===== -->
 <div class="overlay-page" id="overlay-profile"><div class="grain-overlay"><div class="grain"></div></div>
   <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('profile')">← Back</button><span class="logo">SNO</span></div>
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('profile')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
   </div>
   <div class="overlay-content" style="max-width:500px">
     <div style="text-align:center;padding:40px 0">
@@ -426,7 +604,7 @@ footer a:hover{color:var(--white)}
 <!-- ===== DEMO POPUP ===== -->
 <div class="overlay-fixed" id="demo-overlay">
   <div class="modal-box">
-    <div class="logo">SNO</div>
+    <img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px">
     <h2>Under Demo</h2>
     <p>This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.</p>
     <button class="btn btn-primary" onclick="closeDemo()">Got it</button>
@@ -437,7 +615,7 @@ footer a:hover{color:var(--white)}
 <footer>
   <div class="container">
     <div class="footer-grid">
-      <div><div class="logo">SNO</div><p>Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
+      <div><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px"><p>Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
       <div><h4>Channels</h4><a onclick="navigate('home')">Home</a><a onclick="openOverlay('news')">News</a><a onclick="openOverlay('live')">Live</a><a onclick="openOverlay('play')">SNO Play</a><a onclick="openOverlay('schedule')">Schedule</a></div>
       <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Contact</a><a href="#">Advertise</a></div>
       <div><h4>Support</h4><a href="#">Help Center</a><a href="#">Accessibility</a><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
@@ -458,7 +636,6 @@ const firebaseConfig = {
   measurementId: "G-BXT6RDW0SB"
 };
 
-// Ganti dengan email & uid admin-mu
 const ADMIN_EMAIL = "tychinf.co.id@gmail.com";
 const ADMIN_UID = "XO7UzNVxaWa7hsoyyDFi7tHZp9F2";
 
@@ -470,6 +647,8 @@ let fbApp, fbAuth, fbFirestore;
 let authMode = 'login', currentUser = null, isAdmin = false;
 let overlayStack = [];
 let unsubscribers = [];
+let newsData = [];
+let _scheduleData = [];
 
 try {
   fbApp = firebase.initializeApp(firebaseConfig);
@@ -478,15 +657,14 @@ try {
   console.log('Firebase OK');
 } catch(e) { console.warn('Firebase not configured. Using static data.'); }
 
-// ===== STATIC FALLBACK DATA =====
 const STATIC = {
   news: [
-    {icon:'🌍',cat:'Global',time:'2h ago',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1566386228769-24560e9a8b0f?w=600&h=338&fit=crop'},
-    {icon:'🤖',cat:'Technology',time:'5h ago',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=338&fit=crop'},
-    {icon:'⚽',cat:'Sports',time:'8h ago',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=600&h=338&fit=crop'},
-    {icon:'📈',cat:'Economy',time:'12h ago',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=338&fit=crop'},
-    {icon:'🌊',cat:'Weather',time:'14h ago',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)',gambar:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=600&h=338&fit=crop'},
-    {icon:'🎬',cat:'Culture',time:'1d ago',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&h=338&fit=crop'}
+    {icon:'🌍',cat:'Global',time:'2h ago',writer:'Sarah Chen',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',isi:'World leaders have reached a historic agreement at the Global Climate Summit, committing to achieve net-zero carbon emissions by 2050. The landmark pact, signed by representatives from over 190 nations, represents the most ambitious coordinated effort to combat climate change in history.\n\n"This is not just an agreement — it is a pledge to future generations," said the Secretary-General during the closing ceremony. "We have crossed a threshold today that will define the course of human civilization."\n\nThe agreement includes binding commitments to reduce greenhouse gas emissions by 50% by 2030, a $100 billion annual fund for developing nations, and a framework for carbon trading that economists believe could transform global markets.\n\nEnvironmental groups have cautiously welcomed the deal, though many emphasize that the true test lies in implementation. "The words on paper are powerful, but action is what matters now," said the director of the Global Climate Institute.\n\nStock markets reacted positively to the news, with clean energy shares surging across major exchanges. Analysts predict a wave of investment in renewable infrastructure over the coming decade.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1566386228769-24560e9a8b0f?w=1200&h=600&fit=crop'},
+    {icon:'🤖',cat:'Technology',time:'5h ago',writer:'Alex Rivera',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',isi:'In a landmark development for artificial intelligence, researchers at the Institute for Advanced Computing have unveiled a new AI model that surpasses human performance across a broad range of medical diagnostic tasks.\n\nThe system, named Medeus-2, achieved a 99.7% accuracy rate in identifying conditions from medical imaging — outperforming the average specialist by a significant margin. The model was trained on over 10 million anonymized medical scans from hospitals worldwide.\n\n"We are witnessing a paradigm shift in healthcare," said Dr. James Park, lead researcher on the project. "This technology doesn\'t replace doctors — it empowers them to make faster, more accurate decisions."\n\nThe breakthrough has already attracted attention from major healthcare providers, with several hospitals planning pilot programs later this year. Critics, however, have raised concerns about data privacy and the potential for algorithmic bias in under-represented populations.\n\nRegulatory bodies are now racing to establish frameworks for the safe deployment of such systems, balancing innovation with patient safety.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop'},
+    {icon:'⚽',cat:'Sports',time:'8h ago',writer:'Maria Torres',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',isi:'The championship final has broken all previous viewership records, with an estimated 2.3 billion people tuning in across broadcast and streaming platforms worldwide. The match, which went into extra time before a dramatic penalty shootout, captivated audiences across every continent.\n\nThe previous record of 1.8 billion viewers had stood since 2018. The surge in viewership is attributed to the growing accessibility of digital streaming platforms, particularly in emerging markets where mobile viewing has exploded.\n\n"This is the most-watched event in human history," said the league commissioner in a post-match statement. "It demonstrates the unifying power of sport."\n\nSocial media platforms reported record engagement, with over 500 million posts related to the match during the 24-hour period surrounding the game. The halftime show alone drew more viewers than the previous year\'s championship game.\n\nAnalysts expect the economic impact to be substantial, with host cities reporting billions in tourism revenue and global brands seeing record returns on their sponsorship investments.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=1200&h=600&fit=crop'},
+    {icon:'📈',cat:'Economy',time:'12h ago',writer:'David Kim',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',isi:'Global financial markets surged on Monday following the announcement of a comprehensive trade agreement between the world\'s largest economies. The landmark deal, which has been in negotiation for over three years, addresses tariffs, intellectual property protection, and supply chain cooperation.\n\nThe Dow Jones Industrial Average rose 3.2%, while European and Asian markets posted similar gains. The agreement is expected to unlock an estimated $2 trillion in additional trade volume over the next five years.\n\n"We are entering a new era of economic cooperation," said the chief economist at Global Financial Analytics. "This deal provides the certainty that markets have been craving since the onset of trade tensions."\n\nSectors expected to benefit most include manufacturing, technology, and agriculture. Currency markets also responded positively, with emerging market currencies strengthening against the dollar.\n\nHowever, some analysts caution that implementation challenges remain, and the true impact will only become clear in the months ahead.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=600&fit=crop'},
+    {icon:'🌊',cat:'Weather',time:'14h ago',writer:'Lisa Park',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions along the coastline.',isi:'Meteorological agencies have issued a severe weather warning as a powerful storm system intensifies over the Atlantic Ocean, threatening coastal communities across a wide swath of the eastern seaboard.\n\nThe storm, now classified as a Category 3 system, is expected to make landfall within 48 hours, bringing sustained winds of up to 120 miles per hour and storm surges of 12 to 15 feet. Evacuation orders have been issued for low-lying areas affecting an estimated 3 million residents.\n\n"This is a life-threatening situation," said the director of the National Weather Service. "Residents in evacuation zones should leave immediately. Do not wait."\n\nEmergency response teams have been mobilized, with shelters opening across the region. The military has been placed on standby to assist with rescue and recovery operations.\n\nThe storm is expected to cause significant infrastructure damage, with power outages potentially lasting weeks in the hardest-hit areas. Utility companies are pre-positioning crews and equipment for rapid response.\n\nClimate scientists note that warming ocean temperatures have contributed to the rapid intensification of storms in recent years, making such events more frequent and severe.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)',gambar:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=1200&h=600&fit=crop'},
+    {icon:'🎬',cat:'Culture',time:'1d ago',writer:'Emma Blackwood',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors at the annual ceremony.',isi:'The 48th International Film Festival concluded with a stunning ceremony that saw emerging directors take the top honors, marking a generational shift in the world of cinema. The Palme d\'Or was awarded to an unprecedented debut feature from a 27-year-old director from Senegal.\n\n"Storytelling is the bridge between cultures," said the winner in an emotional acceptance speech. "This film is dedicated to everyone who dares to dream beyond their circumstances."\n\nThe festival, which screened over 200 films from 60 countries, was notable for its emphasis on diverse voices and innovative storytelling techniques. Several films employed groundbreaking virtual production technology that industry insiders believe will reshape filmmaking.\n\nDistributors were active throughout the festival, with several high-profile acquisition deals closing during the event. Streaming platforms competed aggressively for international titles, reflecting the growing global appetite for diverse content.\n\nThe festival\'s jury president praised the selection for its "fearless exploration of the human condition" and noted that this year\'s entries reflected a new wave of cinematic expression.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&h=600&fit=crop'}
   ],
   schedule: [
     {time:'06:00',title:'Morning Briefing',desc:'Overnight news recap',tag:'Live'},
@@ -503,15 +681,15 @@ const STATIC = {
     {vid:'9bZkp7q19f0',title:'Weather Watch: Storm Tracking',desc:'Latest satellite imagery.',dur:'10:15',time:'Today 8PM'}
   ],
   play: [
-    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a'},
-    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a'},
-    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a'},
-    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a'},
-    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a'},
-    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a'}
+    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a',url:'',vid:'Bfy1HmAC6i8'},
+    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a',url:'',vid:'dQw4w9WgXcQ'},
+    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a',url:'',vid:'jNQXAC9IVRw'},
+    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a',url:'',vid:''},
+    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a',url:'',vid:''},
+    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a',url:'',vid:''}
   ],
   ticker:['Global summit reaches historic agreement','Tech giant unveils AI platform','Championship finals set record','Storm warning for coastal regions','Markets surge on trade agreement'],
-  hero:{title1:'Breaking',title2:'News.',desc:'Global summit addresses climate crisis.',stat1:'12.4K',stat2:'24/7',stat3:'189',s1:'Watching Now',s2:'Live Coverage',s3:'Countries'}
+  hero:{}
 };
 
 // ===== AUTH =====
@@ -595,6 +773,10 @@ function openOverlay(name){
 function closeOverlay(name){
   let el=document.getElementById('overlay-'+name);
   if(el){el.classList.remove('open');overlayStack=overlayStack.filter(o=>o!==name);if(!overlayStack.length)document.body.style.overflow=''}
+  if(name==='news-detail'){
+    if(window.location.hash.startsWith('#/news/')) history.pushState('','','#');
+    if(synth && synth.speaking){synth.cancel();stopListenUI()}
+  }
 }
 function closeTopOverlay(){
   if(overlayStack.length){let last=overlayStack.pop();closeOverlay(last);if(!overlayStack.length)document.body.style.overflow=''}
@@ -629,9 +811,9 @@ function navigate(page){
 
 // ===== LANG =====
 const LANG = {
-  en:{hero_label:'Live Now',hero_title1:'Breaking',hero_title2:'News.',hero_desc:'Global summit addresses climate crisis as world leaders convene for emergency talks.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',hero_stat1:'Watching Now',hero_stat2:'Live Coverage',hero_stat3:'Countries'},
-  id:{hero_label:'Siaran Langsung',hero_title1:'Terkini',hero_title2:'Berita.',hero_desc:'KTT iklim global membahas krisis iklim saat para pemimpin dunia berkumpul.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',hero_stat1:'Sedang Menonton',hero_stat2:'Liputan 24/7',hero_stat3:'Negara'},
-  nl:{hero_label:'Live Nu',hero_title1:'Breaking',hero_title2:'Nieuws.',hero_desc:'Wereldtop over klimaatcrisis terwijl wereldleiders bijeenkomen.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',hero_stat1:'Kijken Nu',hero_stat2:'24/7 Verslaggeving',hero_stat3:'Landen'}
+  en:{hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',slider_title:'Latest News'},
+  id:{hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru'},
+  nl:{hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws'}
 };
 let currentLang='en';
 function t(k){return LANG[currentLang]?.[k]||k}
@@ -641,18 +823,26 @@ function setLang(lang){
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
   let h=LANG[lang];
   if(h){
-    document.getElementById('hero-label-text').textContent=h.hero_label||'Live Now';
-    document.getElementById('hero-title1').textContent=h.hero_title1||'Breaking';
-    document.getElementById('hero-title2').textContent=h.hero_title2||'News.';
     document.getElementById('hero-desc').textContent=h.hero_desc||'';
     document.getElementById('hero-btn1').textContent=h.hero_btn1||'▶ Watch Now';
     document.getElementById('hero-btn2').textContent=h.hero_btn2||'Read Story';
-    document.getElementById('stat-label1').textContent=h.hero_stat1||'Watching Now';
-    document.getElementById('stat-label2').textContent=h.hero_stat2||'Live Coverage';
-    document.getElementById('stat-label3').textContent=h.hero_stat3||'Countries';
   }
 }
 document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',function(){setLang(this.dataset.lang)}));
+
+// ===== NEWS SLIDER =====
+function renderNewsSlider(items){
+  let s=document.getElementById('news-slider');if(!s)return;
+  let data=items||newsData.length?newsData:STATIC.news;
+  s.innerHTML='';
+  data.forEach(item=>{
+    let a=document.createElement('a');a.className='news-slide';a.href='#/news/'+slugify(item.title||'');
+    let img=item.gambar?'<img class="news-slide-img" src="'+item.gambar+'" loading="lazy" onerror="this.style.display=\'none\'">':'<div class="news-slide-img"></div>';
+    a.innerHTML=img+'<div class="news-slide-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'')+'</span><h4>'+(item.title||'')+'</h4></div>';
+    a.onclick=function(e){e.preventDefault();openNewsDetail(item)};
+    s.appendChild(a);
+  });
+}
 
 // ===== RENDER =====
 function renderGrid(gridId, data, type){
@@ -663,16 +853,18 @@ function renderGrid(gridId, data, type){
       el=document.createElement('article');el.className='news-card';
       let imgBg=item.gambar?'url('+item.gambar+') center/cover no-repeat, ':'';
       let imgEl=item.gambar?'<img src="'+item.gambar+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" onerror="this.style.display=\'none\'" alt="">':'';
-      el.innerHTML='<div class="news-card-img" style="background:'+imgBg+(item.color||'var(--green3)')+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p></div>';
-      el.onclick=()=>{openOverlay('news')};
+      el.innerHTML='<div class="news-card-img" style="background:'+imgBg+(item.color||'var(--green3)')+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p>'+(item.writer?'<span class="label-sm" style="margin-top:6px;display:block;color:var(--gray2)">By '+item.writer+'</span>':'')+'</div>';
+      el.onclick=()=>{openNewsDetail(item)};
     } else if(type==='schedule'){
       el=document.createElement('div');el.className='schedule-card';
       el.innerHTML='<div class="schedule-time">'+item.time+'</div><div class="schedule-info"><h4>'+item.title+'</h4><p>'+item.desc+'</p></div>'+(item.tag?'<span class="schedule-tag">'+item.tag+'</span>':'');
-      el.onclick=()=>{openOverlay('schedule')};
+      el.onclick=()=>{openScheduleDetail(item)};
     } else if(type==='play'){
       el=document.createElement('div');el.className='news-card';
-      el.innerHTML='<div class="news-card-img" style="background:'+(item.color||'var(--green3)')+'"><div class="icon">'+item.icon+'</div></div><div class="news-card-body"><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p>'+(item.tag?'<span class="label-sm">'+item.tag+'</span>':'')+'</div>';
-      el.onclick=()=>{openOverlay('play')};
+      let thumbHtml=item.vid?'<img src="https://i.ytimg.com/vi/'+item.vid+'/hqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" alt=""><div class="play-badge">▶</div>':item.url?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent)">▶</div>':'<div class="icon">'+item.icon+'</div>';
+      let labelExtra = item.url?'<span class="label-sm" style="margin-left:6px;color:var(--accent)">Mux</span>':'';
+      el.innerHTML='<div class="news-card-img" style="background:'+(item.color||'var(--green3)')+'">'+thumbHtml+'</div><div class="news-card-body"><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p>'+(item.tag?'<span class="label-sm">'+item.tag+'</span>':'')+labelExtra+'</div>';
+      el.onclick=()=>{openPlayDetail(item)};
     } else if(type==='upnext'){
       el=document.createElement('div');el.className='up-next-item';
       el.innerHTML='<div class="up-next-thumb"><div class="dur">'+(item.dur||'')+'</div></div><div class="up-next-info"><h4>'+item.title+'</h4><p>'+(item.desc||'')+'</p><span class="label-sm">'+(item.time||'')+'</span></div>';
@@ -680,9 +872,12 @@ function renderGrid(gridId, data, type){
         document.querySelectorAll('#'+gridId+' .up-next-item').forEach(x=>x.classList.remove('active'));
         this.classList.add('active');
         let v=item.vid;
-        ['main-video','main-video-full'].forEach(id=>{
-          let e=document.getElementById(id);if(e)e.src='https://www.youtube.com/embed/'+v+'?autoplay=1&mute=1';
-        });
+        if(v){
+          ['main-video','main-video-full'].forEach(id=>{
+            let el = document.getElementById(id); if(el) el.style.display='none';
+            let fb = document.getElementById(id+'-fallback'); if(fb){fb.style.display='block';fb.src=toEmbedUrl(v)}
+          });
+        }
         ['video-title','video-title-full'].forEach(id=>{
           let e=document.getElementById(id);if(e)e.textContent=item.title;
         });
@@ -695,30 +890,436 @@ function renderGrid(gridId, data, type){
   });
 }
 
+// ===== NEWS DETAIL =====
+let currentArticle = null;
+function openNewsDetail(item){
+  currentArticle = item;
+  document.getElementById('detail-image').src = item.gambar||'';
+  document.getElementById('detail-image').style.display = item.gambar?'block':'none';
+  document.getElementById('detail-category').textContent = item.cat||'General';
+  document.getElementById('detail-title').textContent = item.title||'';
+  document.getElementById('detail-writer').textContent = 'By '+(item.writer||'Staff');
+  document.getElementById('detail-date').textContent = (item.time||'Just now')+' · '+(item.createdAt?new Date(item.createdAt.seconds?item.createdAt.seconds*1000:item.createdAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'');
+  document.getElementById('detail-avatar').textContent = (item.writer||'S')[0].toUpperCase();
+  let likes = getLikes(item.title||item.id);
+  document.getElementById('like-count').textContent = likes;
+  let btn = document.getElementById('detail-like-btn');
+  btn.classList.toggle('liked', hasLiked(item.title||item.id));
+  let body = document.getElementById('detail-body');
+  let content = item.isi||item.desc||'No content available.';
+  let paragraphs = content.split('\n').filter(p=>p.trim()).map(p=>{
+    if(p.startsWith('## ')) return '<h2>'+p.replace('## ','')+'</h2>';
+    if(p.startsWith('> ')) return '<blockquote>'+p.replace('> ','')+'</blockquote>';
+    return '<p>'+p+'</p>';
+  }).join('');
+  body.innerHTML = paragraphs;
+  renderRecommended(item);
+  window.location.hash = '#/news/'+slugify(item.title||'');
+  openOverlay('news-detail');
+}
+function toggleLike(){
+  if(!currentArticle) return;
+  let key = currentArticle.title||currentArticle.id;
+  let liked = hasLiked(key);
+  if(liked) removeLike(key); else addLike(key);
+  let btn = document.getElementById('detail-like-btn');
+  btn.classList.toggle('liked', !liked);
+  document.getElementById('like-count').textContent = getLikes(key);
+}
+function getLikes(key){
+  try{ return parseInt(localStorage.getItem('sno_like_'+key)||'0',10); }catch(e){return 0}
+}
+function hasLiked(key){
+  try{
+    let arr = JSON.parse(localStorage.getItem('sno_liked_set')||'[]');
+    return arr.includes(key);
+  }catch(e){return false}
+}
+function addLike(key){
+  try{
+    localStorage.setItem('sno_like_'+key, String(getLikes(key)+1));
+    let arr = JSON.parse(localStorage.getItem('sno_liked_set')||'[]');
+    if(!arr.includes(key)){arr.push(key);localStorage.setItem('sno_liked_set',JSON.stringify(arr))}
+  }catch(e){}
+}
+function removeLike(key){
+  try{
+    let c = Math.max(0, getLikes(key)-1);
+    localStorage.setItem('sno_like_'+key, String(c));
+    let arr = JSON.parse(localStorage.getItem('sno_liked_set')||'[]');
+    let idx = arr.indexOf(key);
+    if(idx>-1){arr.splice(idx,1);localStorage.setItem('sno_liked_set',JSON.stringify(arr))}
+  }catch(e){}
+}
+function renderRecommended(exclude){
+  let g=document.getElementById('recommended-grid'); if(!g) return; g.innerHTML='';
+  let all = typeof newsData !== 'undefined' && newsData.length ? newsData : STATIC.news;
+  let others = all.filter(n=>(n.title||n.id)!==(exclude.title||exclude.id));
+  let recs = others.slice(0,3);
+  recs.forEach(item=>{
+    let el=document.createElement('article');el.className='news-card';
+    let imgBg=item.gambar?'url('+item.gambar+') center/cover no-repeat, ':'';
+    let imgEl=item.gambar?'<img src="'+item.gambar+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" onerror="this.style.display=\'none\'" alt="">':'';
+    el.innerHTML='<div class="news-card-img" style="background:'+imgBg+(item.color||'var(--green3)')+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p></div>';
+    el.onclick=()=>{closeOverlay('news-detail');setTimeout(()=>openNewsDetail(item),400)};
+    g.appendChild(el);
+  });
+  if(!recs.length) g.innerHTML='<p style="font-size:13px;color:var(--gray)">No related stories at this time.</p>';
+}
+// ===== TEXT-TO-SPEECH =====
+let synth = window.speechSynthesis;
+let currentUtterance = null;
+let selectedVoice = null;
+let listenVoices = [];
+function toggleListen(){
+  if(currentUtterance && synth.speaking){
+    synth.cancel();stopListenUI();closeListenPopup();return;
+  }
+  if(!currentArticle) return;
+  let text = currentArticle.isi || currentArticle.desc || '';
+  if(!text.trim()) return;
+  openListenPopup();
+}
+function openListenPopup(){
+  let pop = document.getElementById('listen-popup'); if(!pop) return;
+  pop.classList.add('open');
+  if(synth){
+    let v = synth.getVoices();
+    if(v.length) populateVoices(v);
+    else{setTimeout(()=>{let v2=synth.getVoices();if(v2.length)populateVoices(v2)},500)}
+  }
+  document.getElementById('listen-rate').value = '1';
+  document.getElementById('listen-rate-val').textContent = '1x';
+  document.getElementById('listen-pitch').value = '1';
+  document.getElementById('listen-pitch-val').textContent = '1x';
+  document.getElementById('listen-play-btn').textContent = '▶ Play';
+}
+function closeListenPopup(){
+  document.getElementById('listen-popup')?.classList.remove('open');
+}
+function populateVoices(voices){
+  listenVoices = voices;
+  let container = document.getElementById('listen-voices'); if(!container) return;
+  let groups = {male:[],female:[]};
+  voices.forEach(v => {
+    let name = v.name.toLowerCase();
+    if(name.includes('female')||name.includes('woman')||name.includes('girl')||name.includes('zira')) groups.female.push(v);
+    else if(name.includes('male')||name.includes('man')||name.includes('boy')||name.includes('david')||name.includes('mark')) groups.male.push(v);
+  });
+    let presets = [
+      {id:'female',icon:'F',label:'Female',voice:groups.female[0]||voices[1]||voices[0]},
+      {id:'male',icon:'M',label:'Male',voice:groups.male[0]||voices[0]},
+      {id:'neutral',icon:'N',label:'Neutral',voice:voices[0]}
+    ];
+    container.innerHTML = '';
+    presets.forEach(p => {
+      let btn = document.createElement('button'); btn.className = 'listen-voice-btn';
+      if(p.id==='neutral') btn.classList.add('active');
+      btn.innerHTML = '<span class="voice-badge'+(p.id==='neutral'?' active':'')+'">'+p.icon+'</span>'+p.label;
+    btn.onclick = ()=>{
+      container.querySelectorAll('.listen-voice-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedVoice = p.voice;
+      listenPlay();
+      closeListenPopup();
+    };
+    container.appendChild(btn);
+  });
+  selectedVoice = presets[2].voice;
+}
+document.addEventListener('click',function(e){
+  let pop=document.getElementById('listen-popup');
+  if(pop&&pop.classList.contains('open')&&!e.target.closest('.listen-popup')&&!e.target.closest('.btn-listen'))closeListenPopup()
+});
+['listen-rate','listen-pitch'].forEach(id=>{
+  let el = document.getElementById(id);
+  if(el) el.addEventListener('input',function(){document.getElementById(id+'-val').textContent=this.value+'x'});
+});
+function listenPlay(){
+  if(!currentArticle) return;
+  let text = currentArticle.isi || currentArticle.desc || '';
+  let clean = text.replace(/<[^>]*>/g,'').replace(/\n+/g,' ').trim();
+  if(!clean) return;
+  if(synth.speaking){synth.cancel();stopListenUI()}
+  let utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'en-US';
+  utter.rate = parseFloat(document.getElementById('listen-rate').value)||1;
+  utter.pitch = parseFloat(document.getElementById('listen-pitch').value)||1;
+  if(selectedVoice) utter.voice = selectedVoice;
+  utter.onend = stopListenUI;
+  utter.onerror = stopListenUI;
+  currentUtterance = utter;
+  synth.speak(utter);
+  let btn = document.getElementById('detail-listen-btn');
+  if(btn) btn.classList.add('playing');
+  let txt = document.getElementById('listen-text');
+  if(txt) txt.textContent = 'Stop';
+}
+function stopListenUI(){
+  currentUtterance = null;
+  let btn = document.getElementById('detail-listen-btn');
+  if(btn) btn.classList.remove('playing');
+  let txt = document.getElementById('listen-text');
+  if(txt) txt.textContent = 'Listen';
+}
+
+function openSharePopup(){
+  document.getElementById('share-popup').classList.add('open');
+  let url = encodeURIComponent(window.location.href.replace(/#$|#[^/].*$/,'')+'#/news/'+slugify(currentArticle?.title||''));
+  let title = encodeURIComponent(currentArticle?.title||'SNO News');
+  document.getElementById('share-twitter').href='https://twitter.com/intent/tweet?text='+title+'&url='+url;
+  document.getElementById('share-facebook').href='https://www.facebook.com/sharer/sharer.php?u='+url;
+  document.getElementById('share-whatsapp').href='https://wa.me/?text='+title+'%20'+url;
+}
+function closeSharePopup(){document.getElementById('share-popup').classList.remove('open')}
+function copyShareLink(){
+  navigator.clipboard.writeText(window.location.href).then(()=>{showToast('Link copied!','success');closeSharePopup()}).catch(()=>{showToast('Failed to copy','error')});
+}
+document.addEventListener('click',function(e){let pop=document.getElementById('share-popup');if(pop&&pop.classList.contains('open')&&!e.target.closest('.share-popup')&&!e.target.closest('.btn-share'))closeSharePopup()});
+
+// ===== SCHEDULE DETAIL =====
+let currentSchedule = null;
+function openScheduleDetail(item){
+  currentSchedule = item;
+  let overlay = document.getElementById('overlay-schedule');
+  let content = overlay.querySelector('.overlay-content');
+  let existing = content.querySelector('.schedule-detail-card');
+  if(existing) existing.remove();
+  let card = document.createElement('div'); card.className = 'schedule-detail-card detail-card';
+  card.innerHTML = '<div class="detail-card-header"><div class="detail-card-time">'+item.time+'</div><div class="detail-card-info"><h2>'+(item.title||'')+'</h2><p>'+(item.desc||'')+'</p></div>'+(item.tag?'<span class="schedule-tag">'+item.tag+'</span>':'')+'</div><div class="detail-card-body"><p>'+(item.fullDesc||item.desc||'Detailed program information coming soon. Stay tuned for updates on this broadcast.')+'</p></div>';
+  let grid = content.querySelector('#schedule-grid-full');
+  if(grid) grid.parentNode.insertBefore(card, grid);
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  if(!overlay.classList.contains('open')) openOverlay('schedule');
+}
+
+// ===== PLAY DETAIL =====
+let currentPlay = null;
+// ===== SNO PLAYER (custom video) =====
+let playPlayer = null;
+let playHls = null;
+function initPlayPlayer(videoEl, src){
+  if(playHls){try{playHls.destroy()}catch(e){};playHls=null}
+  if(!videoEl||!src) return;
+  playPlayer = videoEl;
+  if(src.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()){
+    let h = new Hls();
+    h.loadSource(src);
+    h.attachMedia(videoEl);
+    playHls = h;
+  } else if(src.includes('.m3u8') && videoEl.canPlayType('application/vnd.apple.mpegurl')){
+    videoEl.src = src;
+  } else if(src.includes('youtube') || src.includes('youtu.be')){
+    videoEl.style.display = 'none';
+    let fb = document.getElementById('play-feat-video-fallback');
+    if(!fb){
+      fb = document.createElement('iframe');fb.id='play-feat-video-fallback';fb.style='width:100%;aspect-ratio:21/9';fb.allow='encrypted-media';fb.allowFullscreen=true;
+      videoEl.parentNode.insertBefore(fb, videoEl.nextSibling);
+    }
+    fb.style.display = 'block';
+    fb.src = toEmbedUrl(src);
+  } else {
+    videoEl.src = src;
+  }
+  videoEl.play().catch(()=>{});
+}
+function togglePlayPlayer(){
+  if(!playPlayer) return;
+  if(playPlayer.paused){playPlayer.play();document.getElementById('sno-play-btn').textContent='⏸'}
+  else{playPlayer.pause();document.getElementById('sno-play-btn').textContent='▶'}
+}
+function seekPlayer(e){
+  let wrap = document.getElementById('sno-player-progress');
+  if(!wrap||!playPlayer) return;
+  let rect = wrap.getBoundingClientRect();
+  let pct = (e.clientX - rect.left) / rect.width;
+  playPlayer.currentTime = pct * playPlayer.duration;
+}
+function toggleMutePlayer(){
+  if(!playPlayer) return;
+  playPlayer.muted = !playPlayer.muted;
+  document.getElementById('sno-vol-btn').textContent = playPlayer.muted?'🔇':'🔊';
+}
+function setVolumePlayer(v){
+  if(!playPlayer) return;
+  playPlayer.volume = parseFloat(v);
+  document.getElementById('sno-vol-btn').textContent = parseFloat(v)>0?'🔊':'🔇';
+}
+function formatTime(s){
+  if(!s||isNaN(s)) return '0:00';
+  let m = Math.floor(s/60);
+  let sec = Math.floor(s%60);
+  return m+':'+String(sec).padStart(2,'0');
+}
+function updatePlayerUI(){
+  if(!playPlayer) return;
+  let fill = document.getElementById('sno-player-fill');
+  let time = document.getElementById('sno-player-time');
+  if(fill && playPlayer.duration) fill.style.width = (playPlayer.currentTime/playPlayer.duration*100)+'%';
+  if(time) time.textContent = formatTime(playPlayer.currentTime)+' / '+formatTime(playPlayer.duration);
+  document.getElementById('sno-play-btn').textContent = playPlayer.paused?'▶':'⏸';
+}
+setInterval(updatePlayerUI, 250);
+
+function openPlayDetail(item){
+  currentPlay = item;
+  let overlay = document.getElementById('overlay-play');
+  let content = overlay.querySelector('.overlay-content');
+  // Update featured area
+  let feat = content.querySelector('#play-feat-title');
+  let featDesc = content.querySelector('#play-feat-desc');
+  let featVid = content.querySelector('#play-feat-video');
+  if(feat) feat.textContent = item.title||'';
+  if(featDesc) featDesc.textContent = item.desc||'';
+  if(featVid) initPlayPlayer(featVid, item.url||'');
+  let tag = content.querySelector('.play-feat-tag');
+  if(tag) tag.textContent = item.tag||'SNO Original';
+  // Scroll to featured
+  let featured = content.querySelector('.play-featured');
+  if(featured) featured.scrollIntoView({behavior:'smooth',block:'start'});
+  if(!overlay.classList.contains('open')) openOverlay('play');
+}
+
+// ===== YOUTUBE URL HELPER =====
+function toEmbedUrl(url){
+  if(!url) return '';
+  if(url.includes('/embed/')) return url;
+  let m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(m) return 'https://www.youtube.com/embed/'+m[1]+'?autoplay=0&mute=1';
+  return url;
+}
+
+// ===== HLS / MUX PLAYER =====
+let hlsInstances = [];
+function initHlsPlayer(muxId, youtubeUrl){
+  let videoIds = ['hero-video','main-video','main-video-full'];
+  let fallbackIds = ['hero-video-fallback','main-video-fallback','main-video-full-fallback'];
+  hlsInstances.forEach(h=>{try{h.destroy()}catch(e){}});hlsInstances=[];
+  let useMux = muxId && muxId.length>5;
+  videoIds.forEach((vid,i)=>{
+    let video = document.getElementById(vid);
+    let fallback = document.getElementById(fallbackIds[i]);
+    if(!video) return;
+    if(useMux && typeof Hls !== 'undefined' && Hls.isSupported()){
+      video.style.display = 'block';
+      if(fallback) fallback.style.display = 'none';
+      let hls = new Hls();
+      hls.loadSource('https://stream.mux.com/'+muxId+'.m3u8');
+      hls.attachMedia(video);
+      video.play().catch(()=>{});
+      hlsInstances.push(hls);
+    } else if(useMux && video.canPlayType('application/vnd.apple.mpegurl')){
+      video.style.display = 'block';
+      if(fallback) fallback.style.display = 'none';
+      video.src = 'https://stream.mux.com/'+muxId+'.m3u8';
+      video.play().catch(()=>{});
+    } else {
+      video.style.display = 'none';
+      if(fallback){
+        fallback.style.display = 'block';
+        if(youtubeUrl && youtubeUrl.includes('youtube')) fallback.src = toEmbedUrl(youtubeUrl);
+      }
+    }
+  });
+}
+
+// ===== UPCOMING BROADCAST / PRE-LIVE =====
+let _upcomingData = null;
+let _countdownInterval = null;
+function checkBroadcastState(){
+  let u = _upcomingData;
+  let defEl = document.getElementById('hero-default');
+  let preEl = document.getElementById('hero-prelive');
+  let visEl = document.getElementById('hero-visual');
+  let navDot = document.getElementById('nav-livedot');
+  let heroDot = document.getElementById('hero-live-dot');
+  if(!defEl) return;
+  // Reset - default: text only, no video
+  defEl.style.display = '';
+  if(preEl) preEl.style.display = 'none';
+  if(visEl) visEl.style.display = 'none';
+  if(navDot) navDot.style.display = 'none';
+  if(heroDot) heroDot.style.display = 'none';
+  document.getElementById('nav-live-text').textContent = 'Broadcast';
+  if(_countdownInterval){clearInterval(_countdownInterval);_countdownInterval=null}
+  // If we have an active upcoming broadcast
+  if(u && u.active && u.active !== 'false' && u.startTime){
+    let startMs = new Date(u.startTime).getTime();
+    let nowMs = Date.now();
+    if(!isNaN(startMs) && startMs > nowMs){
+      // PRE-LIVE: countdown (only if within 24h), no video
+      defEl.style.display = 'none';
+      if(visEl) visEl.style.display = 'none';
+      if(navDot) navDot.style.display = 'inline-block';
+      if(heroDot) heroDot.style.display = 'inline-block';
+      document.getElementById('nav-live-text').textContent = 'LIVE';
+      if(preEl){
+        preEl.style.display = 'block';
+        document.getElementById('prelive-title').textContent = u.title||'Upcoming Broadcast';
+        document.getElementById('prelive-desc').textContent = u.desc||'';
+        document.getElementById('prelive-starttime').textContent = 'Starts at '+new Date(u.startTime).toLocaleString();
+        let diffH = (startMs - nowMs) / 3600000;
+        if(diffH <= 24) startCountdown(startMs);
+        else document.getElementById('hero-countdown').textContent = '--:--:--';
+      }
+    } else if(!isNaN(startMs)){
+      // LIVE: show video, "LIVE" label
+      defEl.style.display = 'none';
+      if(preEl) preEl.style.display = 'none';
+      if(visEl) visEl.style.display = '';
+      if(navDot) navDot.style.display = 'inline-block';
+      if(heroDot) heroDot.style.display = 'inline-block';
+      document.getElementById('nav-live-text').textContent = 'LIVE';
+      let hLabel = document.querySelector('#hero-default .hero-label .label');
+      if(hLabel) hLabel.textContent = 'LIVE';
+      initHlsPlayer(u.mux_playback_id||'', u.video||'');
+    }
+  }
+  // If no upcoming or inactive, show default (Breaking News + news slider)
+}
+function startCountdown(targetMs){
+  if(_countdownInterval) clearInterval(_countdownInterval);
+  function tick(){
+    let diff = targetMs - Date.now();
+    if(diff <= 0){checkBroadcastState();return}
+    let h = Math.floor(diff/3600000);
+    let m = Math.floor((diff%3600000)/60000);
+    let s = Math.floor((diff%60000)/1000);
+    let el = document.getElementById('hero-countdown');
+    if(el) el.textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  }
+  tick();
+  _countdownInterval = setInterval(tick, 1000);
+}
+
+// ===== HERO SCHEDULE =====
+function updateHeroWithSchedule(){
+  // hero is managed by checkBroadcastState
+}
+
 function renderTicker(items){
   let g=document.getElementById('ticker-wrap');if(!g)return;g.innerHTML='';
-  let data=items||STATIC.ticker;
+  let data = items && items.length && items[0].time ? items : (_scheduleData.length ? _scheduleData : STATIC.schedule);
   let html=[];
-  for(let i=0;i<2;i++)data.forEach(t=>{html.push('<div class="ticker-item"><span class="label">'+(i===0?'News':'')+'</span><span>'+t+'</span></div>')});
+  let formatted = data.map(s=>s.time+' — '+s.title);
+  for(let i=0;i<2;i++)formatted.forEach(t=>{html.push('<div class="ticker-item"><span class="label">NOW</span><span>'+t+'</span></div>')});
   g.innerHTML=html.join('');
 }
 
 function loadAllData(){
-  // Show static fallback IMMEDIATELY — no waiting for Firestore
   fallbackAll();
-
-  // Then try Firestore in background
   if(fbFirestore){
     unsubscribers.forEach(u=>u());unsubscribers=[];
-
     const collections = {
       news: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
-        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');document.getElementById('news-count').textContent=data.length+' articles';console.log('News loaded from Firestore:',data.length)}else fallbackNews();
+        newsData = data;
+        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' articles';console.log('News loaded from Firestore:',data.length)}else fallbackNews();
       },
       schedule: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
-        if(data.length){renderGrid('schedule-grid',data,'schedule');renderGrid('schedule-grid-full',data,'schedule');console.log('Schedule loaded from Firestore:',data.length)}else fallbackSchedule();
+        _scheduleData = data;
+        if(data.length){renderGrid('schedule-grid',data,'schedule');renderGrid('schedule-grid-full',data,'schedule');renderTicker();updateHeroWithSchedule();console.log('Schedule loaded from Firestore:',data.length)}else fallbackSchedule();
       },
       upnext: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
@@ -731,21 +1332,26 @@ function loadAllData(){
       ticker: (snap)=>{
         let data=[];snap.forEach(d=>data.push(d.data().text||d.data().title));
         if(data.length)renderTicker(data);else renderTicker();
+        if(data.length)_scheduleData = data.map(t=>({time:'',title:t}));
+      },
+      upcoming: (snap)=>{
+        let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
+        _upcomingData = data.length ? data[0] : null;
+        checkBroadcastState();
       }
     };
-
     Object.entries(collections).forEach(([name,cb])=>{
       let unsub = fbFirestore.collection(name).onSnapshot(cb, err=>{
         console.warn('Firestore error for '+name,err);
-        // Try localStorage backup
         let localKey='sno_backup_'+name;
         try{
           let localData=JSON.parse(localStorage.getItem(localKey)||'[]');
           if(localData.length){
-            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');document.getElementById('news-count').textContent=localData.length+' articles (backup)'}
-            else if(name==='schedule'){renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule')}
+            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' articles (backup)'}
+            else if(name==='schedule'){_scheduleData=localData;renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule');renderTicker();updateHeroWithSchedule()}
             else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
             else if(name==='play'){renderGrid('play-grid-full',localData,'play')}
+            else if(name==='upcoming'){_upcomingData=localData.length?localData[0]:null;checkBroadcastState()}
           }
         }catch(ex){}
         fallbackAll();
@@ -753,42 +1359,33 @@ function loadAllData(){
       });
       unsubscribers.push(unsub);
     });
-
-    // Hero settings
     fbFirestore.collection('settings').doc('hero').get().then(doc=>{
       if(doc.exists){
         let h=doc.data();
-        document.getElementById('hero-title1').textContent=h.title1||STATIC.hero.title1;
-        document.getElementById('hero-title2').textContent=h.title2||STATIC.hero.title2;
-        document.getElementById('hero-desc').textContent=h.desc||STATIC.hero.desc;
-        document.getElementById('stat-num1').textContent=h.stat1||STATIC.hero.stat1;
-        document.getElementById('stat-num2').textContent=h.stat2||STATIC.hero.stat2;
-        document.getElementById('stat-num3').textContent=h.stat3||STATIC.hero.stat3;
-        document.getElementById('stat-label1').textContent=h.s1||STATIC.hero.s1;
-        document.getElementById('stat-label2').textContent=h.s2||STATIC.hero.s2;
-        document.getElementById('stat-label3').textContent=h.s3||STATIC.hero.s3;
-        if(h.video) document.getElementById('hero-video').src=h.video;
+        initHlsPlayer(h.mux_playback_id||'', h.video||'');
       }
     }).catch(()=>{});
+    if(!fbFirestore) initHlsPlayer('','');
   }
 }
 
 function fallbackNews(){
+  newsData = STATIC.news;
   renderGrid('news-grid',STATIC.news,'news');
   renderGrid('news-grid-full',STATIC.news,'news');
+  renderNewsSlider(STATIC.news);
   document.getElementById('news-count').textContent=STATIC.news.length+' articles';
 }
-function fallbackSchedule(){renderGrid('schedule-grid',STATIC.schedule,'schedule');renderGrid('schedule-grid-full',STATIC.schedule,'schedule')}
+function fallbackSchedule(){_scheduleData = STATIC.schedule;renderGrid('schedule-grid',STATIC.schedule,'schedule');renderGrid('schedule-grid-full',STATIC.schedule,'schedule');renderTicker();updateHeroWithSchedule()}
 function fallbackUpnext(){renderGrid('upnext-list',STATIC.upnext,'upnext');renderGrid('upnext-list-full',STATIC.upnext,'upnext')}
 function fallbackPlay(){renderGrid('play-grid-full',STATIC.play,'play')}
-function fallbackAll(){fallbackNews();fallbackSchedule();fallbackUpnext();fallbackPlay();renderTicker();}
+function fallbackUpcoming(){_upcomingData=null;checkBroadcastState()}
+function fallbackAll(){fallbackNews();fallbackSchedule();fallbackUpnext();fallbackPlay();renderTicker();fallbackUpcoming();}
 
 // ===== ADMIN PANELS =====
 function renderAdmin(){
   let container=document.getElementById('admin-panels');if(!container)return;
   container.innerHTML='';
-
-  // Firestore status
   let statusEl=document.createElement('div');
   statusEl.style.cssText='padding:10px 14px;margin-bottom:16px;border-radius:6px;font-size:12px;border:1px solid rgba(255,255,255,.06)';
   if(fbFirestore){
@@ -800,20 +1397,25 @@ function renderAdmin(){
     });
   } else statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#ff4444">● Not initialized</span>';
   container.appendChild(statusEl);
-
   const panels = [
-    {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'time',p:'Time (e.g. 2h ago)'},{k:'color',p:'Color fallback'}],col:'news'},
-    {title:'Schedule',fields:[{k:'time',p:'Time (e.g. 06:00)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
-    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'color',p:'Color'}],col:'play'},
+    {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Short description'},{k:'isi',p:'Full article content'},{k:'writer',p:'Writer name'},{k:'time',p:'Time (e.g. 2h ago)'},{k:'color',p:'Color fallback'}],col:'news'},
+    {title:'Schedule',fields:[{k:'time',p:'Time'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
+    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'url',p:'Video URL (Mux .m3u8 / .mp4)'},{k:'vid',p:'YouTube ID (fallback)'},{k:'color',p:'Color'}],col:'play'},
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
     {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
-    {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'stat1',p:'Stat 1 number'},{k:'stat2',p:'Stat 2 number'},{k:'stat3',p:'Stat 3 number'},{k:'s1',p:'Stat 1 label'},{k:'s2',p:'Stat 2 label'},{k:'s3',p:'Stat 3 label'},{k:'video',p:'YouTube embed URL'}],col:'settings/hero'}
+    {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'mux_playback_id',p:'Mux Playback ID (for live)'},{k:'video',p:'YouTube embed URL (fallback)'}],col:'settings/hero'},
+    {title:'Upcoming Broadcast',fields:[{k:'title',p:'Broadcast Title'},{k:'desc',p:'Description'},{k:'startTime',p:'Start time (YYYY-MM-DDTHH:mm)'},{k:'active',p:'Active (true/false)'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'YouTube URL'}],col:'upcoming'}
   ];
-
   panels.forEach(p=>{
     let card=document.createElement('div');card.className='admin-card';
     let fieldsHtml='';
-    p.fields.forEach(f=>{fieldsHtml+='<input class="admin-input" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'">'});
+    p.fields.forEach(f=>{
+      let isTime = f.k==='time' && p.col==='schedule';
+      let isDt = f.k==='startTime' && p.col==='upcoming';
+      let inpType = isTime ? 'time' : isDt ? 'datetime-local' : f.k==='isi' ? 'textarea' : 'text';
+      if(inpType==='textarea') fieldsHtml+='<textarea class="admin-textarea" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'"></textarea>';
+      else fieldsHtml+='<input type="'+inpType+'" class="admin-input" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'"'+(isDt?'':'')+'>';
+    });
     card.innerHTML='<h3>'+p.title+'</h3><div class="admin-form">'+fieldsHtml+'<button class="btn btn-primary btn-sm" onclick="adminSubmit(\''+p.col+'\')">Add to '+p.title+'</button></div><div class="admin-list" id="admin-list-'+p.col+'"></div>';
     container.appendChild(card);
     adminList(p.col);
@@ -823,12 +1425,13 @@ function renderAdmin(){
 function adminSubmit(col){
   if(!fbFirestore||!isAdmin){alert('Configure Firebase and sign in as admin!');return}
   let fields={
-    news:['gambar','cat','title','desc','time','color'],
+    news:['gambar','cat','title','desc','isi','writer','time','color'],
     schedule:['time','title','desc','tag'],
-    play:['icon','title','desc','tag','color'],
+    play:['icon','title','desc','tag','url','vid','color'],
     upnext:['vid','title','desc','dur','time'],
     ticker:['text'],
-    'settings/hero':['title1','title2','desc','stat1','stat2','stat3','s1','s2','s3','video']
+    'settings/hero':['title1','title2','desc','mux_playback_id','video'],
+    upcoming:['title','desc','startTime','active','mux_playback_id','video']
   };
   let data={};
   (fields[col]||[]).forEach(k=>{
@@ -838,11 +1441,12 @@ function adminSubmit(col){
   if(!Object.keys(data).length){alert('Fill at least one field');return}
   if(col==='news'){if(!data.time)data.time='Just now';if(!data.cat)data.cat='General';if(!data.color)data.color='linear-gradient(135deg,#0a1a10,#0d5e2e)'}
   data.createdAt=new Date();
-
   let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):fbFirestore.collection(col).doc();
-  ref.set(data).then(()=>{showToast('Data saved to Firestore!','success');console.log('Saved:',col,data)}).catch(e=>{
+  ref.set(data).then(()=>{
+    showToast('Data saved to Firestore!','success');console.log('Saved:',col,data);
+    if(col==='settings/hero'){let m=data.mux_playback_id||'';let v=data.video||'';initHlsPlayer(m,v)}
+  }).catch(e=>{
     showToast('Firestore error: '+e.message,'error');
-    // Backup ke localStorage
     try{let key='sno_backup_'+col;let existing=JSON.parse(localStorage.getItem(key)||'[]');existing.push(data);localStorage.setItem(key,JSON.stringify(existing));showToast('Firestore gagal. Data disimpan lokal (backup)','success')}catch(ex){}
     alert('Upload gagal: '+e.message+'\n\nCek: 1) Adblocker dimatiin\n2) Firestore Database: https://console.firebase.google.com → Firestore → Create database\n3) Koneksi internet')
   });
@@ -890,6 +1494,20 @@ function closeDemo(){document.getElementById('demo-overlay').classList.remove('s
 
 renderAdmin();
 loadAllData();
+checkBroadcastState();
+renderNewsSlider();
+
+// ===== HASH ROUTING =====
+function slugify(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').substring(0,80)}
+function openNewsByHash(){
+  let hash = window.location.hash.replace('#/news/','');
+  if(!hash) return;
+  let all = newsData.length ? newsData : STATIC.news;
+  let item = all.find(n => slugify(n.title||'') === hash);
+  if(item) openNewsDetail(item);
+}
+window.addEventListener('hashchange', openNewsByHash);
+if(window.location.hash.startsWith('#/news/')) openNewsByHash();
 </script>
 </body>
 </html>
