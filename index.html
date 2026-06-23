@@ -255,33 +255,57 @@ footer a:hover{color:var(--white)}
 .sno-player-vol-slider{width:50px;height:3px;-webkit-appearance:none;background:rgba(255,255,255,.2);border-radius:2px;outline:none;flex-shrink:0}
 .sno-player-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:#fff;cursor:pointer}
 
-/* ===== NETFLIX-STYLE PLAY ===== */
-.play-hero{position:relative;width:100%;min-height:70vh;display:flex;align-items:flex-end;padding:80px 40px 40px;overflow:hidden;background:var(--black2)}
-.play-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.3;transition:opacity .6s}
-.play-hero-vignette{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,12,.95) 0%,rgba(10,10,12,.6) 50%,transparent 70%),linear-gradient(0deg,rgba(10,10,12,1) 0%,transparent 40%)}
+/* ===== SNO PLAY UNIQUE THEME ===== */
+.play-overlay{--play-accent:#00e85a;--play-bg:#0c0c0e;--play-card-bg:#141416;--play-card-border:rgba(255,255,255,.06);background:var(--play-bg)}
+.play-overlay .overlay-header{display:none}
+.play-overlay .overlay-content{background:var(--play-bg)}
+.play-header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;gap:16px;background:rgba(12,12,14,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04)}
+.play-header-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.play-brand{font-family:'Coolvetica',sans-serif;font-size:22px;letter-spacing:2px;background:linear-gradient(135deg,var(--accent) 20%,var(--play-accent) 70%,#b3ffd4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.play-header-center{flex:1;display:flex;justify-content:center;max-width:420px;margin:0 auto}
+.play-search-wrap{position:relative;width:100%}
+.play-search{width:100%;padding:8px 14px 8px 36px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;font-size:13px;outline:none;transition:all .25s;font-family:'Telegraf',sans-serif}
+.play-search:focus{border-color:var(--play-accent);background:rgba(255,255,255,.06);box-shadow:0 0 0 3px rgba(0,232,90,.1)}
+.play-search::placeholder{color:rgba(255,255,255,.25)}
+.play-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.4;pointer-events:none}
+.play-search-clear{display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:14px;padding:2px 4px}
+.play-search-clear:hover{color:#fff}
+.play-search:not(:placeholder-shown) ~ .play-search-clear{display:block}
+.play-header-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.play-sub-btn{background:var(--play-accent)!important;border-color:var(--play-accent)!important;color:#000!important}
+
+.play-hero{position:relative;width:100%;min-height:75vh;display:flex;align-items:flex-end;padding:80px 40px 40px;overflow:hidden;background:var(--play-bg)}
+.play-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.25;transition:opacity .8s}
+.play-hero-vignette{position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,12,14,.95) 0%,rgba(12,12,14,.5) 50%,transparent 70%),linear-gradient(0deg,rgba(12,12,14,1) 0%,transparent 40%)}
 .play-hero-content{position:relative;z-index:2;display:flex;align-items:flex-end;gap:40px;width:100%}
-.play-hero-player{border:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.play-hero-player{border:2px solid rgba(255,255,255,.06);flex-shrink:0;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
 .play-hero-info{flex:1;padding-bottom:20px}
+.play-hero-info .play-feat-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--play-accent);display:block;margin-bottom:6px}
 .play-hero-info h1{font-family:'Coolvetica',sans-serif;font-size:clamp(42px,6vw,80px);line-height:.85;margin:8px 0 12px}
 .play-hero-info p{font-size:14px;color:var(--gray);line-height:1.6;max-width:500px}
-.play-rows{padding:40px}
+.play-rows{padding:40px 28px}
 .play-row{margin-bottom:40px}
 .play-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.play-row-header h3{font-family:'Coolvetica',sans-serif;font-size:22px}
+.play-row-header h3{font-family:'Coolvetica',sans-serif;font-size:22px;letter-spacing:.5px}
+.play-row-header h3::before{content:'// ';color:var(--play-accent);opacity:.5}
 .play-row-scroll{display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .play-row-scroll::-webkit-scrollbar{height:4px}
-.play-row-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
-.play-card{flex:0 0 260px;border-radius:var(--radius-sm);overflow:hidden;background:var(--black3);border:1px solid rgba(255,255,255,.04);cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative}
-.play-card:hover{transform:scale(1.04);z-index:5;border-color:rgba(0,212,84,.2);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.play-row-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
+.play-card{flex:0 0 260px;border-radius:10px;overflow:hidden;background:var(--play-card-bg);border:1px solid var(--play-card-border);cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1);position:relative}
+.play-card:hover{transform:scale(1.04);z-index:5;border-color:rgba(0,232,90,.3);box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .play-card-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--green3)}
 .play-card-body{padding:14px}
-.play-card-body .label-sm{font-size:9px;color:var(--accent)}
+.play-card-body .label-sm{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--play-accent)}
 .play-card-body h4{font-size:13px;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .play-card-body p{font-size:11px;color:var(--gray);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.play-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7) 0%,transparent 50%);opacity:0;transition:opacity .35s;display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.play-card-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,12,14,.8) 0%,transparent 50%);opacity:0;transition:opacity .35s;display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
 .play-card:hover .play-card-overlay{opacity:1}
-.play-card-overlay .label-sm{font-size:9px;color:var(--accent)}
+.play-card-overlay .label-sm{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--play-accent)}
 .play-card-overlay h4{font-family:'Coolvetica',sans-serif;font-size:16px}
+
+.play-no-results{padding:80px 28px;text-align:center;color:var(--gray)}
+
+/* Subscribe popup */
 /* Subscribe popup */
 .sub-plans{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .sub-plan{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02)}
@@ -293,7 +317,7 @@ footer a:hover{color:var(--white)}
 .sub-plan-tag{font-size:10px;background:var(--accent);color:#000;padding:2px 8px;border-radius:4px;font-weight:600;width:fit-content}
 .sub-plan-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s}
 .sub-plan.selected .sub-plan-check{border-color:var(--accent);background:var(--accent);color:#000}
-.sub-plan.selected .sub-plan-check::after{content:'✓';font-weight:700}
+.sub-plan.selected .sub-plan-check::after{content:'+';font-weight:700}
 .play-header-actions{display:flex;gap:8px;align-items:center}
 .play-user-badge{width:32px;height:32px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.1);transition:border-color .2s}
 .play-user-badge:hover{border-color:var(--accent)}
@@ -404,7 +428,7 @@ footer a:hover{color:var(--white)}
             <div class="news-slider" id="news-slider"></div>
           </div>
           <div class="hero-actions">
-        <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1" data-i18n="watch_now">▶ Watch Now</a>
+        <a class="btn btn-primary" onclick="openOverlay('live')" id="hero-btn1" data-i18n="watch_now">► Watch Now</a>
         <a class="btn btn-outline" onclick="openOverlay('news')" id="hero-btn2" data-i18n="read_story">Read Story</a>
           </div>
         </div>
@@ -422,15 +446,6 @@ footer a:hover{color:var(--white)}
           <video id="hero-video" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
           <iframe id="hero-video-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
         </div>
-      </div>
-    </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-video-wrap" id="hero-video-wrap">
-          <video id="hero-video" class="hls-video" muted autoplay playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
-          <iframe id="hero-video-fallback" src="https://www.youtube.com/embed/Bfy1HmAC6i8?autoplay=1&mute=1&loop=1&playlist=Bfy1HmAC6i8" allow="autoplay; encrypted-media" allowfullscreen style="display:none"></iframe>
-        </div>
-        
       </div>
     </div>
   </div>
@@ -514,41 +529,51 @@ footer a:hover{color:var(--white)}
 </div>
 
 <!-- ===== PLAY OVERLAY ===== -->
-<div class="overlay-page" id="overlay-play"><div class="grain-overlay"><div class="grain"></div></div>
-  <div class="overlay-header">
-    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('play')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
-    <div class="play-header-actions">
+<div class="overlay-page play-overlay" id="overlay-play">
+  <div class="play-header">
+    <div class="play-header-left">
+      <button class="overlay-back-btn" onclick="closeOverlay('play')" data-i18n="back">← Back</button>
+      <span class="play-brand">SNO <span style="font-weight:300">PLAY</span></span>
+    </div>
+    <div class="play-header-center">
+      <div class="play-search-wrap">
+        <span class="play-search-icon">⌕</span>
+        <input type="text" class="play-search" id="play-search" placeholder="Search videos..." oninput="searchPlay(this.value)">
+        <button class="play-search-clear" onclick="clearPlaySearch()">×</button>
+      </div>
+    </div>
+    <div class="play-header-right">
       <div class="play-user-badge" id="play-user-badge" style="display:none;cursor:pointer" onclick="closeOverlay('play');openProfile()"></div>
-      <button class="btn btn-primary btn-sm" id="play-sub-btn" onclick="openSubscribePopup()" data-i18n="play_subscribe">Subscribe</button>
+      <button class="btn btn-primary btn-sm play-sub-btn" onclick="alert('Coming soon!')" data-i18n="play_subscribe">Subscribe</button>
     </div>
   </div>
   <div class="overlay-content" style="padding:0">
-    <!-- Netflix-style featured hero -->
+    <!-- SNO Play banner hero -->
     <div class="play-hero" id="play-hero">
       <div class="play-hero-bg" id="play-hero-bg"></div>
       <div class="play-hero-vignette"></div>
       <div class="play-hero-content">
-        <div class="sno-player play-hero-player" id="sno-player" style="width:45%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;position:relative">
+        <div class="sno-player play-hero-player" id="sno-player" style="width:45%;aspect-ratio:16/9;overflow:hidden;position:relative">
           <video id="play-feat-video" class="sno-player-video" playsinline style="width:100%;display:block;aspect-ratio:16/9;background:#000"></video>
           <img class="sno-player-logo" src="SNOTRNSPRNTLOGO.png" alt="SNO">
           <div class="sno-player-controls" id="sno-player-controls">
-            <button class="sno-player-btn" id="sno-play-btn" onclick="togglePlayPlayer()">▶</button>
+            <button class="sno-player-btn" id="sno-play-btn" onclick="togglePlayPlayer()">►</button>
             <div class="sno-player-progress-wrap" onclick="seekPlayer(event)">
               <div class="sno-player-progress" id="sno-player-progress"><div class="sno-player-fill" id="sno-player-fill"></div></div>
             </div>
             <span class="sno-player-time" id="sno-player-time">0:00 / 0:00</span>
-            <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">🔊</button>
+            <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">♪</button>
             <input type="range" class="sno-player-vol-slider" id="sno-vol-slider" min="0" max="1" step="0.05" value="1" oninput="setVolumePlayer(this.value)">
           </div>
         </div>
         <div class="play-hero-info">
-          <span class="label-sm play-feat-tag" id="play-feat-tag">SNO Original</span>
+          <span class="play-feat-tag" id="play-feat-tag">SNO Original</span>
           <h1 class="h-xl" id="play-feat-title">The Signal</h1>
           <p id="play-feat-desc">Award-winning documentary series returns.</p>
         </div>
       </div>
     </div>
-    <!-- Netflix-style category rows -->
+    <!-- SNO Play category rows -->
     <div class="play-rows" id="play-rows"></div>
   </div>
 </div>
@@ -610,8 +635,8 @@ footer a:hover{color:var(--white)}
           </div>
         </div>
         <div class="article-actions">
-          <button class="btn-like" id="detail-like-btn" onclick="toggleLike()"><span class="like-icon">♡</span> <span id="like-count">0</span></button>
-          <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">🔊</span> <span id="listen-text" data-i18n="listen">Listen</span></button>
+          <button class="btn-like" id="detail-like-btn" onclick="toggleLike()"><span class="like-icon">♥</span> <span id="like-count">0</span></button>
+          <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">♪</span> <span id="listen-text" data-i18n="listen">Listen</span></button>
           <button class="btn-share" onclick="openSharePopup()">↗ <span data-i18n="share">Share</span></button>
         </div>
       </div>
@@ -628,10 +653,10 @@ footer a:hover{color:var(--white)}
 <div class="share-popup" id="share-popup">
   <h4>Share this story</h4>
   <div class="share-grid">
-    <a class="share-option" id="share-twitter" href="#" target="_blank"><span class="share-icon">𝕏</span>Twitter</a>
+    <a class="share-option" id="share-twitter" href="#" target="_blank"><span class="share-icon">X</span>Twitter</a>
     <a class="share-option" id="share-facebook" href="#" target="_blank"><span class="share-icon">f</span>Facebook</a>
-    <a class="share-option" id="share-whatsapp" href="#" target="_blank"><span class="share-icon">💬</span>WhatsApp</a>
-    <a class="share-option" id="share-copy" href="#" onclick="copyShareLink();return false"><span class="share-icon">🔗</span>Copy Link</a>
+    <a class="share-option" id="share-whatsapp" href="#" target="_blank"><span class="share-icon">☁</span>WhatsApp</a>
+    <a class="share-option" id="share-copy" href="#" onclick="copyShareLink();return false"><span class="share-icon">⊞</span>Copy Link</a>
   </div>
   <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:12px" onclick="closeSharePopup()">Cancel</button>
 </div>
@@ -644,7 +669,7 @@ footer a:hover{color:var(--white)}
     <div class="listen-control-row"><label>Speed</label><input type="range" class="listen-slider" id="listen-rate" min="0.5" max="2" step="0.1" value="1"><span class="listen-val" id="listen-rate-val">1x</span></div>
     <div class="listen-control-row"><label>Pitch</label><input type="range" class="listen-slider" id="listen-pitch" min="0.5" max="2" step="0.1" value="1"><span class="listen-val" id="listen-pitch-val">1x</span></div>
   </div>
-  <button class="btn btn-primary listen-play-btn" id="listen-play-btn" onclick="listenPlay()">▶ Play</button>
+  <button class="btn btn-primary listen-play-btn" id="listen-play-btn" onclick="listenPlay()">► Play</button>
   <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeListenPopup()">Cancel</button>
 </div>
 
@@ -674,8 +699,8 @@ footer a:hover{color:var(--white)}
       <span id="pfp-role" style="font-size:10px;font-weight:600;text-transform:uppercase;background:rgba(0,212,84,.1);padding:4px 12px;border-radius:6px;color:var(--accent)">Member</span>
     </div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-      <button id="pfp-admin-link" class="btn btn-primary" style="width:100%;justify-content:center;display:none" onclick="closeOverlay('profile');openOverlay('admin')">⚙ Admin Panel</button>
-      <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="alert('Coming soon')">📊 My Activity</button>
+      <button id="pfp-admin-link" class="btn btn-primary" style="width:100%;justify-content:center;display:none" onclick="closeOverlay('profile');openOverlay('admin')">≡ Admin Panel</button>
+      <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="alert('Coming soon')">☰ My Activity</button>
       <button id="pfp-signout" class="btn btn-outline" style="width:100%;justify-content:center;border-color:rgba(255,68,68,.3);color:#ff6666">Sign Out</button>
     </div>
   </div>
@@ -722,7 +747,7 @@ footer a:hover{color:var(--white)}
       <div><h4 data-i18n="footer_company">Company</h4><a href="#" data-i18n="about">About</a><a href="#" data-i18n="careers">Careers</a><a href="#" data-i18n="contact">Contact</a><a href="#" data-i18n="advertise">Advertise</a></div>
       <div><h4 data-i18n="footer_support">Support</h4><a href="#" data-i18n="help">Help Center</a><a href="#" data-i18n="access">Accessibility</a><a href="#" data-i18n="privacy">Privacy Policy</a><a href="#" data-i18n="terms">Terms of Service</a></div>
     </div>
-    <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">𝕏</a><a href="#">◻</a><a href="#">▶</a></div></div>
+    <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">X</a><a href="#">▢</a><a href="#">►</a></div></div>
   </div>
 </footer>
 
@@ -763,12 +788,12 @@ try {
 
 const STATIC = {
   news: [
-    {icon:'🌍',cat:'Global',time:'2h ago',writer:'Sarah Chen',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',isi:'World leaders have reached a historic agreement at the Global Climate Summit, committing to achieve net-zero carbon emissions by 2050. The landmark pact, signed by representatives from over 190 nations, represents the most ambitious coordinated effort to combat climate change in history.\n\n"This is not just an agreement — it is a pledge to future generations," said the Secretary-General during the closing ceremony. "We have crossed a threshold today that will define the course of human civilization."\n\nThe agreement includes binding commitments to reduce greenhouse gas emissions by 50% by 2030, a $100 billion annual fund for developing nations, and a framework for carbon trading that economists believe could transform global markets.\n\nEnvironmental groups have cautiously welcomed the deal, though many emphasize that the true test lies in implementation. "The words on paper are powerful, but action is what matters now," said the director of the Global Climate Institute.\n\nStock markets reacted positively to the news, with clean energy shares surging across major exchanges. Analysts predict a wave of investment in renewable infrastructure over the coming decade.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1566386228769-24560e9a8b0f?w=1200&h=600&fit=crop'},
-    {icon:'🤖',cat:'Technology',time:'5h ago',writer:'Alex Rivera',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',isi:'In a landmark development for artificial intelligence, researchers at the Institute for Advanced Computing have unveiled a new AI model that surpasses human performance across a broad range of medical diagnostic tasks.\n\nThe system, named Medeus-2, achieved a 99.7% accuracy rate in identifying conditions from medical imaging — outperforming the average specialist by a significant margin. The model was trained on over 10 million anonymized medical scans from hospitals worldwide.\n\n"We are witnessing a paradigm shift in healthcare," said Dr. James Park, lead researcher on the project. "This technology doesn\'t replace doctors — it empowers them to make faster, more accurate decisions."\n\nThe breakthrough has already attracted attention from major healthcare providers, with several hospitals planning pilot programs later this year. Critics, however, have raised concerns about data privacy and the potential for algorithmic bias in under-represented populations.\n\nRegulatory bodies are now racing to establish frameworks for the safe deployment of such systems, balancing innovation with patient safety.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop'},
-    {icon:'⚽',cat:'Sports',time:'8h ago',writer:'Maria Torres',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',isi:'The championship final has broken all previous viewership records, with an estimated 2.3 billion people tuning in across broadcast and streaming platforms worldwide. The match, which went into extra time before a dramatic penalty shootout, captivated audiences across every continent.\n\nThe previous record of 1.8 billion viewers had stood since 2018. The surge in viewership is attributed to the growing accessibility of digital streaming platforms, particularly in emerging markets where mobile viewing has exploded.\n\n"This is the most-watched event in human history," said the league commissioner in a post-match statement. "It demonstrates the unifying power of sport."\n\nSocial media platforms reported record engagement, with over 500 million posts related to the match during the 24-hour period surrounding the game. The halftime show alone drew more viewers than the previous year\'s championship game.\n\nAnalysts expect the economic impact to be substantial, with host cities reporting billions in tourism revenue and global brands seeing record returns on their sponsorship investments.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=1200&h=600&fit=crop'},
-    {icon:'📈',cat:'Economy',time:'12h ago',writer:'David Kim',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',isi:'Global financial markets surged on Monday following the announcement of a comprehensive trade agreement between the world\'s largest economies. The landmark deal, which has been in negotiation for over three years, addresses tariffs, intellectual property protection, and supply chain cooperation.\n\nThe Dow Jones Industrial Average rose 3.2%, while European and Asian markets posted similar gains. The agreement is expected to unlock an estimated $2 trillion in additional trade volume over the next five years.\n\n"We are entering a new era of economic cooperation," said the chief economist at Global Financial Analytics. "This deal provides the certainty that markets have been craving since the onset of trade tensions."\n\nSectors expected to benefit most include manufacturing, technology, and agriculture. Currency markets also responded positively, with emerging market currencies strengthening against the dollar.\n\nHowever, some analysts caution that implementation challenges remain, and the true impact will only become clear in the months ahead.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=600&fit=crop'},
-    {icon:'🌊',cat:'Weather',time:'14h ago',writer:'Lisa Park',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions along the coastline.',isi:'Meteorological agencies have issued a severe weather warning as a powerful storm system intensifies over the Atlantic Ocean, threatening coastal communities across a wide swath of the eastern seaboard.\n\nThe storm, now classified as a Category 3 system, is expected to make landfall within 48 hours, bringing sustained winds of up to 120 miles per hour and storm surges of 12 to 15 feet. Evacuation orders have been issued for low-lying areas affecting an estimated 3 million residents.\n\n"This is a life-threatening situation," said the director of the National Weather Service. "Residents in evacuation zones should leave immediately. Do not wait."\n\nEmergency response teams have been mobilized, with shelters opening across the region. The military has been placed on standby to assist with rescue and recovery operations.\n\nThe storm is expected to cause significant infrastructure damage, with power outages potentially lasting weeks in the hardest-hit areas. Utility companies are pre-positioning crews and equipment for rapid response.\n\nClimate scientists note that warming ocean temperatures have contributed to the rapid intensification of storms in recent years, making such events more frequent and severe.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)',gambar:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=1200&h=600&fit=crop'},
-    {icon:'🎬',cat:'Culture',time:'1d ago',writer:'Emma Blackwood',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors at the annual ceremony.',isi:'The 48th International Film Festival concluded with a stunning ceremony that saw emerging directors take the top honors, marking a generational shift in the world of cinema. The Palme d\'Or was awarded to an unprecedented debut feature from a 27-year-old director from Senegal.\n\n"Storytelling is the bridge between cultures," said the winner in an emotional acceptance speech. "This film is dedicated to everyone who dares to dream beyond their circumstances."\n\nThe festival, which screened over 200 films from 60 countries, was notable for its emphasis on diverse voices and innovative storytelling techniques. Several films employed groundbreaking virtual production technology that industry insiders believe will reshape filmmaking.\n\nDistributors were active throughout the festival, with several high-profile acquisition deals closing during the event. Streaming platforms competed aggressively for international titles, reflecting the growing global appetite for diverse content.\n\nThe festival\'s jury president praised the selection for its "fearless exploration of the human condition" and noted that this year\'s entries reflected a new wave of cinematic expression.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&h=600&fit=crop'}
+    {icon:'G',cat:'Global',time:'2h ago',writer:'Sarah Chen',title:'Climate Summit Reaches Landmark Agreement',desc:'Over 190 nations sign historic pact committing to net-zero targets by 2050.',isi:'World leaders have reached a historic agreement at the Global Climate Summit, committing to achieve net-zero carbon emissions by 2050. The landmark pact, signed by representatives from over 190 nations, represents the most ambitious coordinated effort to combat climate change in history.\n\n"This is not just an agreement — it is a pledge to future generations," said the Secretary-General during the closing ceremony. "We have crossed a threshold today that will define the course of human civilization."\n\nThe agreement includes binding commitments to reduce greenhouse gas emissions by 50% by 2030, a $100 billion annual fund for developing nations, and a framework for carbon trading that economists believe could transform global markets.\n\nEnvironmental groups have cautiously welcomed the deal, though many emphasize that the true test lies in implementation. "The words on paper are powerful, but action is what matters now," said the director of the Global Climate Institute.\n\nStock markets reacted positively to the news, with clean energy shares surging across major exchanges. Analysts predict a wave of investment in renewable infrastructure over the coming decade.',color:'linear-gradient(135deg,#0d5e2e,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1566386228769-24560e9a8b0f?w=1200&h=600&fit=crop'},
+    {icon:'T',cat:'Technology',time:'5h ago',writer:'Alex Rivera',title:'AI Breakthrough: New Model Surpasses Human Performance',desc:'Researchers achieve unprecedented accuracy in medical diagnosis.',isi:'In a landmark development for artificial intelligence, researchers at the Institute for Advanced Computing have unveiled a new AI model that surpasses human performance across a broad range of medical diagnostic tasks.\n\nThe system, named Medeus-2, achieved a 99.7% accuracy rate in identifying conditions from medical imaging — outperforming the average specialist by a significant margin. The model was trained on over 10 million anonymized medical scans from hospitals worldwide.\n\n"We are witnessing a paradigm shift in healthcare," said Dr. James Park, lead researcher on the project. "This technology doesn\'t replace doctors — it empowers them to make faster, more accurate decisions."\n\nThe breakthrough has already attracted attention from major healthcare providers, with several hospitals planning pilot programs later this year. Critics, however, have raised concerns about data privacy and the potential for algorithmic bias in under-represented populations.\n\nRegulatory bodies are now racing to establish frameworks for the safe deployment of such systems, balancing innovation with patient safety.',color:'linear-gradient(135deg,#1a1a3a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop'},
+    {icon:'S',cat:'Sports',time:'8h ago',writer:'Maria Torres',title:'Championship Final Draws Record Global Audience',desc:'Most-watched sporting event in history captivates over 2 billion viewers.',isi:'The championship final has broken all previous viewership records, with an estimated 2.3 billion people tuning in across broadcast and streaming platforms worldwide. The match, which went into extra time before a dramatic penalty shootout, captivated audiences across every continent.\n\nThe previous record of 1.8 billion viewers had stood since 2018. The surge in viewership is attributed to the growing accessibility of digital streaming platforms, particularly in emerging markets where mobile viewing has exploded.\n\n"This is the most-watched event in human history," said the league commissioner in a post-match statement. "It demonstrates the unifying power of sport."\n\nSocial media platforms reported record engagement, with over 500 million posts related to the match during the 24-hour period surrounding the game. The halftime show alone drew more viewers than the previous year\'s championship game.\n\nAnalysts expect the economic impact to be substantial, with host cities reporting billions in tourism revenue and global brands seeing record returns on their sponsorship investments.',color:'linear-gradient(135deg,#2a1a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1461896836934-bd45ba8fcf9b?w=1200&h=600&fit=crop'},
+    {icon:'E',cat:'Economy',time:'12h ago',writer:'David Kim',title:'Markets Rally as Trade Agreement Boosts Confidence',desc:'Global indices surge following comprehensive trade framework.',isi:'Global financial markets surged on Monday following the announcement of a comprehensive trade agreement between the world\'s largest economies. The landmark deal, which has been in negotiation for over three years, addresses tariffs, intellectual property protection, and supply chain cooperation.\n\nThe Dow Jones Industrial Average rose 3.2%, while European and Asian markets posted similar gains. The agreement is expected to unlock an estimated $2 trillion in additional trade volume over the next five years.\n\n"We are entering a new era of economic cooperation," said the chief economist at Global Financial Analytics. "This deal provides the certainty that markets have been craving since the onset of trade tensions."\n\nSectors expected to benefit most include manufacturing, technology, and agriculture. Currency markets also responded positively, with emerging market currencies strengthening against the dollar.\n\nHowever, some analysts caution that implementation challenges remain, and the true impact will only become clear in the months ahead.',color:'linear-gradient(135deg,#0a2a1a,#1a3a2a)',gambar:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=600&fit=crop'},
+    {icon:'W',cat:'Weather',time:'14h ago',writer:'Lisa Park',title:'Severe Weather Warning for Coastal Communities',desc:'Storm system expected to impact millions along the coastline.',isi:'Meteorological agencies have issued a severe weather warning as a powerful storm system intensifies over the Atlantic Ocean, threatening coastal communities across a wide swath of the eastern seaboard.\n\nThe storm, now classified as a Category 3 system, is expected to make landfall within 48 hours, bringing sustained winds of up to 120 miles per hour and storm surges of 12 to 15 feet. Evacuation orders have been issued for low-lying areas affecting an estimated 3 million residents.\n\n"This is a life-threatening situation," said the director of the National Weather Service. "Residents in evacuation zones should leave immediately. Do not wait."\n\nEmergency response teams have been mobilized, with shelters opening across the region. The military has been placed on standby to assist with rescue and recovery operations.\n\nThe storm is expected to cause significant infrastructure damage, with power outages potentially lasting weeks in the hardest-hit areas. Utility companies are pre-positioning crews and equipment for rapid response.\n\nClimate scientists note that warming ocean temperatures have contributed to the rapid intensification of storms in recent years, making such events more frequent and severe.',color:'linear-gradient(135deg,#1a2a1a,#0a1f12)',gambar:'https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=1200&h=600&fit=crop'},
+    {icon:'C',cat:'Culture',time:'1d ago',writer:'Emma Blackwood',title:'International Film Festival Awards Announced',desc:'Groundbreaking films from emerging directors take top honors at the annual ceremony.',isi:'The 48th International Film Festival concluded with a stunning ceremony that saw emerging directors take the top honors, marking a generational shift in the world of cinema. The Palme d\'Or was awarded to an unprecedented debut feature from a 27-year-old director from Senegal.\n\n"Storytelling is the bridge between cultures," said the winner in an emotional acceptance speech. "This film is dedicated to everyone who dares to dream beyond their circumstances."\n\nThe festival, which screened over 200 films from 60 countries, was notable for its emphasis on diverse voices and innovative storytelling techniques. Several films employed groundbreaking virtual production technology that industry insiders believe will reshape filmmaking.\n\nDistributors were active throughout the festival, with several high-profile acquisition deals closing during the event. Streaming platforms competed aggressively for international titles, reflecting the growing global appetite for diverse content.\n\nThe festival\'s jury president praised the selection for its "fearless exploration of the human condition" and noted that this year\'s entries reflected a new wave of cinematic expression.',color:'linear-gradient(135deg,#2a1a2a,#0d5e2e)',gambar:'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&h=600&fit=crop'}
   ],
   schedule: [
     {time:'06:00',title:'Morning Briefing',desc:'Overnight news recap',tag:'Live'},
@@ -785,12 +810,12 @@ const STATIC = {
     {vid:'9bZkp7q19f0',title:'Weather Watch: Storm Tracking',desc:'Latest satellite imagery.',dur:'10:15',time:'Today 8PM'}
   ],
   play: [
-    {icon:'🎬',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a',url:'',vid:'Bfy1HmAC6i8',gambar:'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&h=600&fit=crop'},
-    {icon:'🌍',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a',url:'',vid:'dQw4w9WgXcQ',gambar:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop'},
-    {icon:'🔬',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'',color:'#1a1a3a',url:'',vid:'jNQXAC9IVRw',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop'},
-    {icon:'🎵',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=600&fit=crop'},
-    {icon:'📷',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&h=600&fit=crop'},
-    {icon:'🌌',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&h=600&fit=crop'}
+    {icon:'F',title:'The Signal — S2 E1',desc:'Award-winning docu-series premiere.',tag:'New',color:'#1a1a2a',url:'',vid:'Bfy1HmAC6i8',gambar:'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&h=600&fit=crop',category:'originals'},
+    {icon:'G',title:'Borders: A World Divided',desc:'Geopolitical lines defining our world.',tag:'Popular',color:'#0a2a1a',url:'',vid:'dQw4w9WgXcQ',gambar:'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop',category:'originals'},
+    {icon:'I',title:'Beyond the Code',desc:'The minds shaping AI\'s future.',tag:'Trending',color:'#1a1a3a',url:'',vid:'jNQXAC9IVRw',gambar:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop',category:'originals'},
+    {icon:'M',title:'Echoes: Music & Memory',desc:'How sound shapes identity.',tag:'New',color:'#2a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=600&fit=crop',category:'originals'},
+    {icon:'P',title:'Frames of War',desc:'Unseen conflict zone footage.',tag:'Popular',color:'#2a1a1a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=1200&h=600&fit=crop',category:'originals'},
+    {icon:'N',title:'Nightfall',desc:'Journey through dark skies.',tag:'',color:'#0a1a2a',url:'',vid:'',gambar:'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&h=600&fit=crop',category:'originals'}
   ],
   ticker:['Global summit reaches historic agreement','Tech giant unveils AI platform','Championship finals set record','Storm warning for coastal regions','Markets surge on trade agreement'],
   hero:{}
@@ -924,9 +949,9 @@ function navigate(page){
 
 // ===== LANG =====
 const LANG = {
-  en:{nav_home:'Home',nav_news:'News',nav_broadcast:'Broadcast',nav_play:'SNO Play',nav_schedule:'Schedule',nav_admin:'Admin',auth_signin:'Sign In',auth_profile:'Profile',auth_signout:'Sign Out',hero_label:'LIVE',hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'▶ Watch Now',hero_btn2:'Read Story',slider_title:'Latest News',section_live:'Live Broadcast',section_schedule:'TV Schedule',section_upcoming:'Upcoming',section_news:'Top Stories',section_play:'Exclusive Originals',live_upnext:'Up Next',live_now:'Live Now',play_subscribe:'Subscribe',play_originals:'Exclusive Originals',schedule_title:'Full Schedule',news_count:'articles',footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',footer_channels:'Channels',footer_company:'Company',footer_support:'Support',about:'About',careers:'Careers',contact:'Contact',advertise:'Advertise',help:'Help Center',access:'Accessibility',privacy:'Privacy Policy',terms:'Terms of Service',listen:'Listen',share:'Share',like:'Like',recommended:'Recommended Stories',back_news:'← Back to News',back:'← Back',starting_soon:'Starting Soon',starts_at:'Starts at',now_playing:'NOW',demo_title:'Under Demo',demo_desc:'This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.',demo_gotit:'Got it',view_all:'View All',watch_now:'Watch Now',read_story:'Read Story'},
-  id:{nav_home:'Beranda',nav_news:'Berita',nav_broadcast:'Siaran',nav_play:'SNO Play',nav_schedule:'Jadwal',nav_admin:'Admin',auth_signin:'Masuk',auth_profile:'Profil',auth_signout:'Keluar',hero_label:'LANGSUNG',hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'▶ Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru',section_live:'Siaran Langsung',section_schedule:'Jadwal TV',section_upcoming:'Akan Datang',section_news:'Berita Utama',section_play:'Original Eksklusif',live_upnext:'Selanjutnya',live_now:'Siaran Langsung',play_subscribe:'Berlangganan',play_originals:'Original Eksklusif',schedule_title:'Jadwal Lengkap',news_count:'artikel',footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',footer_channels:'Saluran',footer_company:'Perusahaan',footer_support:'Dukungan',about:'Tentang',careers:'Karir',contact:'Kontak',advertise:'Iklan',help:'Pusat Bantuan',access:'Aksesibilitas',privacy:'Kebijakan Privasi',terms:'Ketentuan Layanan',listen:'Dengarkan',share:'Bagikan',like:'Suka',recommended:'Rekomendasi',back_news:'← Kembali ke Berita',back:'← Kembali',starting_soon:'Segera Mulai',starts_at:'Mulai',now_playing:'SEKARANG',demo_title:'Demo',demo_desc:'Situs ini dalam versi demo. Beberapa fitur mungkin belum berfungsi penuh.',demo_gotit:'Mengerti',view_all:'Lihat Semua',watch_now:'Tonton Sekarang',read_story:'Baca Cerita'},
-  nl:{nav_home:'Home',nav_news:'Nieuws',nav_broadcast:'Uitzending',nav_play:'SNO Play',nav_schedule:'Schema',nav_admin:'Admin',auth_signin:'Inloggen',auth_profile:'Profiel',auth_signout:'Uitloggen',hero_label:'LIVE',hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'▶ Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws',section_live:'Live Uitzending',section_schedule:'TV Schema',section_upcoming:'Binnenkort',section_news:'Top Verhalen',section_play:'Exclusieve Originals',live_upnext:'Volgende',live_now:'Live Nu',play_subscribe:'Abonneren',play_originals:'Exclusieve Originals',schedule_title:'Volledig Schema',news_count:'artikelen',footer_desc:'Global News Network. Betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',footer_channels:'Kanalen',footer_company:'Bedrijf',footer_support:'Ondersteuning',about:'Over ons',careers:'Carrières',contact:'Contact',advertise:'Adverteren',help:'Helpcentrum',access:'Toegankelijkheid',privacy:'Privacybeleid',terms:'Servicevoorwaarden',listen:'Luister',share:'Delen',like:'Vind ik leuk',recommended:'Aanbevolen',back_news:'← Terug naar Nieuws',back:'← Terug',starting_soon:'Binnenkort',starts_at:'Begint om',now_playing:'NU',demo_title:'Demo',demo_desc:'Deze site is een demoversie. Sommige functies werken mogelijk nog niet volledig.',demo_gotit:'Begrepen',view_all:'Alles Bekijken',watch_now:'Kijk Nu',read_story:'Lees Verhaal'}
+  en:{nav_home:'Home',nav_news:'News',nav_broadcast:'Broadcast',nav_play:'SNO Play',nav_schedule:'Schedule',nav_admin:'Admin',auth_signin:'Sign In',auth_profile:'Profile',auth_signout:'Sign Out',hero_label:'LIVE',hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'► Watch Now',hero_btn2:'Read Story',slider_title:'Latest News',section_live:'Live Broadcast',section_schedule:'TV Schedule',section_upcoming:'Upcoming',section_news:'Top Stories',section_play:'Exclusive Originals',live_upnext:'Up Next',live_now:'Live Now',play_subscribe:'Subscribe',play_originals:'Exclusive Originals',schedule_title:'Full Schedule',news_count:'articles',footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',footer_channels:'Channels',footer_company:'Company',footer_support:'Support',about:'About',careers:'Careers',contact:'Contact',advertise:'Advertise',help:'Help Center',access:'Accessibility',privacy:'Privacy Policy',terms:'Terms of Service',listen:'Listen',share:'Share',like:'Like',recommended:'Recommended Stories',back_news:'← Back to News',back:'← Back',starting_soon:'Starting Soon',starts_at:'Starts at',now_playing:'NOW',demo_title:'Under Demo',demo_desc:'This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.',demo_gotit:'Got it',view_all:'View All',watch_now:'Watch Now',read_story:'Read Story'},
+  id:{nav_home:'Beranda',nav_news:'Berita',nav_broadcast:'Siaran',nav_play:'SNO Play',nav_schedule:'Jadwal',nav_admin:'Admin',auth_signin:'Masuk',auth_profile:'Profil',auth_signout:'Keluar',hero_label:'LANGSUNG',hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'► Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru',section_live:'Siaran Langsung',section_schedule:'Jadwal TV',section_upcoming:'Akan Datang',section_news:'Berita Utama',section_play:'Original Eksklusif',live_upnext:'Selanjutnya',live_now:'Siaran Langsung',play_subscribe:'Berlangganan',play_originals:'Original Eksklusif',schedule_title:'Jadwal Lengkap',news_count:'artikel',footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',footer_channels:'Saluran',footer_company:'Perusahaan',footer_support:'Dukungan',about:'Tentang',careers:'Karir',contact:'Kontak',advertise:'Iklan',help:'Pusat Bantuan',access:'Aksesibilitas',privacy:'Kebijakan Privasi',terms:'Ketentuan Layanan',listen:'Dengarkan',share:'Bagikan',like:'Suka',recommended:'Rekomendasi',back_news:'← Kembali ke Berita',back:'← Kembali',starting_soon:'Segera Mulai',starts_at:'Mulai',now_playing:'SEKARANG',demo_title:'Demo',demo_desc:'Situs ini dalam versi demo. Beberapa fitur mungkin belum berfungsi penuh.',demo_gotit:'Mengerti',view_all:'Lihat Semua',watch_now:'Tonton Sekarang',read_story:'Baca Cerita'},
+  nl:{nav_home:'Home',nav_news:'Nieuws',nav_broadcast:'Uitzending',nav_play:'SNO Play',nav_schedule:'Schema',nav_admin:'Admin',auth_signin:'Inloggen',auth_profile:'Profiel',auth_signout:'Uitloggen',hero_label:'LIVE',hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'► Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws',section_live:'Live Uitzending',section_schedule:'TV Schema',section_upcoming:'Binnenkort',section_news:'Top Verhalen',section_play:'Exclusieve Originals',live_upnext:'Volgende',live_now:'Live Nu',play_subscribe:'Abonneren',play_originals:'Exclusieve Originals',schedule_title:'Volledig Schema',news_count:'artikelen',footer_desc:'Global News Network. Betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',footer_channels:'Kanalen',footer_company:'Bedrijf',footer_support:'Ondersteuning',about:'Over ons',careers:'Carrières',contact:'Contact',advertise:'Adverteren',help:'Helpcentrum',access:'Toegankelijkheid',privacy:'Privacybeleid',terms:'Servicevoorwaarden',listen:'Luister',share:'Delen',like:'Vind ik leuk',recommended:'Aanbevolen',back_news:'← Terug naar Nieuws',back:'← Terug',starting_soon:'Binnenkort',starts_at:'Begint om',now_playing:'NU',demo_title:'Demo',demo_desc:'Deze site is een demoversie. Sommige functies werken mogelijk nog niet volledig.',demo_gotit:'Begrepen',view_all:'Alles Bekijken',watch_now:'Kijk Nu',read_story:'Lees Verhaal'}
 };
 let currentLang=localStorage.getItem('sno_lang')||'en';
 function t(k){let v=LANG[currentLang]?.[k];return v!==undefined?v:(LANG.en[k]||k)}
@@ -975,7 +1000,7 @@ function renderGrid(gridId, data, type){
       el.onclick=()=>{openScheduleDetail(item)};
     } else if(type==='play'){
       el=document.createElement('div');el.className='news-card';
-      let thumbHtml=item.vid?'<img src="https://i.ytimg.com/vi/'+item.vid+'/hqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" alt=""><div class="play-badge">▶</div>':item.url?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent)">▶</div>':'<div class="icon">'+item.icon+'</div>';
+      let thumbHtml=item.vid?'<img src="https://i.ytimg.com/vi/'+item.vid+'/hqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" alt=""><div class="play-badge">►</div>':item.url?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent)">►</div>':'<div class="icon">'+item.icon+'</div>';
       let labelExtra = item.url?'<span class="label-sm" style="margin-left:6px;color:var(--accent)">Mux</span>':'';
       el.innerHTML='<div class="news-card-img" style="background:'+(item.color||'var(--green3)')+'">'+thumbHtml+'</div><div class="news-card-body"><h3>'+item.title+'</h3><p>'+(item.desc||'')+'</p>'+(item.tag?'<span class="label-sm">'+item.tag+'</span>':'')+labelExtra+'</div>';
       el.onclick=()=>{openPlayDetail(item)};
@@ -1120,7 +1145,7 @@ function openListenPopup(){
   document.getElementById('listen-rate-val').textContent = '1x';
   document.getElementById('listen-pitch').value = '1';
   document.getElementById('listen-pitch-val').textContent = '1x';
-  document.getElementById('listen-play-btn').textContent = '▶ Play';
+  document.getElementById('listen-play-btn').textContent = '► Play';
 }
 function closeListenPopup(){
   document.getElementById('listen-popup')?.classList.remove('open');
@@ -1253,8 +1278,8 @@ function initPlayPlayer(videoEl, src){
 }
 function togglePlayPlayer(){
   if(!playPlayer) return;
-  if(playPlayer.paused){playPlayer.play();document.getElementById('sno-play-btn').textContent='⏸'}
-  else{playPlayer.pause();document.getElementById('sno-play-btn').textContent='▶'}
+  if(playPlayer.paused){playPlayer.play();document.getElementById('sno-play-btn').textContent='❚❚'}
+  else{playPlayer.pause();document.getElementById('sno-play-btn').textContent='►'}
 }
 function seekPlayer(e){
   let wrap = document.getElementById('sno-player-progress');
@@ -1266,12 +1291,12 @@ function seekPlayer(e){
 function toggleMutePlayer(){
   if(!playPlayer) return;
   playPlayer.muted = !playPlayer.muted;
-  document.getElementById('sno-vol-btn').textContent = playPlayer.muted?'🔇':'🔊';
+  document.getElementById('sno-vol-btn').textContent = playPlayer.muted?'♫':'♪';
 }
 function setVolumePlayer(v){
   if(!playPlayer) return;
   playPlayer.volume = parseFloat(v);
-  document.getElementById('sno-vol-btn').textContent = parseFloat(v)>0?'🔊':'🔇';
+  document.getElementById('sno-vol-btn').textContent = parseFloat(v)>0?'♪':'♫';
 }
 function formatTime(s){
   if(!s||isNaN(s)) return '0:00';
@@ -1285,7 +1310,7 @@ function updatePlayerUI(){
   let time = document.getElementById('sno-player-time');
   if(fill && playPlayer.duration) fill.style.width = (playPlayer.currentTime/playPlayer.duration*100)+'%';
   if(time) time.textContent = formatTime(playPlayer.currentTime)+' / '+formatTime(playPlayer.duration);
-  document.getElementById('sno-play-btn').textContent = playPlayer.paused?'▶':'⏸';
+  document.getElementById('sno-play-btn').textContent = playPlayer.paused?'►':'❚❚';
 }
 setInterval(updatePlayerUI, 250);
 
@@ -1308,14 +1333,15 @@ function openPlayDetail(item){
 
 // ===== PLAY ROWS (Netflix-style) =====
 function renderPlayRows(data){
+  _playData = data;
   let rows = document.getElementById('play-rows');
   if(!rows) return;
   let items = data && data.length ? data : STATIC.play;
   if(!items || !items.length){rows.innerHTML='<p style="color:var(--gray);padding:20px">No content yet.</p>';return}
   let categories = [
-    {title:'Exclusive Originals',filter:()=>true},
+    {title:'Exclusive Originals',filter:(item)=>true},
     {title:'Trending Now',filter:(i)=>i.tag&&i.tag.match(/trending|hot|popular/i)},
-    {title:'Recently Added',filter:(i,i2,a)=>a.slice(-4).reverse()}
+    {title:'Recently Added',filter:(i,idx,a)=>idx>=a.length-4}
   ];
   // Fill featured hero with first item (if none selected)
   let first = items[0];
@@ -1333,7 +1359,7 @@ function renderPlayRows(data){
   }
   rows.innerHTML = '';
   categories.forEach(cat=>{
-    let catItems = cat.filter(items);
+    let catItems = items.filter(cat.filter);
     if(!catItems.length) return;
     let row = document.createElement('div');row.className='play-row';
     row.innerHTML = '<div class="play-row-header"><h3>'+cat.title+'</h3></div><div class="play-row-scroll"></div>';
@@ -1355,6 +1381,20 @@ function openSubscribePopup(){
   let emailInput = document.getElementById('sub-email');
   if(emailInput && u) emailInput.value = u.email||'';
   document.getElementById('subscribe-popup').classList.add('show');
+}
+// ===== SNO PLAY SEARCH =====
+let _playData = [];
+function searchPlay(q){
+  if(!q.trim()){renderPlayRows(_playData);return}
+  let filtered = _playData.filter(i=>(i.title||'').toLowerCase().includes(q.toLowerCase())||(i.desc||'').toLowerCase().includes(q.toLowerCase())||(i.tag||'').toLowerCase().includes(q.toLowerCase()));
+  let rows = document.getElementById('play-rows');
+  if(!rows) return;
+  if(!filtered.length){rows.innerHTML='<div class="play-no-results"><p style="font-size:32px;margin-bottom:12px">⌕</p><p>No results for "<strong>'+q+'</strong>"</p></div>';return}
+  renderPlayRows(filtered);
+}
+function clearPlaySearch(){
+  let inp = document.getElementById('play-search');
+  if(inp){inp.value='';searchPlay('')}
 }
 function closeSubscribePopup(){document.getElementById('subscribe-popup').classList.remove('show')}
 function selectPlan(el, name, price){
@@ -1544,18 +1584,22 @@ function loadAllData(){
       let unsub = fbFirestore.collection(name).onSnapshot(cb, err=>{
         console.warn('Firestore error for '+name,err);
         let localKey='sno_backup_'+name;
-        try{
-          let localData=JSON.parse(localStorage.getItem(localKey)||'[]');
-          if(localData.length){
-            if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' '+t('news_count')+' (backup)'}
-            else if(name==='schedule'){_scheduleData=localData;renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule');renderTicker();updateHeroWithSchedule()}
-            else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
-            else if(name==='play'){renderPlayRows(localData)}
-            else if(name==='upcoming'){_upcomingData=localData.length?localData[0]:null;checkBroadcastState()}
-          }
-        }catch(ex){}
-        fallbackAll();
-        if(name==='news')showToast('Firestore terblokir! Matiin adblocker atau cek Firestore Console','error');
+        let localData=[];
+        try{localData=JSON.parse(localStorage.getItem(localKey)||'[]')}catch(ex){}
+        if(localData.length){
+          if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' '+t('news_count')+' (backup)'}
+          else if(name==='schedule'){_scheduleData=localData;renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule');renderTicker();updateHeroWithSchedule()}
+          else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
+          else if(name==='play'){renderPlayRows(localData)}
+          else if(name==='upcoming'){_upcomingData=localData.length?localData[0]:null;checkBroadcastState()}
+        } else {
+          if(name==='news')fallbackNews();
+          else if(name==='schedule')fallbackSchedule();
+          else if(name==='upnext')fallbackUpnext();
+          else if(name==='play')fallbackPlay();
+          else if(name==='upcoming')fallbackUpcoming();
+        }
+        if(name==='news')showToast('Firestore blocked! Disable adblocker or check Firestore Console','error');
       });
       unsubscribers.push(unsub);
     });
@@ -1630,7 +1674,7 @@ function adminSubmit(col){
   let fields={
     news:['gambar','cat','title','desc','isi','writer','time','color'],
     schedule:['time','title','desc','tag'],
-    play:['icon','title','desc','tag','url','vid','color'],
+    play:['icon','title','desc','tag','url','vid','gambar','color'],
     upnext:['vid','title','desc','dur','time'],
     ticker:['text'],
     'settings/hero':['title1','title2','desc','mux_playback_id','video'],
@@ -1673,7 +1717,7 @@ function adminList(col){
       let d=doc.data();
       let text=d.title||d.text||d.time||'(no title)';
       let div=document.createElement('div');div.className='admin-list-item';
-      div.innerHTML='<span>'+text.substring(0,50)+'</span><button class="del-btn" onclick="adminDelete(\''+col+'\',\''+doc.id+'\')">✕</button>';
+      div.innerHTML='<span>'+text.substring(0,50)+'</span><button class="del-btn" onclick="adminDelete(\''+col+'\',\''+doc.id+'\')">×</button>';
       container.appendChild(div);
     });
   }, err=>{
@@ -1704,6 +1748,7 @@ function acceptCookies(){
   localStorage.setItem('sno_cookie_consent','1');
 }
 
+applyLang(currentLang);
 renderAdmin();
 loadAllData();
 checkBroadcastState();
