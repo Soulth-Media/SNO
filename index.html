@@ -375,7 +375,6 @@ footer a:hover{color:var(--white)}
 }
 @media(max-width:600px){
   .news-grid,.play-grid{grid-template-columns:1fr}
-  nav{gap:10px}
   nav a{font-size:9px}
   .schedule-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr;gap:24px}
@@ -385,6 +384,29 @@ footer a:hover{color:var(--white)}
   .overlay-content{padding:24px 16px}
   .modal-box{padding:28px 20px}
   .admin-card{padding:16px}
+}
+/* ===== BURGER / MOBILE NAV ===== */
+.burger-btn{display:none;background:none;border:none;color:var(--white);font-size:24px;cursor:pointer;padding:4px;line-height:1;flex-shrink:0}
+.burger-btn:hover{color:var(--accent)}
+.mobile-nav{position:fixed;top:0;right:0;width:280px;height:100%;z-index:200;background:rgba(8,8,8,.98);backdrop-filter:blur(24px);border-left:1px solid rgba(255,255,255,.04);transform:translateX(100%);transition:transform .4s cubic-bezier(.77,0,.18,1);padding:80px 24px 24px;overflow-y:auto}
+.mobile-nav.open{transform:translateX(0)}
+.mobile-nav .nav-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--white);font-size:20px;cursor:pointer;padding:4px}
+.mobile-nav .nav-close:hover{color:var(--accent)}
+.mobile-nav a{display:block;padding:12px 0;font-size:15px;color:var(--gray2);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.03);transition:color .2s}
+.mobile-nav a:hover{color:var(--accent)}
+.mobile-nav a.active{color:var(--white);font-weight:600}
+.mobile-nav .lang-toggle{display:flex;gap:6px;margin-top:20px;justify-content:center}
+.mobile-nav .lang-toggle .lang-btn{font-size:12px;padding:6px 12px}
+.mobile-nav .auth-btn{width:100%;margin-top:12px;justify-content:center}
+.mobile-nav .user-badge{justify-content:center;margin-top:12px}
+.mobile-nav-overlay{position:fixed;inset:0;z-index:199;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
+.mobile-nav-overlay.show{opacity:1;pointer-events:auto}
+@media(max-width:768px){
+  .burger-btn{display:block}
+  header nav{display:none}
+  .header-inner .lang-toggle{display:none}
+  .header-inner .auth-btn{display:none}
+  .header-inner .user-badge{display:none!important}
 }
 </style>
 </head>
@@ -410,8 +432,28 @@ footer a:hover{color:var(--white)}
     </div>
     <button class="auth-btn" id="auth-toggle" onclick="openAuth()" data-i18n="auth_signin">Sign In</button>
     <div class="user-badge" id="user-badge" style="display:none"></div>
+    <button class="burger-btn" id="burger-btn" onclick="toggleMobileNav()">☰</button>
   </div>
 </header>
+<div class="mobile-nav-overlay" id="mobile-nav-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="nav-close" onclick="closeMobileNav()">✕</button>
+  <nav>
+    <a class="active" data-page="home" data-i18n="nav_home">Home</a>
+    <a data-page="news" data-i18n="nav_news">News</a>
+    <a data-page="live"><span class="live-dot" id="nav-livedot-mobile" style="display:none"></span><span data-i18n="nav_broadcast">Broadcast</span></a>
+    <a data-page="play" data-i18n="nav_play">SNO Play</a>
+    <a data-page="schedule" data-i18n="nav_schedule">Schedule</a>
+    <a data-page="admin" id="admin-nav-mobile" style="display:none;color:var(--accent)" data-i18n="nav_admin">Admin</a>
+  </nav>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en');closeMobileNav()">EN</button>
+    <button class="lang-btn" data-lang="id" onclick="setLang('id');closeMobileNav()">ID</button>
+    <button class="lang-btn" data-lang="nl" onclick="setLang('nl');closeMobileNav()">NL</button>
+  </div>
+  <button class="auth-btn" id="auth-toggle-mobile" onclick="openAuth();closeMobileNav()" data-i18n="auth_signin">Sign In</button>
+  <div class="user-badge" id="user-badge-mobile" style="display:none"></div>
+</div>
 
 <!-- ===== MAIN SITE ===== -->
 <div id="main-site">
@@ -883,17 +925,20 @@ if(fbAuth){
   fbAuth.onAuthStateChanged(user=>{
     currentUser=user;
     isAdmin=checkAdmin(user);
-    let toggle=document.getElementById('auth-toggle'),badge=document.getElementById('user-badge'),adminNav=document.getElementById('admin-nav');
+    let toggle=document.getElementById('auth-toggle'),badge=document.getElementById('user-badge'),adminNav=document.getElementById('admin-nav'),toggleM=document.getElementById('auth-toggle-mobile'),badgeM=document.getElementById('user-badge-mobile'),adminNavM=document.getElementById('admin-nav-mobile');
     if(user){
       toggle.style.display='none';badge.style.display='flex';
+      if(toggleM)toggleM.style.display='none';if(badgeM){badgeM.style.display='flex';badgeM.innerHTML=badge.innerHTML;badgeM.onclick=()=>{openProfile();closeMobileNav()}}
       badge.innerHTML=(user.displayName||user.email)+(isAdmin?' <span style="color:var(--accent);font-size:8px;background:rgba(0,212,84,.12);padding:2px 6px;border-radius:4px">ADMIN</span>':'');
       badge.onclick=()=>{openProfile()};
       adminNav.style.display=isAdmin?'inline':'none';
+      if(adminNavM)adminNavM.style.display=isAdmin?'inline':'none';
       // Play user badge
       let pub=document.getElementById('play-user-badge');
       if(pub){pub.style.display='block';pub.innerHTML='<img src="'+(user.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="58" text-anchor="middle" fill="%23fff" font-size="36" font-family="Arial">'+(user.displayName?user.displayName[0].toUpperCase():'U')+'</text></svg>')+'" alt="">';pub.title=user.displayName||user.email}
     } else {
       toggle.style.display='inline-block';badge.style.display='none';adminNav.style.display='none';isAdmin=false;
+      if(toggleM)toggleM.style.display='inline-block';if(badgeM)badgeM.style.display='none';if(adminNavM)adminNavM.style.display='none';
       let pub=document.getElementById('play-user-badge');if(pub)pub.style.display='none';
     }
   });
@@ -925,12 +970,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTopOverlay()});
 document.querySelectorAll('nav a').forEach(a=>{
   a.addEventListener('click',function(){
     let page=this.dataset.page;
-    if(page==='admin'){if(isAdmin)openOverlay('admin');return}
+    if(page==='admin'){if(isAdmin)openOverlay('admin');closeMobileNav();return}
     if(page==='home'){closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
     else if(page==='play')openOverlay('play');
     else if(page==='news')openOverlay('news');
-    else     if(page==='live'){openOverlay('live');if(_heroMuxId)initHlsPlayer(_heroMuxId,_heroVideoUrl)}
+    else if(page==='live'){openOverlay('live');if(_heroMuxId)initHlsPlayer(_heroMuxId,_heroVideoUrl)}
     else if(page==='schedule')openOverlay('schedule');
+    closeMobileNav();
     document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
     if(page==='home')this.classList.add('active');
   });
@@ -939,10 +985,21 @@ document.querySelectorAll('nav a').forEach(a=>{
 document.getElementById('logo-link').addEventListener('click',()=>{
   while(overlayStack.length)closeTopOverlay();
   window.scrollTo({top:0,behavior:'smooth'});
+  closeMobileNav();
   document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
-  document.querySelector('nav a[data-page="home"]').classList.add('active');
+  document.querySelector('nav a[data-page="home"]')?.classList.add('active');
 });
 
+// ===== MOBILE NAV =====
+function toggleMobileNav(){
+  let n=document.getElementById('mobile-nav'),o=document.getElementById('mobile-nav-overlay');
+  if(n.classList.contains('open')){n.classList.remove('open');if(o)o.classList.remove('show')}
+  else{n.classList.add('open');if(o)o.classList.add('show')}
+}
+function closeMobileNav(){
+  document.getElementById('mobile-nav')?.classList.remove('open');
+  document.getElementById('mobile-nav-overlay')?.classList.remove('show');
+}
 function navigate(page){
   if(page==='home'){while(overlayStack.length)closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
 }
@@ -967,7 +1024,7 @@ function setLang(lang){
   applyLang(lang);
 }
 // Apply on load
-document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',function(){setLang(this.dataset.lang)}));
+document.querySelectorAll('header .lang-btn').forEach(b=>b.addEventListener('click',function(){setLang(this.dataset.lang)}));
 
 // ===== NEWS SLIDER =====
 function renderNewsSlider(items){
@@ -1218,7 +1275,7 @@ function stopListenUI(){
 
 function openSharePopup(){
   document.getElementById('share-popup').classList.add('open');
-  let url = encodeURIComponent(window.location.href.replace(/#$|#[^/].*$/,'')+'#/news/'+slugify(currentArticle?.title||''));
+  let url = encodeURIComponent(window.location.href.split('#')[0]+'#/news/'+slugify(currentArticle?.title||''));
   let title = encodeURIComponent(currentArticle?.title||'SNO News');
   document.getElementById('share-twitter').href='https://twitter.com/intent/tweet?text='+title+'&url='+url;
   document.getElementById('share-facebook').href='https://www.facebook.com/sharer/sharer.php?u='+url;
@@ -1467,6 +1524,7 @@ function checkBroadcastState(){
   let preEl = document.getElementById('hero-prelive');
   let visEl = document.getElementById('hero-visual');
   let navDot = document.getElementById('nav-livedot');
+  let navDotM = document.getElementById('nav-livedot-mobile');
   let heroDot = document.getElementById('hero-live-dot');
   if(!defEl) return;
   // Reset - default: text only, no video
@@ -1474,6 +1532,7 @@ function checkBroadcastState(){
   if(preEl) preEl.style.display = 'none';
   if(visEl) visEl.style.display = 'none';
   if(navDot) navDot.style.display = 'none';
+  if(navDotM) navDotM.style.display = 'none';
   if(heroDot) heroDot.style.display = 'none';
   document.getElementById('nav-live-text').textContent = 'Broadcast';
   if(_countdownInterval){clearInterval(_countdownInterval);_countdownInterval=null}
@@ -1486,6 +1545,7 @@ function checkBroadcastState(){
       defEl.style.display = 'none';
       if(visEl) visEl.style.display = 'none';
       if(navDot) navDot.style.display = 'inline-block';
+      if(navDotM) navDotM.style.display = 'inline-block';
       if(heroDot) heroDot.style.display = 'inline-block';
       document.getElementById('nav-live-text').textContent = 'LIVE';
       if(preEl){
@@ -1503,6 +1563,7 @@ function checkBroadcastState(){
       if(preEl) preEl.style.display = 'none';
       if(visEl) visEl.style.display = '';
       if(navDot) navDot.style.display = 'inline-block';
+      if(navDotM) navDotM.style.display = 'inline-block';
       if(heroDot) heroDot.style.display = 'inline-block';
       document.getElementById('nav-live-text').textContent = 'LIVE';
       let hLabel = document.querySelector('#hero-default .hero-label .label');
