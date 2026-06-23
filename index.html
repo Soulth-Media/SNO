@@ -24,6 +24,8 @@
 </script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js">
 </script>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-storage-compat.js">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.js">
 </script>
 <style>
@@ -75,28 +77,26 @@ nav a.play-link:hover{opacity:1}
 .live-dot{display:inline-block;width:6px;height:6px;background:#ff3333;border-radius:50%;margin-right:4px;animation:pulse 1.4s ease infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 .hero{min-height:100vh;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:120px 0 80px;background:linear-gradient(180deg,var(--black) 0%,var(--green) 100%)}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end}
-.hero-content{z-index:2}
-.hero-label{display:flex;align-items:center;gap:8px;margin-bottom:20px}
-.hero-label .live-dot{width:8px;height:8px}
-.hero-label .label{font-size:11px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;position:relative}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .8s;z-index:0}
+.hero-bg.show{opacity:1}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.5) 50%,rgba(0,0,0,.75) 100%);z-index:1}
+.hero-content{position:relative;z-index:2}
 .hero h1{font-size:clamp(44px,7vw,110px);line-height:.82;margin-bottom:20px}
 .hero h1 .glow{color:var(--accent);display:block;text-shadow:0 0 60px rgba(0,212,84,.15)}
-.hero p{font-size:15px;color:var(--gray);line-height:1.7;max-width:460px;margin-bottom:32px;font-weight:300}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);font-size:12px;font-weight:600;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .3s;font-family:'Telegraf',sans-serif}
-.btn-primary{background:var(--accent);color:var(--black)}
-.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,84,.2)}
-.btn-outline{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.15)}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
-.btn-sm{padding:10px 20px;font-size:10px}
-.btn-danger{background:#ff3333;color:#fff}
-.btn-danger:hover{background:#cc0000}
-.btn-ghost{background:transparent;color:var(--gray2);border:1px solid rgba(255,255,255,.08)}
-.btn-ghost:hover{border-color:var(--gray2);color:var(--white)}
 .hero-visual{z-index:2;position:relative}
 .hero-video-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5)}
 .hero-video-wrap iframe,.hero-video-wrap video,.hls-video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);font-size:12px;font-weight:600;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .3s;font-family:'Telegraf',sans-serif}
+.btn-primary{background:var(--accent);color:var(--black)}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,84,.15)}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--white)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.btn-sm{padding:8px 16px;font-size:10px}
+.btn-ghost{background:transparent;border:1px solid transparent;color:var(--gray2)}
+.btn-ghost:hover{border-color:rgba(255,255,255,.1);color:var(--white)}
+.btn-danger{background:transparent;border:1px solid rgba(255,68,68,.3);color:#ff6666}
+.btn-danger:hover{background:rgba(255,68,68,.1);border-color:#ff4444;color:#ff4444}
 
 .ticker{background:var(--green3);border-top:1px solid rgba(0,212,84,.08);border-bottom:1px solid rgba(0,212,84,.08);padding:12px 0;overflow:hidden;position:relative}
 .ticker-inner{display:flex;animation:scroll 35s linear infinite;white-space:nowrap}
@@ -160,6 +160,8 @@ nav a.play-link:hover{opacity:1}
 .admin-card h3{font-size:16px;margin-bottom:16px;font-family:'Telegraf',sans-serif;font-weight:600}
 .admin-form{display:flex;flex-direction:column;gap:10px}
 .admin-input{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s}
+select.admin-input{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%23888'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select.admin-input option{background:#1a1a1e;color:var(--white)}
 .admin-input:focus{border-color:var(--accent)}
 .admin-input::placeholder{color:var(--gray)}
 .admin-textarea{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s;resize:vertical;min-height:60px}
@@ -219,6 +221,40 @@ footer a:hover{color:var(--white)}
 .cookie-bar p{color:var(--gray);max-width:700px}
 .cookie-bar a{color:var(--accent);text-decoration:none}
 .cookie-bar a:hover{text-decoration:underline}
+/* ===== SUBSCRIBE POPUP ===== */
+.sub-popup{position:fixed;bottom:24px;left:24px;z-index:99998;background:rgba(10,10,12,.97);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:24px;max-width:340px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transform:translateY(120%);opacity:0;transition:all .5s cubic-bezier(.16,1,.3,1);box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.sub-popup.show{transform:translateY(0);opacity:1}
+.sub-popup .close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--gray);font-size:16px;cursor:pointer;padding:4px;line-height:1}
+.sub-popup .close:hover{color:var(--white)}
+.sub-popup h3{margin-bottom:6px;font-size:20px}
+.sub-popup p{color:var(--gray);font-size:12px;margin-bottom:16px}
+.sub-popup input{width:100%;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.1);background:var(--black3);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;margin-bottom:8px;outline:none;transition:border-color .2s}
+.sub-popup input:focus{border-color:var(--accent)}
+.sub-popup .sub-actions{display:flex;flex-direction:column;gap:8px}
+.sub-popup .sub-divider{text-align:center;font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.sub-popup .sub-footer{display:flex;justify-content:space-between;margin-top:12px;font-size:10px}
+.sub-popup .sub-footer button{background:none;border:none;color:var(--gray);cursor:pointer;font-size:10px;font-family:'Telegraf',sans-serif;padding:2px 0}
+.sub-popup .sub-footer button:hover{color:var(--accent)}
+.sub-popup .sub-success{display:none;text-align:center;padding:12px 0}
+.sub-popup .sub-success svg{width:40px;height:40px;margin-bottom:8px}
+.sub-popup .sub-success p{color:var(--accent);font-size:13px;margin-bottom:0}
+/* ===== SKELETON LOADING ===== */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skel{background:linear-gradient(90deg,var(--black3) 25%,var(--green3) 50%,var(--black3) 75%);background-size:800px 100%;animation:shimmer 1.5s ease infinite;border-radius:var(--radius-sm)}
+.skel-card{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,.04)}
+.skel-card .skel-img{width:100%;aspect-ratio:16/9;display:block}
+.skel-card .skel-body{padding:16px}
+.skel-card .skel-line{height:12px;margin-bottom:8px;width:100%}
+.skel-card .skel-line:last-child{width:60%}
+.skel-card .skel-line-sm{height:8px;width:40%;margin-bottom:12px}
+/* ===== LOADING SCREEN ===== */
+.load-screen{position:fixed;inset:0;z-index:99999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .5s,visibility .5s}
+.load-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+.load-screen-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
+.load-screen-logo{height:48px;opacity:.8}
+.load-spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+.load-text{font-size:13px;color:var(--gray);letter-spacing:1px;text-transform:uppercase}
+@keyframes spin{to{transform:rotate(360deg)}}
 .social{display:flex;gap:8px}
 .social a{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .3s;color:var(--gray);font-weight:600;text-decoration:none}
 .social a:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,84,.04)}
@@ -434,19 +470,57 @@ footer a:hover{color:var(--white)}
 .mobile-nav .lang-toggle .lang-btn{font-size:12px;padding:6px 12px}
 .mobile-nav .auth-btn{width:100%;margin-top:12px;justify-content:center}
 .mobile-nav .user-badge{justify-content:center;margin-top:12px}
+.user-badge-mobile{display:none;width:32px;height:32px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;border:2px solid var(--accent);background:var(--green3)}
+.search-btn{background:none;border:none;color:var(--gray2);font-size:16px;cursor:pointer;padding:6px;line-height:1;transition:color .2s;flex-shrink:0}
+.search-btn:hover{color:var(--white)}
+.search-overlay{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);opacity:0;pointer-events:none;transition:opacity .35s;display:flex;flex-direction:column;align-items:center;padding:80px 24px}
+.search-overlay.open{opacity:1;pointer-events:auto}
+.search-overlay .close{position:absolute;top:20px;right:28px;background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer;padding:4px;line-height:1}
+.search-overlay .close:hover{color:var(--white)}
+.search-wrap{width:100%;max-width:600px}
+.search-input-wrap{display:flex;align-items:center;gap:12px;border-bottom:2px solid rgba(255,255,255,.1);padding:12px 0;transition:border-color .3s}
+.search-input-wrap:focus-within{border-color:var(--accent)}
+.search-input-wrap .icon{font-size:18px;color:var(--gray)}
+.search-input-wrap input{flex:1;background:transparent;border:none;color:var(--white);font-size:20px;font-family:'Telegraf',sans-serif;outline:none}
+.search-input-wrap input::placeholder{color:var(--gray)}
+.search-results{margin-top:24px;width:100%;max-width:600px;max-height:60vh;overflow-y:auto}
+.search-group{margin-bottom:20px}
+.search-group-title{font-size:10px;text-transform:uppercase;color:var(--accent);letter-spacing:1px;margin-bottom:8px;font-weight:600}
+.search-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;transition:background .2s;text-decoration:none;color:inherit}
+.search-item:hover{background:rgba(255,255,255,.04)}
+.search-item-img{width:48px;height:32px;border-radius:4px;object-fit:cover;background:var(--green3);flex-shrink:0}
+.search-item-info{flex:1;min-width:0}
+.search-item-info h4{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-item-info span{font-size:10px;color:var(--gray)}
+.search-empty{text-align:center;padding:40px 0;color:var(--gray);font-size:13px}
+.search-suggest{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.search-suggest span{font-size:10px;color:var(--gray2);background:rgba(255,255,255,.04);padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .2s}
+.search-suggest span:hover{background:rgba(0,212,84,.12);color:var(--accent)}
+@media(min-width:769px){
+  .user-badge-mobile{display:none !important}
+}
 .mobile-nav-overlay{position:fixed;inset:0;z-index:199;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
 .mobile-nav-overlay.show{opacity:1;pointer-events:auto}
 /* ===== AD POPUP ===== */
-.ad-popup{position:fixed;bottom:20px;right:20px;z-index:500;width:260px;transform:translateY(120%);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.ad-popup{position:fixed;bottom:20px;right:20px;z-index:500;width:300px;transform:translateY(120%);transition:transform .6s cubic-bezier(.16,1,.3,1)}
 .ad-popup.show{transform:translateY(0)}
 .ad-popup-inner{background:rgba(8,8,8,.95);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.ad-popup-video-wrap{position:relative;background:#000;cursor:pointer}
 .ad-popup video{width:100%;display:block;aspect-ratio:16/9;background:#000;border-radius:0}
-.ad-popup-close{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:12px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .2s}
+.ad-popup-controls{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;gap:6px;padding:4px 8px;background:linear-gradient(transparent,rgba(0,0,0,.7));opacity:0;transition:opacity .3s;z-index:2}
+.ad-popup-video-wrap:hover .ad-popup-controls{opacity:1}
+.ad-popup-play-btn{background:none;border:none;color:#fff;font-size:14px;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1}
+.ad-popup-progress-wrap{flex:1;cursor:pointer;padding:3px 0}
+.ad-popup-progress{height:3px;background:rgba(255,255,255,.2);border-radius:2px;position:relative}
+.ad-popup-fill{height:100%;background:var(--accent);border-radius:2px;width:0%}
+.ad-popup-close{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:12px;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .2s}
 .ad-popup-close:hover{background:#ff3333}
-.ad-popup-title{display:block;padding:6px 10px;font-size:9px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:.5px;background:rgba(0,0,0,.5);text-align:center;border-bottom:1px solid rgba(255,255,255,.04)}
+.ad-popup-footer{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-top:1px solid rgba(255,255,255,.04)}
+.ad-popup-title{font-size:9px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:.5px}
+.ad-popup-why{font-size:10px;color:var(--gray);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.ad-popup-why:hover{color:var(--accent)}
 @media(max-width:600px){
-  .ad-popup{width:180px}
-  .ad-popup-title{font-size:7px}
+  .ad-popup{width:240px}
 }
 /* ===== CAREERS ===== */
 .career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
@@ -516,6 +590,8 @@ footer a:hover{color:var(--white)}
     </div>
     <button class="auth-btn" id="auth-toggle" onclick="openAuth()" data-i18n="auth_signin">Sign In</button>
     <div class="user-badge" id="user-badge" style="display:none"></div>
+    <div class="user-badge-mobile" id="user-badge-mobile-header" style="display:none" onclick="openProfile()"></div>
+    <button class="search-btn" id="search-btn" onclick="openSearch()" title="Search">⌕</button>
     <button class="burger-btn" id="burger-btn" onclick="toggleMobileNav()">☰</button>
   </div>
 </header>
@@ -544,6 +620,7 @@ footer a:hover{color:var(--white)}
 <div id="main-site">
 <section class="hero" id="page-home">
   <div class="container" style="width:100%">
+    <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-grid">
       <div class="hero-content">
         <!-- DEFAULT: no broadcast / no upcoming — normal headline + news -->
@@ -606,7 +683,12 @@ footer a:hover{color:var(--white)}
       <div><div class="label" style="margin-bottom:6px" data-i18n="slider_title">Latest Stories</div><h2 class="h-lg" data-i18n="section_news">Top News</h2></div>
       <button class="btn btn-outline btn-sm" onclick="openOverlay('news')" data-i18n="view_all">View All</button>
     </div>
-    <div class="news-grid" id="news-grid"></div>
+    <div class="news-grid" id="news-grid">
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:50%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:50%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:50%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:50%"></div></div></div>
+    </div>
   </div>
 </section>
 
@@ -629,7 +711,12 @@ footer a:hover{color:var(--white)}
   </div>
   <div class="overlay-content">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px"><h1 class="h-lg" style="font-size:clamp(32px,4.5vw,56px)">All Stories</h1><div class="label-sm" id="news-count"></div></div>
-    <div class="news-grid" id="news-grid-full"></div>
+    <div class="news-grid" id="news-grid-full">
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:50%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:40%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:45%"></div></div></div>
+      <div class="skel skel-card"><div class="skel skel-img"></div><div class="skel-body"><div class="skel skel-line-sm"></div><div class="skel skel-line"></div><div class="skel skel-line"></div><div class="skel skel-line" style="width:55%"></div></div></div>
+    </div>
   </div>
 </div>
 
@@ -780,6 +867,7 @@ footer a:hover{color:var(--white)}
           <button class="btn-like" id="detail-like-btn" onclick="toggleLike()"><span class="like-icon">♥</span> <span id="like-count">0</span></button>
           <button class="btn-listen" id="detail-listen-btn" onclick="toggleListen()"><span id="listen-icon">♪</span> <span id="listen-text" data-i18n="listen">Listen</span></button>
           <button class="btn-share" onclick="openSharePopup()">↗ <span data-i18n="share">Share</span></button>
+          <span class="label-sm" id="detail-views" style="font-size:11px;color:var(--gray);margin-left:auto"></span>
         </div>
       </div>
       <div class="article-body" id="detail-body"></div>
@@ -875,13 +963,26 @@ footer a:hover{color:var(--white)}
     <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('profile')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
   </div>
   <div class="overlay-content" style="max-width:500px">
-    <div style="text-align:center;padding:40px 0">
+    <div style="text-align:center;padding:40px 0 20px">
       <img id="pfp-img" src="" style="width:80px;height:80px;border-radius:50%;margin-bottom:16px;border:2px solid var(--accent);object-fit:cover">
       <h2 id="pfp-name" style="font-size:22px;margin-bottom:4px">User</h2>
       <p id="pfp-email" style="font-size:13px;color:var(--gray);margin-bottom:6px"></p>
       <span id="pfp-role" style="font-size:10px;font-weight:600;text-transform:uppercase;background:rgba(0,212,84,.1);padding:4px 12px;border-radius:6px;color:var(--accent)">Member</span>
     </div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+    <!-- Roblox Connect -->
+    <div style="border-top:1px solid rgba(255,255,255,.04);padding:16px 0;margin:0 0 8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-size:13px;font-weight:500">Roblox</div>
+          <div id="roblox-status" style="font-size:11px;color:var(--gray);margin-top:2px">Not connected</div>
+        </div>
+        <div id="roblox-actions">
+          <button class="btn btn-outline btn-sm" id="roblox-connect-btn" onclick="connectRoblox()">+ Connect</button>
+          <button class="btn btn-danger btn-sm" id="roblox-disconnect-btn" style="display:none" onclick="disconnectRoblox()">Disconnect</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
       <button id="pfp-admin-link" class="btn btn-primary" style="width:100%;justify-content:center;display:none" onclick="closeOverlay('profile');openOverlay('admin')">≡ Admin Panel</button>
       <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="alert('Coming soon')">☰ My Activity</button>
       <button id="pfp-signout" class="btn btn-outline" style="width:100%;justify-content:center;border-color:rgba(255,68,68,.3);color:#ff6666">Sign Out</button>
@@ -918,16 +1019,104 @@ footer a:hover{color:var(--white)}
 <!-- ===== AD POPUP ===== -->
 <div class="ad-popup" id="ad-popup">
   <div class="ad-popup-inner">
-    <span class="ad-popup-title" id="ad-popup-title">Ad</span>
     <button class="ad-popup-close" onclick="closeAdPopup()">×</button>
-                <video id="ad-popup-video" muted playsinline loop></video>
+    <div class="ad-popup-video-wrap">
+      <video id="ad-popup-video" muted playsinline loop></video>
+      <div class="ad-popup-controls">
+        <button class="ad-popup-play-btn" id="ad-popup-play-btn" onclick="toggleAdPlay()">►</button>
+        <div class="ad-popup-progress-wrap" onclick="seekAdVideo(event)">
+          <div class="ad-popup-progress"><div class="ad-popup-fill" id="ad-popup-fill"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ad-popup-footer">
+      <span class="ad-popup-title" id="ad-popup-title">Ad</span>
+      <span class="ad-popup-why" onclick="openPrivacy()">Why this ad?</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRIVACY POLICY OVERLAY ===== -->
+<div class="overlay-page" id="overlay-privacy">
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('privacy')">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+  </div>
+  <div class="overlay-content" style="max-width:700px;padding:40px 32px">
+    <h1 class="h-xl" style="margin-bottom:24px">Privacy Policy</h1>
+    <div style="font-size:13px;line-height:1.7;color:var(--gray2)">
+      <p style="margin-bottom:16px">Last updated: June 2026</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">1. Information We Collect</h3>
+      <p>We collect information you provide directly, such as your display name and email address when you sign in. We also collect anonymous usage data, including page views and article interactions, to improve our service.</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">2. How We Use Your Information</h3>
+      <p>Your information is used to personalize your experience, display your profile, and remember your preferences (language, favorites, reading history). Usage statistics help us understand what content resonates with our audience.</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">3. Cookies</h3>
+      <p>We use localStorage (not server-side cookies) to store your preferences, authentication state, and reading data. No tracking cookies are used by third parties.</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">4. Data Sharing</h3>
+      <p>We do not sell or share your personal data with third parties. Your profile information is only visible to you and site administrators.</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">5. Advertising</h3>
+      <p>Ads displayed on SNO are managed internally. We do not use third-party ad networks. Ad data (playback statistics) is collected anonymously to measure performance.</p>
+      <h3 style="color:var(--white);margin:20px 0 8px">6. Contact</h3>
+      <p>For questions about this policy, reach out to our team via the Careers page or contact an administrator.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOADING SCREEN ===== -->
+<div class="load-screen" id="load-screen">
+  <div class="load-screen-inner">
+    <img src="SNOTRNSPRNTLOGO.png" alt="SNO" class="load-screen-logo">
+    <div class="load-spinner"></div>
+    <span class="load-text" id="load-text">Loading...</span>
   </div>
 </div>
 
 <!-- ===== COOKIE CONSENT ===== -->
 <div class="cookie-bar" id="cookie-bar">
-  <p>This site uses cookies. By continuing, you agree to our <a href="#" data-i18n="privacy">Privacy Policy</a>.</p>
+  <p>This site uses cookies. By continuing, you agree to our <a href="#" onclick="event.preventDefault();acceptCookies();openPrivacy()" data-i18n="privacy">Privacy Policy</a>.</p>
   <button class="btn btn-primary btn-sm" onclick="acceptCookies()" id="cookie-accept">Accept</button>
+</div>
+
+<!-- ===== SEARCH OVERLAY ===== -->
+<div class="search-overlay" id="search-overlay">
+  <button class="close" onclick="closeSearch()">×</button>
+  <div class="search-wrap">
+    <div class="search-input-wrap">
+      <span class="icon">⌕</span>
+      <input type="text" id="search-input" placeholder="Search news, videos, schedules..." autocomplete="off" oninput="searchQuery(this.value)">
+      <button style="background:none;border:none;color:var(--gray);font-size:12px;cursor:pointer;padding:4px;display:none" id="search-clear" onclick="clearSearch()">Clear</button>
+    </div>
+    <div class="search-suggest" id="search-suggest">
+      <span onclick="searchQuery('SNO')">SNO</span>
+      <span onclick="searchQuery('breaking')">Breaking News</span>
+      <span onclick="searchQuery('live')">Live</span>
+      <span onclick="searchQuery('interview')">Interview</span>
+      <span onclick="searchQuery('music')">Music</span>
+    </div>
+  </div>
+  <div class="search-results" id="search-results"><div class="search-empty">Type something to search across all content.</div></div>
+</div>
+
+<!-- ===== SUBSCRIBE POPUP ===== -->
+<div class="sub-popup" id="sub-popup">
+  <button class="close" onclick="closeSubPopup()">×</button>
+  <h3 class="h-lg" style="font-size:22px">Stay Updated</h3>
+  <p>Get the latest news and exclusive content delivered to your inbox, or create a free SNO account.</p>
+  <div id="sub-form">
+    <input type="email" id="sub-email" placeholder="Your email address" autocomplete="email">
+    <div class="sub-actions">
+      <button class="btn btn-primary btn-sm" onclick="subscribeNewsletter()">Subscribe</button>
+      <div class="sub-divider">or</div>
+      <button class="btn btn-outline btn-sm" onclick="subOpenAuth()">Create SNO Account</button>
+    </div>
+  </div>
+  <div class="sub-success" id="sub-success">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="%2300d454" stroke-width="2"/><path d="M12 20l6 6 10-10" stroke="%2300d454" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <p>You're subscribed!</p>
+  </div>
+  <div class="sub-footer">
+    <button onclick="closeSubPopup()" data-i18n="close">Close</button>
+    <button onclick="dontShowSub()">Don't show again</button>
+  </div>
 </div>
 
 <!-- ===== FOOTER ===== -->
@@ -937,7 +1126,7 @@ footer a:hover{color:var(--white)}
       <div><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px"><p data-i18n="footer_desc">Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
       <div><h4 data-i18n="footer_channels">Channels</h4><a onclick="navigate('home')" data-i18n="nav_home">Home</a><a onclick="openOverlay('news')" data-i18n="nav_news">News</a><a onclick="openOverlay('live')" data-i18n="nav_broadcast">Live</a><a onclick="openOverlay('play')" data-i18n="nav_play">SNO Play</a><a onclick="openOverlay('schedule')" data-i18n="nav_schedule">Schedule</a><a onclick="openCareers()" data-i18n="nav_careers">Careers</a></div>
       <div><h4 data-i18n="footer_company">Company</h4><a href="#" data-i18n="about">About</a><a onclick="openCareers()" data-i18n="careers">Careers</a><a href="#" data-i18n="contact">Contact</a><a href="#" data-i18n="advertise">Advertise</a></div>
-      <div><h4 data-i18n="footer_support">Support</h4><a href="#" data-i18n="help">Help Center</a><a href="#" data-i18n="access">Accessibility</a><a href="#" data-i18n="privacy">Privacy Policy</a><a href="#" data-i18n="terms">Terms of Service</a></div>
+      <div><h4 data-i18n="footer_support">Support</h4><a href="#" onclick="event.preventDefault();openPrivacy()" data-i18n="help">Help Center</a><a href="#" data-i18n="access">Accessibility</a><a href="#" onclick="event.preventDefault();openPrivacy()" data-i18n="privacy">Privacy Policy</a><a href="#" data-i18n="terms">Terms of Service</a></div>
     </div>
     <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">X</a><a href="#">▢</a><a href="#">►</a></div></div>
   </div>
@@ -962,7 +1151,7 @@ function checkAdmin(u){
   return u && (u.uid === ADMIN_UID || u.email === ADMIN_EMAIL);
 }
 
-let fbApp, fbAuth, fbFirestore;
+let fbApp, fbAuth, fbFirestore, fbStorage;
 let authMode = 'login', currentUser = null, isAdmin = false;
 let overlayStack = [];
 let unsubscribers = [];
@@ -975,6 +1164,7 @@ try {
   fbApp = firebase.initializeApp(firebaseConfig);
   fbAuth = firebase.auth(fbApp);
   fbFirestore = firebase.firestore(fbApp);
+  fbStorage = firebase.storage(fbApp);
   console.log('Firebase OK');
 } catch(e) { console.warn('Firebase not configured. Using static data.'); }
 
@@ -1028,7 +1218,64 @@ function openProfile(){
   document.getElementById('pfp-img').src=currentUser.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="58" text-anchor="middle" fill="%23fff" font-size="36" font-family="Arial">'+(currentUser.displayName?currentUser.displayName[0].toUpperCase():'U')+'</text></svg>';
   document.getElementById('pfp-admin-link').style.display=isAdm?'block':'none';
   document.getElementById('pfp-signout').onclick=function(){closeOverlay('profile');signOut()};
+  // Load Roblox status
+  loadRobloxStatus();
   openOverlay('profile');
+}
+
+// ===== ROBLOX CONNECT =====
+function loadRobloxStatus(){
+  if(!currentUser)return;
+  let status=document.getElementById('roblox-status');
+  let conBtn=document.getElementById('roblox-connect-btn');
+  let disBtn=document.getElementById('roblox-disconnect-btn');
+  if(fbFirestore){
+    fbFirestore.collection('users').doc(currentUser.uid).get().then(doc=>{
+      if(doc.exists&&doc.data().roblox){
+        let r=doc.data().roblox;
+        status.innerHTML='Connected as <strong>'+r.username+'</strong> <span style="color:var(--gray);font-size:10px">(ID: '+r.id+')</span>';
+        conBtn.style.display='none';disBtn.style.display='inline-flex';
+      } else {
+        status.textContent='Not connected';
+        conBtn.style.display='inline-flex';disBtn.style.display='none';
+      }
+    }).catch(()=>{status.textContent='Not connected';conBtn.style.display='inline-flex';disBtn.style.display='none'});
+  }
+}
+function connectRoblox(){
+  if(!currentUser)return showToast('Sign in first','error');
+  let username=prompt('Enter your Roblox username:');
+  if(!username||!username.trim())return;
+  username=username.trim();
+  document.getElementById('roblox-connect-btn').textContent='Verifying...';
+  // Verify via Roblox API
+  fetch('https://users.roblox.com/v1/usernames/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({usernames:[username],excludeBannedUsers:true})})
+    .then(r=>r.json()).then(data=>{
+      if(data.data&&data.data.length){
+        let robloxUser=data.data[0];
+        if(fbFirestore){
+          fbFirestore.collection('users').doc(currentUser.uid).set({roblox:{id:robloxUser.id,username:robloxUser.name,verifiedAt:new Date()}},{merge:true})
+            .then(()=>{showToast('Roblox account connected!','success');loadRobloxStatus()})
+            .catch(()=>showToast('Failed to save','error'));
+        } else showToast('Firestore unavailable','error');
+      } else showToast('Roblox user not found','error');
+      document.getElementById('roblox-connect-btn').textContent='+ Connect';
+    }).catch(()=>{
+      // Fallback: save without verification
+      if(fbFirestore){
+        fbFirestore.collection('users').doc(currentUser.uid).set({roblox:{username:username,id:'unverified',verifiedAt:new Date()}},{merge:true})
+          .then(()=>{showToast('Roblox connected (unverified)','success');loadRobloxStatus()})
+          .catch(()=>showToast('Failed to save','error'));
+      }
+      document.getElementById('roblox-connect-btn').textContent='+ Connect';
+    });
+}
+function disconnectRoblox(){
+  if(!currentUser||!fbFirestore)return;
+  if(!confirm('Disconnect Roblox account?'))return;
+  fbFirestore.collection('users').doc(currentUser.uid).update({'roblox':firebase.firestore.FieldValue.delete()})
+    .then(()=>{showToast('Roblox disconnected','success');loadRobloxStatus()})
+    .catch(()=>showToast('Failed to disconnect','error'));
 }
 
 function toggleAuthMode(){
@@ -1075,7 +1322,7 @@ if(fbAuth){
   fbAuth.onAuthStateChanged(user=>{
     currentUser=user;
     isAdmin=checkAdmin(user);
-    let toggle=document.getElementById('auth-toggle'),badge=document.getElementById('user-badge'),adminNav=document.getElementById('admin-nav'),toggleM=document.getElementById('auth-toggle-mobile'),badgeM=document.getElementById('user-badge-mobile'),adminNavM=document.getElementById('admin-nav-mobile');
+    let toggle=document.getElementById('auth-toggle'),badge=document.getElementById('user-badge'),adminNav=document.getElementById('admin-nav'),toggleM=document.getElementById('auth-toggle-mobile'),badgeM=document.getElementById('user-badge-mobile'),adminNavM=document.getElementById('admin-nav-mobile'),badgeMH=document.getElementById('user-badge-mobile-header');
     if(user){
       toggle.style.display='none';badge.style.display='flex';
       if(toggleM)toggleM.style.display='none';if(badgeM){badgeM.style.display='flex';badgeM.innerHTML=badge.innerHTML;badgeM.onclick=()=>{openProfile();closeMobileNav()}}
@@ -1083,12 +1330,14 @@ if(fbAuth){
       badge.onclick=()=>{openProfile()};
       adminNav.style.display=isAdmin?'inline':'none';
       if(adminNavM)adminNavM.style.display=isAdmin?'inline':'none';
+      // Mobile header avatar badge
+      if(badgeMH){badgeMH.style.display='block';badgeMH.innerHTML='<img src="'+(user.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="60" text-anchor="middle" fill="%23fff" font-size="40" font-family="Arial">'+(user.displayName?user.displayName[0].toUpperCase():'U')+'</text></svg>')+'" style="width:100%;height:100%;object-fit:cover" alt="">';badgeMH.title=user.displayName||user.email}
       // Play user badge
       let pub=document.getElementById('play-user-badge');
       if(pub){pub.style.display='block';pub.innerHTML='<img src="'+(user.photoURL||'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%230d5e2e" width="100" height="100" rx="50"/><text x="50" y="58" text-anchor="middle" fill="%23fff" font-size="36" font-family="Arial">'+(user.displayName?user.displayName[0].toUpperCase():'U')+'</text></svg>')+'" alt="">';pub.title=user.displayName||user.email}
     } else {
       toggle.style.display='inline-block';badge.style.display='none';adminNav.style.display='none';isAdmin=false;
-      if(toggleM)toggleM.style.display='inline-block';if(badgeM)badgeM.style.display='none';if(adminNavM)adminNavM.style.display='none';
+      if(toggleM)toggleM.style.display='inline-block';if(badgeM)badgeM.style.display='none';if(adminNavM)adminNavM.style.display='none';if(badgeMH)badgeMH.style.display='none';
       let pub=document.getElementById('play-user-badge');if(pub)pub.style.display='none';
     }
   });
@@ -1098,20 +1347,20 @@ if(fbAuth){
 function openOverlay(name){
   let el=document.getElementById('overlay-'+name);
   if(el){el.classList.add('open');overlayStack.push(name);document.body.style.overflow='hidden'}
+  // Set OG meta per page
+  let pageOG = ['news','live','play','schedule','admin','profile','careers'];
+  if(pageOG.includes(name)) setPageOgMeta(name);
+  if(name==='privacy') updateOgMeta('SNO — Privacy Policy','SNO News Network privacy policy, data collection, and cookie usage.','SNOTRNSPRNTLOGO.png');
 }
 function closeOverlay(name){
   let el=document.getElementById('overlay-'+name);
-  if(el){el.classList.remove('open');overlayStack=overlayStack.filter(o=>o!==name);if(!overlayStack.length)document.body.style.overflow=''}
+  if(el){el.classList.remove('open');overlayStack=overlayStack.filter(o=>o!==name);if(!overlayStack.length){document.body.style.overflow='';resetOgMeta()}}
   if(name==='news-detail'){
     if(window.location.hash.startsWith('#/news/')) history.pushState('','','#');
     if(synth && synth.speaking){synth.cancel();stopListenUI()}
     if(_commentsUnsub){_commentsUnsub();_commentsUnsub=null}
     if(window._readingScrollCleanup){try{window._readingScrollCleanup();window._readingScrollCleanup=null}catch(e){}}
-    // Reset OG meta
-    document.querySelector('meta[property="og:title"]').content = 'SNO — News Network';
-    document.querySelector('meta[property="og:description"]').content = 'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.';
-    document.querySelector('meta[property="og:image"]').content = 'SNOTRNSPRNTLOGO.png';
-    document.querySelector('meta[name="twitter:image"]').content = 'SNOTRNSPRNTLOGO.png';
+    if(overlayStack.length) resetOgMeta();
   }
 }
 function closeTopOverlay(){
@@ -1155,7 +1404,7 @@ function closeMobileNav(){
   document.getElementById('mobile-nav-overlay')?.classList.remove('show');
 }
 function navigate(page){
-  if(page==='home'){while(overlayStack.length)closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});}
+  if(page==='home'){while(overlayStack.length)closeTopOverlay();window.scrollTo({top:0,behavior:'smooth'});resetOgMeta()}
 }
 
 // ===== LANG =====
@@ -1187,8 +1436,24 @@ function renderNewsSlider(items){
   s.innerHTML='';
   data.forEach(item=>{
     let a=document.createElement('a');a.className='news-slide';a.href='#/news/'+slugify(item.title||'');
-    let img=item.gambar?'<img class="news-slide-img" src="'+item.gambar+'" loading="lazy" onerror="this.style.display=\'none\'">':'<div class="news-slide-img"></div>';
-    a.innerHTML=img+'<div class="news-slide-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'')+'</span><h4>'+(item.title||'')+'</h4></div>';
+    let imgDiv=document.createElement('div');imgDiv.className='news-slide-img';imgDiv.style.background=item.color||'var(--green3)';
+    if(item.gambar){
+      let fbSlide=document.createElement('span');
+      fbSlide.textContent=(item.title||'SNO')[0];
+      fbSlide.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:coolvetica;font-size:32px;color:var(--accent);background:linear-gradient(135deg,'+(item.color||'var(--green3)')+',#0a1a10);z-index:1';
+      imgDiv.style.position='relative';
+      imgDiv.style.overflow='hidden';
+      let cleanUrl=item.gambar.replace(/["'()]/g,'');
+      let imSlide=document.createElement('img');
+      imSlide.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2';
+      imSlide.onload=function(){fbSlide.style.display='none';imgDiv.style.backgroundImage='url("'+cleanUrl+'")';imgDiv.style.backgroundSize='cover';imgDiv.style.backgroundPosition='center'};
+      imSlide.onerror=function(){this.style.display='none'};
+      imSlide.src=item.gambar;
+      imgDiv.appendChild(fbSlide);imgDiv.appendChild(imSlide);
+    }
+    let body=document.createElement('div');body.className='news-slide-body';
+    body.innerHTML='<span class="label-sm">'+(item.cat||'')+' · '+(item.time||'')+'</span><h4>'+(item.title||'')+'</h4>';
+    a.appendChild(imgDiv);a.appendChild(body);
     a.onclick=function(e){e.preventDefault();openNewsDetail(item)};
     s.appendChild(a);
   });
@@ -1201,9 +1466,25 @@ function renderGrid(gridId, data, type){
     let el;
     if(type==='news'){
       el=document.createElement('article');el.className='news-card';
-      let imgBg=item.gambar?'url('+item.gambar+') center/cover no-repeat, ':'';
-      let imgEl=item.gambar?'<img src="'+item.gambar+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" onerror="this.style.display=\'none\'" alt="">':'';
-      el.innerHTML='<div class="news-card-img" style="background:'+imgBg+(item.color||'var(--green3)')+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p>'+(item.writer?'<span class="label-sm" style="margin-top:6px;display:block;color:var(--gray2)">By '+item.writer+'</span>':'')+'</div>';
+      let imgDiv=document.createElement('div');imgDiv.className='news-card-img';imgDiv.style.background=item.color||'var(--green3)';
+      if(item.gambar){
+        let fbGrid=document.createElement('span');
+        fbGrid.textContent=(item.title||'SNO')[0];
+        fbGrid.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:coolvetica;font-size:42px;color:var(--accent);background:linear-gradient(135deg,'+(item.color||'var(--green3)')+',#0a1a10);z-index:1';
+        let cleanUrl=item.gambar.replace(/["'()]/g,'');
+        let im=document.createElement('img');
+        im.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2';
+        im.onload=function(){fbGrid.style.display='none';imgDiv.style.backgroundImage='url("'+cleanUrl+'")';imgDiv.style.backgroundSize='cover';imgDiv.style.backgroundPosition='center'};
+        im.onerror=function(){this.style.display='none'};
+        im.src=item.gambar;
+        imgDiv.appendChild(fbGrid);imgDiv.appendChild(im);
+      } else {
+        let ic=document.createElement('div');ic.className='icon';ic.textContent=item.icon||'';
+        imgDiv.appendChild(ic);
+      }
+      let body=document.createElement('div');body.className='news-card-body';
+      body.innerHTML='<span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p>'+(item.writer?'<span class="label-sm" style="margin-top:6px;display:block;color:var(--gray2)">By '+item.writer+'</span>':'')+'<span class="label-sm" style="margin-top:2px;display:block;color:var(--gray)">'+(item.views||'0')+' views · '+(item.likes||'0')+' likes</span></div>';
+      el.appendChild(imgDiv);el.appendChild(body);
       el.onclick=()=>{openNewsDetail(item)};
     } else if(type==='schedule'){
       el=document.createElement('div');el.className='schedule-card';
@@ -1244,6 +1525,8 @@ function renderGrid(gridId, data, type){
 let currentArticle = null;
 function openNewsDetail(item){
   currentArticle = item;
+  // Track view
+  trackNewsView(item);
   document.getElementById('detail-image').src = item.gambar||'';
   document.getElementById('detail-image').style.display = item.gambar?'block':'none';
   document.getElementById('detail-category').textContent = item.cat||'General';
@@ -1290,18 +1573,70 @@ function openNewsDetail(item){
   openOverlay('news-detail');
   loadComments(slugify(item.title||''));
 }
+// ===== VIEW STATISTICS =====
+let _viewTimers={};
+function trackNewsView(item){
+  if(!item) return;
+  let key = item.id || slugify(item.title||'');
+  if(!key) return;
+  if(currentUser && (currentUser.email==='tychinf.co.id@gmail.com'||currentUser.uid==='XO7UzNVxaWa7hsoyyDFi7tHZp9F2')) return;
+  let sess = {};
+  try{sess=JSON.parse(sessionStorage.getItem('sno_viewed')||'{}')}catch(e){}
+  if(sess[key]) return;
+  let now = Date.now();
+  if(_viewTimers[key] && now-_viewTimers[key]<5000) return;
+  _viewTimers[key]=now;
+  sess[key]=1;
+  try{sessionStorage.setItem('sno_viewed',JSON.stringify(sess))}catch(e){}
+  let localViews = {};
+  try{localViews=JSON.parse(localStorage.getItem('sno_views')||'{}')}catch(e){}
+  localViews[key] = (localViews[key]||0) + 1;
+  localStorage.setItem('sno_views', JSON.stringify(localViews));
+  if(fbFirestore && item.id){
+    fbFirestore.collection('news').doc(item.id).update({
+      views: firebase.firestore.FieldValue.increment(1)
+    }).catch(()=>{});
+  }
+  let views = getNewsViews(item);
+  let el = document.getElementById('detail-views');
+  if(el) el.textContent = views+' view'+(views!==1?'s':'');
+}
+function getNewsViews(item){
+  if(!item) return 0;
+  let key = item.id || slugify(item.title||'');
+  let localViews = {};
+  try{localViews=JSON.parse(localStorage.getItem('sno_views')||'{}')}catch(e){}
+  let local = localViews[key]||0;
+  let firestore = parseInt(item.views||'0',10);
+  return Math.max(local, firestore);
+}
+function resetOgMeta(){
+  updateOgMeta('SNO — News Network','One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.','SNOTRNSPRNTLOGO.png');
+}
+function setPageOgMeta(page,data){
+  let titles={home:'SNO — News Network',news:'SNO News — Latest Stories & Breaking News',live:'SNO Live — Watch Live Broadcast',play:'SNO Play — Videos & Entertainment',schedule:'SNO Schedule — TV Program Guide',admin:'SNO Admin Panel',profile:'SNO — Your Profile',careers:'SNO Careers — Join Our Team'};
+  let descs={home:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',news:'Stay informed with the latest news, breaking stories, and in-depth coverage.',live:'Watch SNO live broadcasts — news, events, and exclusive coverage.',play:'SNO Play — stream videos, music, and entertainment content.',schedule:'Check the SNO TV schedule — never miss your favorite program.',admin:'Manage SNO content — admin dashboard.',profile:'Your SNO profile and account settings.',careers:'Explore career opportunities at SNO News Network.'};
+  let imgs={home:'SNOTRNSPRNTLOGO.png',news:'SNOTRNSPRNTLOGO.png',live:'SNOTRNSPRNTLOGO.png',play:'SNOTRNSPRNTLOGO.png',schedule:'SNOTRNSPRNTLOGO.png',admin:'SNOTRNSPRNTLOGO.png',profile:'SNOTRNSPRNTLOGO.png',careers:'SNOTRNSPRNTLOGO.png'};
+  let t = data&&data.title ? data.title : (titles[page]||'SNO News Network');
+  let d = data&&data.desc ? data.desc : (descs[page]||'One Media, For All');
+  let img = data&&data.gambar ? data.gambar : (imgs[page]||'SNOTRNSPRNTLOGO.png');
+  updateOgMeta(t,d,img);
+}
+function updateOgMeta(t,d,img){
+  document.querySelector('meta[property="og:title"]').content = t;
+  document.querySelector('meta[property="og:description"]').content = d;
+  document.querySelector('meta[property="og:image"]').content = img;
+  document.querySelector('meta[property="og:url"]').content = window.location.href;
+  document.querySelector('meta[name="twitter:title"]').content = t;
+  document.querySelector('meta[name="twitter:description"]').content = d;
+  document.querySelector('meta[name="twitter:image"]').content = img;
+}
+// Alias for backward compat
 function setOgMeta(item){
   let t = item.title||'SNO News Network';
   let d = item.desc||'One Media, For All — trusted journalism, breaking stories, and in-depth coverage.';
   let img = item.gambar||'SNOTRNSPRNTLOGO.png';
-  let url = window.location.href;
-  document.querySelector('meta[property="og:title"]').content = t;
-  document.querySelector('meta[property="og:description"]').content = d;
-  document.querySelector('meta[property="og:image"]').content = img;
-  document.querySelector('meta[property="og:url"]').content = url;
-  document.querySelector('meta[name="twitter:title"]').content = t;
-  document.querySelector('meta[name="twitter:description"]').content = d;
-  document.querySelector('meta[name="twitter:image"]').content = img;
+  updateOgMeta(t,d,img);
 }
 function toggleLike(){
   if(!currentArticle) return;
@@ -1311,9 +1646,18 @@ function toggleLike(){
   let btn = document.getElementById('detail-like-btn');
   btn.classList.toggle('liked', !liked);
   document.getElementById('like-count').textContent = getLikes(key);
+  // Sync to Firestore
+  if(fbFirestore && currentArticle.id){
+    fbFirestore.collection('news').doc(currentArticle.id).update({
+      likes: firebase.firestore.FieldValue.increment(liked ? -1 : 1)
+    }).catch(()=>{});
+  }
 }
 function getLikes(key){
-  try{ return parseInt(localStorage.getItem('sno_like_'+key)||'0',10); }catch(e){return 0}
+  let local = 0;
+  try{ local = parseInt(localStorage.getItem('sno_like_'+key)||'0',10); }catch(e){}
+  let firestore = parseInt(currentArticle?.likes||'0',10);
+  return Math.max(local, firestore);
 }
 function hasLiked(key){
   try{
@@ -1344,9 +1688,22 @@ function renderRecommended(exclude){
   let recs = others.slice(0,3);
   recs.forEach(item=>{
     let el=document.createElement('article');el.className='news-card';
-    let imgBg=item.gambar?'url('+item.gambar+') center/cover no-repeat, ':'';
-    let imgEl=item.gambar?'<img src="'+item.gambar+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85" onerror="this.style.display=\'none\'" alt="">':'';
-    el.innerHTML='<div class="news-card-img" style="background:'+imgBg+(item.color||'var(--green3)')+'">'+imgEl+'<div class="icon">'+(item.gambar?'':item.icon)+'</div></div><div class="news-card-body"><span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p></div>';
+    let imgDiv=document.createElement('div');imgDiv.className='news-card-img';imgDiv.style.background=item.color||'var(--green3)';
+    if(item.gambar){
+      let fbRec=document.createElement('span');
+      fbRec.textContent=(item.title||'SNO')[0];
+      fbRec.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:coolvetica;font-size:42px;color:var(--accent);background:linear-gradient(135deg,'+(item.color||'var(--green3)')+',#0a1a10);z-index:1';
+      let cleanUrl=item.gambar.replace(/["'()]/g,'');
+      let im=document.createElement('img');
+      im.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2';
+      im.onload=function(){fbRec.style.display='none';imgDiv.style.backgroundImage='url("'+cleanUrl+'")';imgDiv.style.backgroundSize='cover';imgDiv.style.backgroundPosition='center'};
+      im.onerror=function(){this.style.display='none'};
+      im.src=item.gambar;
+      imgDiv.appendChild(fbRec);imgDiv.appendChild(im);
+    }
+    let body=document.createElement('div');body.className='news-card-body';
+    body.innerHTML='<span class="label-sm">'+(item.cat||'')+' · '+(item.time||'Just now')+'</span><h3>'+(item.title||'')+'</h3><p>'+(item.desc||'')+'</p><span class="label-sm" style="margin-top:2px;display:block;color:var(--gray)">'+(item.views||'0')+' views</span></div>';
+    el.appendChild(imgDiv);el.appendChild(body);
     el.onclick=()=>{closeOverlay('news-detail');setTimeout(()=>openNewsDetail(item),400)};
     g.appendChild(el);
   });
@@ -1733,7 +2090,7 @@ function openPlayDetail(item){
   if(featVid) initPlayPlayer(featVid, item.url||'');
   let tag = content.querySelector('.play-feat-tag');
   if(tag) tag.textContent = item.tag||'SNO Original';
-  if(bg && item.gambar) bg.style.backgroundImage = 'url('+item.gambar+')';
+  if(bg && item.gambar) bg.style.backgroundImage = 'url("'+item.gambar.replace(/["'()]/g,'')+'")';
   if(!overlay.classList.contains('open')) openOverlay('play');
   setTimeout(updateFavBtn, 300);
 }
@@ -1879,7 +2236,7 @@ function checkBroadcastState(){
   let navDotM = document.getElementById('nav-livedot-mobile');
   let heroDot = document.getElementById('hero-live-dot');
   if(!defEl) return;
-  // Reset - default: text only, no video
+  // Reset
   defEl.style.display = '';
   if(preEl) preEl.style.display = 'none';
   if(visEl) visEl.style.display = 'none';
@@ -1888,12 +2245,33 @@ function checkBroadcastState(){
   if(heroDot) heroDot.style.display = 'none';
   document.getElementById('nav-live-text').textContent = 'Broadcast';
   if(_countdownInterval){clearInterval(_countdownInterval);_countdownInterval=null}
-  // If we have an active upcoming broadcast
-  if(u && u.active && u.active !== 'false' && u.startTime){
-    let startMs = new Date(u.startTime).getTime();
+  let bgEl = document.getElementById('hero-bg');
+  if(bgEl){bgEl.style.backgroundImage='';bgEl.classList.remove('show')}
+  // Compute start time from day+time or legacy startTime
+  let startMs = null;
+  if(u && u.active && u.active !== 'false'){
+    if(u.startTime){
+      // Legacy format
+      startMs = new Date(u.startTime).getTime();
+    } else if(u.day && u.time){
+      // New format: day + time — compute next occurrence
+      let days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+      let targetDay = days.indexOf(u.day.toLowerCase().trim());
+      if(targetDay===-1) targetDay = parseInt(u.day) || 0;
+      let now = new Date();
+      let target = new Date(now);
+      target.setDate(target.getDate() + (targetDay + 7 - target.getDay()) % 7);
+      let parts = u.time.split(':');
+      target.setHours(parseInt(parts[0])||0, parseInt(parts[1])||0, 0, 0);
+      // If already past this week, go to next week
+      if(target.getTime() <= Date.now()) target.setDate(target.getDate() + 7);
+      startMs = target.getTime();
+    }
+  }
+  if(u && u.active && u.active !== 'false' && startMs){
     let nowMs = Date.now();
     if(!isNaN(startMs) && startMs > nowMs){
-      // PRE-LIVE: countdown (only if within 24h), no video
+      // PRE-LIVE
       defEl.style.display = 'none';
       if(visEl) visEl.style.display = 'none';
       if(navDot) navDot.style.display = 'inline-block';
@@ -1904,13 +2282,26 @@ function checkBroadcastState(){
         preEl.style.display = 'block';
         document.getElementById('prelive-title').textContent = u.title||'Upcoming Broadcast';
         document.getElementById('prelive-desc').textContent = u.desc||'';
-        document.getElementById('prelive-starttime').textContent = 'Starts at '+new Date(u.startTime).toLocaleString();
+        let dateStr = u.day ? u.day+' at '+u.time : new Date(u.startTime).toLocaleString();
+        document.getElementById('prelive-starttime').textContent = 'Starts '+dateStr;
+        // YouTube thumbnail as background
+        let bgEl = document.getElementById('hero-bg');
+        if(u.video){
+          let ytMatch = u.video.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+          if(ytMatch && bgEl){
+            let ytid = ytMatch[1];
+            let testImg = new Image();
+            testImg.onload = ()=>{bgEl.style.backgroundImage='url(https://i.ytimg.com/vi/'+ytid+'/maxresdefault.jpg)';bgEl.classList.add('show')};
+            testImg.onerror = ()=>{bgEl.style.backgroundImage='url(https://i.ytimg.com/vi/'+ytid+'/hqdefault.jpg)';bgEl.classList.add('show')};
+            testImg.src = 'https://i.ytimg.com/vi/'+ytid+'/maxresdefault.jpg';
+          } else if(bgEl){bgEl.style.backgroundImage='';bgEl.classList.remove('show')}
+        } else if(bgEl){bgEl.style.backgroundImage='';bgEl.classList.remove('show')}
         let diffH = (startMs - nowMs) / 3600000;
         if(diffH <= 24) startCountdown(startMs);
         else document.getElementById('hero-countdown').textContent = '--:--:--';
       }
     } else if(!isNaN(startMs)){
-      // LIVE: show video, "LIVE" label
+      // LIVE
       defEl.style.display = 'none';
       if(preEl) preEl.style.display = 'none';
       if(visEl) visEl.style.display = '';
@@ -1966,8 +2357,8 @@ function loadAllData(){
     const collections = {
       news: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
-        newsData = data; window._newsDataLoaded = true;
-        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' '+t('news_count');console.log('News loaded from Firestore:',data.length);if(window.location.hash.startsWith('#/news/'))openNewsByHash()}else fallbackNews();
+        newsData = data; window._newsDataLoaded = true; hideLoadScreen();
+        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' '+t('news_count');console.log('News loaded from Firestore:',data.length)}else fallbackNews();
       },
       schedule: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
@@ -2030,7 +2421,7 @@ function loadAllData(){
 }
 
 function fallbackNews(){
-  newsData = STATIC.news; window._newsDataLoaded = true;
+  newsData = STATIC.news; window._newsDataLoaded = true; hideLoadScreen();
   renderGrid('news-grid',STATIC.news,'news');
   renderGrid('news-grid-full',STATIC.news,'news');
   renderNewsSlider(STATIC.news);
@@ -2064,17 +2455,21 @@ function renderAdmin(){
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
     {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
     {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'mux_playback_id',p:'Mux Playback ID (for live)'},{k:'video',p:'YouTube embed URL (fallback)'}],col:'settings/hero'},
-    {title:'Upcoming Broadcast',fields:[{k:'title',p:'Broadcast Title'},{k:'desc',p:'Description'},{k:'startTime',p:'Start time (YYYY-MM-DDTHH:mm)'},{k:'active',p:'Active (true/false)'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'YouTube URL'}],col:'upcoming'},
+    {title:'Upcoming Broadcast',fields:[{k:'day',p:'Day (e.g. Monday)'},{k:'time',p:'Time (HH:MM)'},{k:'title',p:'Broadcast Title'},{k:'desc',p:'Description'},{k:'active',p:'Active (true/false)'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'YouTube URL'}],col:'upcoming'},
     {title:'Ad Popup',fields:[{k:'title',p:'Ad title'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'Fallback video URL'},{k:'active',p:'Active (true/false)'}],col:'settings/ad'}
   ];
   panels.forEach(p=>{
     let card=document.createElement('div');card.className='admin-card';
     let fieldsHtml='';
     p.fields.forEach(f=>{
-      let isTime = f.k==='time' && p.col==='schedule';
-      let isDt = f.k==='startTime' && p.col==='upcoming';
+      let isTime = (f.k==='time') && (p.col==='schedule' || p.col==='upcoming');
+      let isDt = false;
       let inpType = isTime ? 'time' : isDt ? 'datetime-local' : f.k==='isi' ? 'textarea' : 'text';
-      if(inpType==='textarea') fieldsHtml+='<textarea class="admin-textarea" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'"></textarea>';
+      if(f.k==='day' && p.col==='upcoming'){
+        let days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        fieldsHtml+='<select class="admin-input" id="af-'+p.col+'-'+f.k+'"><option value="">Day...</option>'+days.map(d=>'<option value="'+d+'">'+d+'</option>').join('')+'</select>';
+      } else if(inpType==='textarea') fieldsHtml+='<textarea class="admin-textarea" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'"></textarea>';
+      else if(f.k==='gambar' && p.col==='news') fieldsHtml+='<div style="display:flex;gap:8px;align-items:center"><input type="'+inpType+'" class="admin-input" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'" style="flex:1"><input type="file" accept="image/*" id="af-news-gambar-upload" style="display:none" onchange="uploadNewsImage(this)"><button class="btn btn-outline btn-sm" onclick="event.preventDefault();document.getElementById(\'af-news-gambar-upload\').click()" style="flex-shrink:0">+ Upload</button><span id="af-news-gambar-status" style="font-size:11px;color:var(--gray);white-space:nowrap"></span></div>';
       else fieldsHtml+='<input type="'+inpType+'" class="admin-input" id="af-'+p.col+'-'+f.k+'" placeholder="'+f.p+'"'+(isDt?'':'')+'>';
     });
     card.innerHTML='<h3>'+p.title+'</h3><div class="admin-form">'+fieldsHtml+'<button class="btn btn-primary btn-sm" onclick="adminSubmit(\''+p.col+'\')">Add to '+p.title+'</button></div><div class="admin-list" id="admin-list-'+p.col+'"></div>';
@@ -2088,6 +2483,26 @@ function renderAdmin(){
   renderCareerAdmin();
 }
 
+function uploadNewsImage(input){
+  let file = input.files && input.files[0];
+  if(!file) return;
+  if(!fbStorage){showToast('Firebase Storage not available','error');return}
+  let statusEl = document.getElementById('af-news-gambar-status');
+  if(statusEl) statusEl.textContent = 'Uploading...';
+  let ref = fbStorage.ref('news_images/'+Date.now()+'_'+file.name);
+  let task = ref.put(file);
+  task.then(snap=>snap.ref.getDownloadURL()).then(url=>{
+    let inp = document.getElementById('af-news-gambar');
+    if(inp) inp.value = url;
+    if(statusEl) statusEl.textContent = 'Uploaded!';
+    setTimeout(()=>{if(statusEl) statusEl.textContent=''}, 3000);
+    showToast('Image uploaded!','success');
+  }).catch(err=>{
+    console.warn('Upload error',err);
+    if(statusEl) statusEl.textContent = 'Failed!';
+    showToast('Upload failed: '+err.message,'error');
+  });
+}
 function adminSubmit(col){
   if(!fbFirestore||!isAdmin){alert('Configure Firebase and sign in as admin!');return}
   let isUpdate = _editingCol === col && _editingId;
@@ -2098,7 +2513,7 @@ function adminSubmit(col){
     upnext:['vid','title','desc','dur','time'],
     ticker:['text'],
     'settings/hero':['title1','title2','desc','mux_playback_id','video'],
-    upcoming:['title','desc','startTime','active','mux_playback_id','video'],
+    upcoming:['day','time','title','desc','active','mux_playback_id','video'],
     'settings/ad':['title','mux_playback_id','video','active']
   };
   let data={};
@@ -2172,7 +2587,7 @@ function adminEdit(col, id){
     play:['icon','title','desc','tag','url','vid','gambar','subs','color'],
       upnext:['vid','title','desc','dur','time'],
       ticker:['text'],
-      upcoming:['title','desc','startTime','active','mux_playback_id','video']
+      upcoming:['day','time','title','desc','active','mux_playback_id','video']
     };
     (fields[col]||[]).forEach(k=>{
       let el=document.getElementById('af-'+col+'-'+k);
@@ -2192,11 +2607,29 @@ function adminDelete(col,id){
 }
 
 // ===== INIT =====
+let _slugEntry = window.location.hash.startsWith('#/news/') || /(?:\/news|\/SNO\/news)\//.test(window.location.pathname);
+let _pageLoadTime = Date.now();
+function hideLoadScreen(){
+  let el = document.getElementById('load-screen');
+  if(!el||el.classList.contains('hide')) return;
+  // Minimum 5s loading for slug entry
+  let elapsed = Date.now() - _pageLoadTime;
+  if(_slugEntry && elapsed < 5000){
+    setTimeout(hideLoadScreen, 5000 - elapsed);
+    return;
+  }
+  el.classList.add('hide');document.body.style.overflow=''
+  // Check routing after load screen hides
+  if(window.location.hash.startsWith('#/news/')) openNewsByHash();
+  routeByPathname();
+}
 document.getElementById('demo-overlay')?.classList.remove('show');
 if(!localStorage.getItem('sno_demo_seen')){
   setTimeout(()=>{let d=document.getElementById('demo-overlay');if(d)d.classList.add('show')},600);
 }
 function closeDemo(){document.getElementById('demo-overlay').classList.remove('show');localStorage.setItem('sno_demo_seen','1')}
+// Force-hide loading screen after 8s if DB hangs
+setTimeout(hideLoadScreen, 8000);
 
 // ===== COOKIE CONSENT =====
 if(!localStorage.getItem('sno_cookie_consent')){
@@ -2205,6 +2638,101 @@ if(!localStorage.getItem('sno_cookie_consent')){
 function acceptCookies(){
   document.getElementById('cookie-bar').classList.remove('show');
   localStorage.setItem('sno_cookie_consent','1');
+}
+
+// ===== SUBSCRIBE POPUP =====
+function showSubPopup(){
+  if(localStorage.getItem('sno_sub_dismiss')||sessionStorage.getItem('sno_sub_shown')) return;
+  sessionStorage.setItem('sno_sub_shown','1');
+  let el = document.getElementById('sub-popup');
+  if(el) setTimeout(()=>el.classList.add('show'), 800);
+}
+function closeSubPopup(){
+  let el = document.getElementById('sub-popup');
+  if(el) el.classList.remove('show');
+}
+function dontShowSub(){
+  localStorage.setItem('sno_sub_dismiss','1');
+  closeSubPopup();
+}
+function subscribeNewsletter(){
+  let email = document.getElementById('sub-email').value.trim();
+  if(!email || !email.includes('@')){showToast('Please enter a valid email','error');return}
+  if(fbFirestore){
+    fbFirestore.collection('subscribers').add({email,subscribedAt:new Date(),source:'slug_popup'})
+      .then(()=>{document.getElementById('sub-form').style.display='none';document.getElementById('sub-success').style.display='block';setTimeout(closeSubPopup,3000)})
+      .catch(e=>showToast('Subscription failed','error'));
+  } else {
+    showToast('Firestore unavailable. Try again later.','error');
+  }
+}
+function subOpenAuth(){
+  closeSubPopup();
+  openAuth();
+}
+
+// ===== SEARCH =====
+let _searchAllData = [];
+function buildSearchIndex(){
+  _searchAllData = [];
+  let n = typeof newsData !== 'undefined' && newsData.length ? newsData : (STATIC.news||[]);
+  n.forEach(item=>{_searchAllData.push({type:'news',title:item.title,desc:item.desc,cat:item.cat,gambar:item.gambar,item:item})});
+  let s = typeof _scheduleData !== 'undefined' && _scheduleData.length ? _scheduleData : (STATIC.schedule||[]);
+  s.forEach(item=>{_searchAllData.push({type:'schedule',title:item.title,desc:item.desc,gambar:'',cat:item.time,item:item})});
+  let p = typeof _playData !== 'undefined' && _playData.length ? _playData : (STATIC.play||[]);
+  p.forEach(item=>{_searchAllData.push({type:'play',title:item.title,desc:item.desc,gambar:item.gambar||'',cat:'SNO Play',item:item})});
+}
+function openSearch(){
+  document.getElementById('search-overlay').classList.add('open');
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').innerHTML='<div class="search-empty">Type something to search across all content.</div>';
+  document.getElementById('search-clear').style.display='none';
+  document.getElementById('search-suggest').style.display='';
+  setTimeout(()=>document.getElementById('search-input').focus(),200);
+  buildSearchIndex();
+}
+function closeSearch(){
+  document.getElementById('search-overlay').classList.remove('open');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSearch()});
+function clearSearch(){
+  document.getElementById('search-input').value='';searchQuery('');document.getElementById('search-input').focus();
+}
+function searchQuery(q){
+  q = q.trim().toLowerCase();
+  let results = document.getElementById('search-results');
+  let suggest = document.getElementById('search-suggest');
+  let clear = document.getElementById('search-clear');
+  if(!q){results.innerHTML='<div class="search-empty">Type something to search across all content.</div>';suggest.style.display='';clear.style.display='none';return}
+  clear.style.display='block';suggest.style.display='none';
+  let hits = _searchAllData.filter(d=>(d.title||'').toLowerCase().includes(q)||(d.desc||'').toLowerCase().includes(q)||(d.cat||'').toLowerCase().includes(q));
+  if(!hits.length){results.innerHTML='<div class="search-empty">No results for "'+q+'".</div>';return}
+  let groups = {};
+  hits.forEach(d=>{if(!groups[d.type])groups[d.type]=[];groups[d.type].push(d)});
+  let html='';
+  Object.keys(groups).forEach(type=>{
+    let label = type==='news'?'News Articles':type==='schedule'?'Schedule':type==='play'?'SNO Play':'Other';
+    html+='<div class="search-group"><div class="search-group-title">'+label+'</div>';
+    groups[type].forEach(d=>{
+      let img = d.gambar ? '<img class="search-item-img" src="'+d.gambar+'" loading="lazy" onerror="this.style.display=\'none\'">' : '<div class="search-item-img"></div>';
+      html+='<div class="search-item" onclick="closeSearch();goSearchResult(\''+type+'\','+(typeof d.item.id==='string'?'"'+d.item.id+'"':d.item.id||'0')+')">'+img+'<div class="search-item-info"><h4>'+(d.title||'Untitled')+'</h4><span>'+(d.cat||'')+'</span></div></div>';
+    });
+    html+='</div>';
+  });
+  results.innerHTML = html;
+}
+function goSearchResult(type,id){
+  if(type==='news'){
+    let all = typeof newsData !== 'undefined' && newsData.length ? newsData : (STATIC.news||[]);
+    let item = all.find(n=>n.id===id);
+    if(item) openNewsDetail(item);
+  } else if(type==='schedule'){
+    openOverlay('schedule');
+  } else if(type==='play'){
+    let all = typeof _playData !== 'undefined' && _playData.length ? _playData : (STATIC.play||[]);
+    let item = all.find(n=>n.id===id);
+    if(item) openPlayDetail(item);
+  }
 }
 
 // ===== CAREERS =====
@@ -2294,7 +2822,7 @@ function setCareerStatus(id,status){
 function toggleCareerDetail(id){let el=document.getElementById('career-detail-'+id);if(el)el.classList.toggle('open')}
 
 // ===== AD POPUP =====
-let _adHls = null;
+let _adHls = null, _adPlayer = null, _adUiInterval = null;
 function loadAdPopup(){
   let popup = document.getElementById('ad-popup');
   if(!popup) return;
@@ -2306,7 +2834,9 @@ function loadAdPopup(){
     document.getElementById('ad-popup-title').textContent = d.title||'Ad';
     let video = document.getElementById('ad-popup-video');
     if(!video) return;
+    _adPlayer = video;
     if(_adHls){try{_adHls.destroy()}catch(e){};_adHls=null}
+    if(_adUiInterval){clearInterval(_adUiInterval);_adUiInterval=null}
     let src = d.mux_playback_id||d.video||'';
     if(!src){popup.classList.remove('show');return}
     if(src.includes('.m3u8') || !src.includes('youtube')){
@@ -2322,15 +2852,40 @@ function loadAdPopup(){
         video.style.display = 'block'; video.src = src; video.play().catch(()=>{});
       } else {popup.classList.remove('show');return}
     } else {popup.classList.remove('show');return}
+    _adUiInterval = setInterval(updateAdUI, 250);
     setTimeout(()=>popup.classList.add('show'), 3000);
   }).catch(()=>{popup.classList.remove('show')});
+}
+function toggleAdPlay(){
+  if(!_adPlayer) return;
+  let btn = document.getElementById('ad-popup-play-btn');
+  if(_adPlayer.paused){_adPlayer.play();btn.textContent='❚❚'}
+  else{_adPlayer.pause();btn.textContent='►'}
+}
+function seekAdVideo(e){
+  let wrap = document.querySelector('.ad-popup-progress');
+  if(!wrap||!_adPlayer||!_adPlayer.duration) return;
+  let rect = wrap.getBoundingClientRect();
+  _adPlayer.currentTime = ((e.clientX - rect.left) / rect.width) * _adPlayer.duration;
+}
+function updateAdUI(){
+  if(!_adPlayer) return;
+  let fill = document.getElementById('ad-popup-fill');
+  let btn = document.getElementById('ad-popup-play-btn');
+  if(fill&&_adPlayer.duration) fill.style.width = (_adPlayer.currentTime/_adPlayer.duration*100)+'%';
+  if(btn) btn.textContent = _adPlayer.paused?'►':'❚❚';
 }
 function closeAdPopup(){
   document.getElementById('ad-popup')?.classList.remove('show');
   if(_adHls){try{_adHls.destroy()}catch(e){};_adHls=null}
+  if(_adUiInterval){clearInterval(_adUiInterval);_adUiInterval=null}
   let v = document.getElementById('ad-popup-video');
   if(v){v.pause();v.src=''}
   localStorage.setItem('sno_ad_closed','1');
+}
+function openPrivacy(){
+  closeOverlay('privacy');
+  setTimeout(()=>openOverlay('privacy'), 100);
 }
 
 applyLang(currentLang);
@@ -2345,15 +2900,9 @@ function slugify(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^
 function openNewsByHash(){
   let hash = window.location.hash.replace('#/news/','');
   if(!hash) return;
-  // Wait until real data has loaded (Firestore or fallback)
-  if(!window._newsDataLoaded){
-    if(!window._newsRetry){window._newsRetry=0}
-    if(window._newsRetry<10){window._newsRetry++;setTimeout(openNewsByHash,500);return}
-  }
-  window._newsRetry=0;
   let all = newsData.length ? newsData : STATIC.news;
   let item = all.find(n => n.slug === hash) || all.find(n => slugify(n.title||'') === hash);
-  if(item) openNewsDetail(item);
+  if(item) {openNewsDetail(item);showSubPopup()}
   else showToast('Article "'+hash+'" not found','error');
 }
 window.addEventListener('hashchange', openNewsByHash);
@@ -2364,18 +2913,12 @@ function routeByPathname(){
   let m = p.match(/(?:\/news|\/SNO\/news)\/(.+)/);
   if(m){
     let slug = m[1].replace(/\.html$/,'');
-    if(!window._newsDataLoaded){
-      if(!window._pathRetry){window._pathRetry=0}
-      if(window._pathRetry<10){window._pathRetry++;setTimeout(routeByPathname,500);return}
-    }
-    window._pathRetry=0;
     let all = newsData.length ? newsData : STATIC.news;
     let item = all.find(n => n.slug === slug) || all.find(n => slugify(n.title||'') === slug);
-    if(item) setTimeout(()=>openNewsDetail(item), 200);
+    if(item) setTimeout(()=>{openNewsDetail(item);showSubPopup()}, 200);
     else showToast('Article not found','error');
   }
 }
-setTimeout(routeByPathname, 300);
 </script>
 </body>
 </html>
