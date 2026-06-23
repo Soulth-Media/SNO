@@ -9,13 +9,13 @@
 <meta property="og:site_name" content="SNO News Network">
 <meta property="og:title" content="SNO — News Network">
 <meta property="og:description" content="One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.">
-<meta property="og:image" content="">
+<meta property="og:image" content="SNOTRNSPRNTLOGO.png">
 <meta property="og:url" content="">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SNO — News Network">
 <meta name="twitter:description" content="One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.">
-<meta name="twitter:image" content="">
+<meta name="twitter:image" content="SNOTRNSPRNTLOGO.png">
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/coolvetica">
 <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/telegraf">
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js">
@@ -356,6 +356,27 @@ footer a:hover{color:var(--white)}
 .listen-popup .listen-play-btn{width:100%;justify-content:center}
 .recommended-section{padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
 .recommended-section h2{margin-bottom:20px}
+.comments-section{padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.comments-section h2{margin-bottom:4px}
+.comments-section .comment-sub{font-size:12px;color:var(--gray);margin-bottom:16px}
+.comment-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.comment-item:last-child{border-bottom:none}
+.comment-avatar{width:36px;height:36px;border-radius:50%;background:var(--green3);display:flex;align-items:center;justify-content:center;font-size:14px;font-family:'Coolvetica',sans-serif;color:var(--accent);flex-shrink:0}
+.comment-body{flex:1;min-width:0}
+.comment-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.comment-meta strong{font-size:13px;font-weight:600}
+.comment-meta .label-sm{font-size:10px}
+.comment-body p{font-size:13px;color:var(--gray2);line-height:1.5;word-break:break-word}
+.comment-form{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.comment-form-row{display:flex;gap:8px;align-items:center}
+.comment-form-row input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s}
+.comment-form-row input:focus{border-color:var(--accent)}
+.comment-form-row input::placeholder{color:var(--gray)}
+.comment-form textarea{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;font-family:'Telegraf',sans-serif;outline:none;transition:border .2s;resize:vertical;min-height:60px}
+.comment-form textarea:focus{border-color:var(--accent)}
+.comment-form textarea::placeholder{color:var(--gray)}
+.comment-form .comment-submit{align-self:flex-end}
+.comment-char-count{font-size:11px;color:var(--gray);text-align:right}
 
 /* ===== SCHEDULE DETAIL ===== */
 .detail-card{background:var(--black3);border-radius:var(--radius);padding:32px;border:1px solid rgba(255,255,255,.04);margin-bottom:24px}
@@ -401,6 +422,53 @@ footer a:hover{color:var(--white)}
 .mobile-nav .user-badge{justify-content:center;margin-top:12px}
 .mobile-nav-overlay{position:fixed;inset:0;z-index:199;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
 .mobile-nav-overlay.show{opacity:1;pointer-events:auto}
+/* ===== AD POPUP ===== */
+.ad-popup{position:fixed;bottom:80px;left:20px;z-index:500;width:200px;background:rgba(8,8,8,.95);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;backdrop-filter:blur(12px);transform:translateX(-120%);transition:transform .6s cubic-bezier(.16,1,.3,1);box-shadow:0 8px 40px rgba(0,0,0,.6)}
+.ad-popup.show{transform:translateX(0)}
+.ad-popup video{width:100%;display:block;aspect-ratio:16/9;background:#000;border-radius:0}
+.ad-popup-close{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:12px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .2s}
+.ad-popup-close:hover{background:#ff3333}
+.ad-popup-title{display:block;padding:6px 10px;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:.5px;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.04)}
+.ad-popup-label{position:absolute;bottom:4px;left:4px;font-size:8px;font-weight:600;text-transform:uppercase;background:rgba(0,0,0,.8);padding:2px 6px;border-radius:3px;color:var(--gray2);z-index:2}
+@media(max-width:600px){
+  .ad-popup{width:150px;bottom:60px;left:12px}
+}
+/* ===== CAREERS ===== */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.career-card{background:var(--black3);border-radius:var(--radius);padding:24px;border:1px solid rgba(255,255,255,.04);transition:all .3s;cursor:pointer}
+.career-card:hover{border-color:rgba(0,212,84,.2);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.career-card h3{font-size:15px;font-weight:600;margin-bottom:4px;font-family:'Telegraf',sans-serif}
+.career-card .career-code{font-size:10px;font-weight:600;color:var(--accent);background:rgba(0,212,84,.1);padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:6px;font-family:monospace}
+.career-card p{font-size:12px;color:var(--gray);line-height:1.5;margin-bottom:12px}
+.career-form{display:flex;flex-direction:column;gap:10px;max-width:500px}
+.career-form .admin-input{padding:12px 14px;font-size:13px}
+.career-q{background:rgba(255,255,255,.03);border-radius:var(--radius-sm);padding:14px;border:1px solid rgba(255,255,255,.04)}
+.career-q label{font-size:12px;color:var(--gray2);display:block;margin-bottom:6px;line-height:1.4;font-weight:500}
+.career-q textarea{width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;outline:none;transition:border .2s;resize:vertical;min-height:60px;font-family:'Telegraf',sans-serif}
+.career-q textarea:focus{border-color:var(--accent)}
+.career-inbox-item{padding:16px;border-radius:var(--radius-sm);background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);margin-bottom:8px}
+.career-inbox-item .status{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;text-transform:uppercase}
+.career-inbox-item .status.pending{background:rgba(255,193,7,.15);color:#ffc107}
+.career-inbox-item .status.training{background:rgba(0,212,84,.12);color:var(--accent)}
+.career-inbox-item .status.accepted{background:rgba(0,212,84,.2);color:#00e676}
+.career-inbox-item .status.rejected{background:rgba(255,68,68,.15);color:#ff4444}
+.career-inbox-detail{background:var(--black3);border-radius:var(--radius-sm);padding:16px;margin-top:8px;display:none;border:1px solid rgba(255,255,255,.06)}
+.career-inbox-detail.open{display:block}
+.career-inbox-detail .field{font-size:12px;margin-bottom:6px}
+.career-inbox-detail .field strong{color:var(--gray2);display:inline-block;min-width:100px}
+.career-inbox-detail .field span{color:var(--white)}
+.career-training-form{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding:12px;border-top:1px solid rgba(255,255,255,.06)}
+.career-training-form input,.career-training-form textarea{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;outline:none;transition:border .2s;width:100%;font-family:'Telegraf',sans-serif}
+.career-training-form textarea{min-height:50px;resize:vertical}
+.career-training-form input:focus,.career-training-form textarea:focus{border-color:var(--accent)}
+.career-training-score{display:flex;align-items:center;gap:8px;margin:8px 0}
+.career-training-score input{flex:1;padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--white);font-size:13px;outline:none;width:80px;font-family:'Telegraf',sans-serif}
+.career-training-score input:focus{border-color:var(--accent)}
+.career-training-score span{font-size:12px;color:var(--gray)}
+@media(max-width:600px){
+  .career-grid{grid-template-columns:1fr}
+}
+
 @media(max-width:768px){
   .burger-btn{display:block}
   header nav{display:none}
@@ -423,6 +491,7 @@ footer a:hover{color:var(--white)}
       <a data-page="live"><span class="live-dot" id="nav-livedot" style="display:none"></span><span id="nav-live-text" data-i18n="nav_broadcast">Broadcast</span></a>
       <a data-page="play" class="play-link" data-i18n="nav_play">SNO Play</a>
       <a data-page="schedule" data-i18n="nav_schedule">Schedule</a>
+      <a data-page="careers" data-i18n="nav_careers">Careers</a>
       <a data-page="admin" id="admin-nav" style="display:none;color:var(--accent)" data-i18n="nav_admin">Admin</a>
     </nav>
     <div class="lang-toggle">
@@ -444,6 +513,7 @@ footer a:hover{color:var(--white)}
     <a data-page="live"><span class="live-dot" id="nav-livedot-mobile" style="display:none"></span><span data-i18n="nav_broadcast">Broadcast</span></a>
     <a data-page="play" data-i18n="nav_play">SNO Play</a>
     <a data-page="schedule" data-i18n="nav_schedule">Schedule</a>
+    <a data-page="careers" data-i18n="nav_careers">Careers</a>
     <a data-page="admin" id="admin-nav-mobile" style="display:none;color:var(--accent)" data-i18n="nav_admin">Admin</a>
   </nav>
   <div class="lang-toggle">
@@ -575,7 +645,7 @@ footer a:hover{color:var(--white)}
   <div class="play-header">
     <div class="play-header-left">
       <button class="overlay-back-btn" onclick="closeOverlay('play')" data-i18n="back">← Back</button>
-      <span class="play-brand">SNO <span style="font-weight:300">PLAY</span></span>
+      <img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"><span class="play-brand">PLAY</span>
     </div>
     <div class="play-header-center">
       <div class="play-search-wrap">
@@ -684,6 +754,21 @@ footer a:hover{color:var(--white)}
       </div>
       <div class="article-body" id="detail-body"></div>
     </article>
+    <div class="comments-section" id="comments-section">
+      <h2 class="h-md"><span>☁ Comments</span> <span class="label-sm" id="comments-count" style="font-size:13px;color:var(--gray)">0</span></h2>
+      <p class="comment-sub">Share your thoughts on this article</p>
+      <div id="comments-list"></div>
+      <div class="comment-form" id="comment-form">
+        <div class="comment-form-row">
+          <input type="text" id="comment-name" placeholder="Your name" value="">
+        </div>
+        <textarea id="comment-text" placeholder="Write a comment..." maxlength="500"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="comment-char-count" id="comment-char-count">0/500</span>
+          <button class="btn btn-primary btn-sm comment-submit" onclick="submitComment()">+ Comment</button>
+        </div>
+      </div>
+    </div>
     <div class="recommended-section">
       <h2 class="h-md" data-i18n="recommended">Recommended Stories</h2>
       <div class="news-grid" id="recommended-grid"></div>
@@ -713,6 +798,32 @@ footer a:hover{color:var(--white)}
   </div>
   <button class="btn btn-primary listen-play-btn" id="listen-play-btn" onclick="listenPlay()">► Play</button>
   <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeListenPopup()">Cancel</button>
+</div>
+
+<!-- ===== CAREERS OVERLAY ===== -->
+<div class="overlay-page" id="overlay-careers"><div class="grain-overlay"><div class="grain"></div></div>
+  <div class="overlay-header">
+    <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('careers')" data-i18n="back">← Back</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
+    <span class="label-sm" data-i18n="nav_careers">Careers</span>
+  </div>
+  <div class="overlay-content">
+    <h1 class="h-lg" style="margin-bottom:4px">Join SNO</h1>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:28px">Build your career in Roblox media & entertainment. Select a role to apply.</p>
+    <div id="career-listings"></div>
+    <div id="career-form-wrap" style="display:none;margin-top:32px;border-top:1px solid rgba(255,255,255,.06);padding-top:32px">
+      <h2 class="h-md" id="career-form-title" style="margin-bottom:16px">Apply for <span id="career-role-name"></span></h2>
+      <div class="career-form">
+        <input type="text" class="admin-input" id="cf-name" placeholder="Your name / username">
+        <input type="text" class="admin-input" id="cf-discord" placeholder="Discord username (e.g. user#0000)">
+        <input type="text" class="admin-input" id="cf-roblox" placeholder="Roblox username">
+        <input type="text" class="admin-input" id="cf-experience" placeholder="Years of experience / relevant background">
+        <div id="cf-questions"></div>
+        <input type="hidden" id="cf-jobcode" value="">
+        <button class="btn btn-primary" onclick="submitCareerApp()" style="width:100%;justify-content:center;margin-top:8px">+ Submit Application</button>
+        <p style="font-size:12px;color:var(--gray);margin-top:8px;text-align:center">After submitting, check back for training scenarios from our team.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== ADMIN OVERLAY ===== -->
@@ -774,6 +885,15 @@ footer a:hover{color:var(--white)}
   </div>
 </div>
 
+<!-- ===== AD POPUP ===== -->
+<div class="ad-popup" id="ad-popup">
+  <div class="ad-popup-inner">
+    <span class="ad-popup-title" id="ad-popup-title">Ad</span>
+    <button class="ad-popup-close" onclick="closeAdPopup()">×</button>
+    <video id="ad-popup-video" muted playsinline></video>
+  </div>
+</div>
+
 <!-- ===== COOKIE CONSENT ===== -->
 <div class="cookie-bar" id="cookie-bar">
   <p>This site uses cookies. By continuing, you agree to our <a href="#" data-i18n="privacy">Privacy Policy</a>.</p>
@@ -785,8 +905,8 @@ footer a:hover{color:var(--white)}
   <div class="container">
     <div class="footer-grid">
       <div><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:36px"><p data-i18n="footer_desc">Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.</p></div>
-      <div><h4 data-i18n="footer_channels">Channels</h4><a onclick="navigate('home')" data-i18n="nav_home">Home</a><a onclick="openOverlay('news')" data-i18n="nav_news">News</a><a onclick="openOverlay('live')" data-i18n="nav_broadcast">Live</a><a onclick="openOverlay('play')" data-i18n="nav_play">SNO Play</a><a onclick="openOverlay('schedule')" data-i18n="nav_schedule">Schedule</a></div>
-      <div><h4 data-i18n="footer_company">Company</h4><a href="#" data-i18n="about">About</a><a href="#" data-i18n="careers">Careers</a><a href="#" data-i18n="contact">Contact</a><a href="#" data-i18n="advertise">Advertise</a></div>
+      <div><h4 data-i18n="footer_channels">Channels</h4><a onclick="navigate('home')" data-i18n="nav_home">Home</a><a onclick="openOverlay('news')" data-i18n="nav_news">News</a><a onclick="openOverlay('live')" data-i18n="nav_broadcast">Live</a><a onclick="openOverlay('play')" data-i18n="nav_play">SNO Play</a><a onclick="openOverlay('schedule')" data-i18n="nav_schedule">Schedule</a><a onclick="openCareers()" data-i18n="nav_careers">Careers</a></div>
+      <div><h4 data-i18n="footer_company">Company</h4><a href="#" data-i18n="about">About</a><a onclick="openCareers()" data-i18n="careers">Careers</a><a href="#" data-i18n="contact">Contact</a><a href="#" data-i18n="advertise">Advertise</a></div>
       <div><h4 data-i18n="footer_support">Support</h4><a href="#" data-i18n="help">Help Center</a><a href="#" data-i18n="access">Accessibility</a><a href="#" data-i18n="privacy">Privacy Policy</a><a href="#" data-i18n="terms">Terms of Service</a></div>
     </div>
     <div class="footer-bottom"><span>&copy; 2026 SNO News Network.</span><div class="social"><a href="#">X</a><a href="#">▢</a><a href="#">►</a></div></div>
@@ -955,10 +1075,12 @@ function closeOverlay(name){
   if(name==='news-detail'){
     if(window.location.hash.startsWith('#/news/')) history.pushState('','','#');
     if(synth && synth.speaking){synth.cancel();stopListenUI()}
+    if(_commentsUnsub){_commentsUnsub();_commentsUnsub=null}
     // Reset OG meta
     document.querySelector('meta[property="og:title"]').content = 'SNO — News Network';
     document.querySelector('meta[property="og:description"]').content = 'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.';
-    document.querySelector('meta[property="og:image"]').content = '';
+    document.querySelector('meta[property="og:image"]').content = 'SNOTRNSPRNTLOGO.png';
+    document.querySelector('meta[name="twitter:image"]').content = 'SNOTRNSPRNTLOGO.png';
   }
 }
 function closeTopOverlay(){
@@ -976,6 +1098,7 @@ document.querySelectorAll('nav a').forEach(a=>{
     else if(page==='news')openOverlay('news');
     else if(page==='live'){openOverlay('live');if(_heroMuxId)initHlsPlayer(_heroMuxId,_heroVideoUrl)}
     else if(page==='schedule')openOverlay('schedule');
+    else if(page==='careers')openCareers();
     closeMobileNav();
     document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'));
     if(page==='home')this.classList.add('active');
@@ -1006,9 +1129,9 @@ function navigate(page){
 
 // ===== LANG =====
 const LANG = {
-  en:{nav_home:'Home',nav_news:'News',nav_broadcast:'Broadcast',nav_play:'SNO Play',nav_schedule:'Schedule',nav_admin:'Admin',auth_signin:'Sign In',auth_profile:'Profile',auth_signout:'Sign Out',hero_label:'LIVE',hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'► Watch Now',hero_btn2:'Read Story',slider_title:'Latest News',section_live:'Live Broadcast',section_schedule:'TV Schedule',section_upcoming:'Upcoming',section_news:'Top Stories',section_play:'Exclusive Originals',live_upnext:'Up Next',live_now:'Live Now',play_subscribe:'Subscribe',play_originals:'Exclusive Originals',schedule_title:'Full Schedule',news_count:'articles',footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',footer_channels:'Channels',footer_company:'Company',footer_support:'Support',about:'About',careers:'Careers',contact:'Contact',advertise:'Advertise',help:'Help Center',access:'Accessibility',privacy:'Privacy Policy',terms:'Terms of Service',listen:'Listen',share:'Share',like:'Like',recommended:'Recommended Stories',back_news:'← Back to News',back:'← Back',starting_soon:'Starting Soon',starts_at:'Starts at',now_playing:'NOW',demo_title:'Under Demo',demo_desc:'This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.',demo_gotit:'Got it',view_all:'View All',watch_now:'Watch Now',read_story:'Read Story'},
-  id:{nav_home:'Beranda',nav_news:'Berita',nav_broadcast:'Siaran',nav_play:'SNO Play',nav_schedule:'Jadwal',nav_admin:'Admin',auth_signin:'Masuk',auth_profile:'Profil',auth_signout:'Keluar',hero_label:'LANGSUNG',hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'► Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru',section_live:'Siaran Langsung',section_schedule:'Jadwal TV',section_upcoming:'Akan Datang',section_news:'Berita Utama',section_play:'Original Eksklusif',live_upnext:'Selanjutnya',live_now:'Siaran Langsung',play_subscribe:'Berlangganan',play_originals:'Original Eksklusif',schedule_title:'Jadwal Lengkap',news_count:'artikel',footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',footer_channels:'Saluran',footer_company:'Perusahaan',footer_support:'Dukungan',about:'Tentang',careers:'Karir',contact:'Kontak',advertise:'Iklan',help:'Pusat Bantuan',access:'Aksesibilitas',privacy:'Kebijakan Privasi',terms:'Ketentuan Layanan',listen:'Dengarkan',share:'Bagikan',like:'Suka',recommended:'Rekomendasi',back_news:'← Kembali ke Berita',back:'← Kembali',starting_soon:'Segera Mulai',starts_at:'Mulai',now_playing:'SEKARANG',demo_title:'Demo',demo_desc:'Situs ini dalam versi demo. Beberapa fitur mungkin belum berfungsi penuh.',demo_gotit:'Mengerti',view_all:'Lihat Semua',watch_now:'Tonton Sekarang',read_story:'Baca Cerita'},
-  nl:{nav_home:'Home',nav_news:'Nieuws',nav_broadcast:'Uitzending',nav_play:'SNO Play',nav_schedule:'Schema',nav_admin:'Admin',auth_signin:'Inloggen',auth_profile:'Profiel',auth_signout:'Uitloggen',hero_label:'LIVE',hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'► Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws',section_live:'Live Uitzending',section_schedule:'TV Schema',section_upcoming:'Binnenkort',section_news:'Top Verhalen',section_play:'Exclusieve Originals',live_upnext:'Volgende',live_now:'Live Nu',play_subscribe:'Abonneren',play_originals:'Exclusieve Originals',schedule_title:'Volledig Schema',news_count:'artikelen',footer_desc:'Global News Network. Betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',footer_channels:'Kanalen',footer_company:'Bedrijf',footer_support:'Ondersteuning',about:'Over ons',careers:'Carrières',contact:'Contact',advertise:'Adverteren',help:'Helpcentrum',access:'Toegankelijkheid',privacy:'Privacybeleid',terms:'Servicevoorwaarden',listen:'Luister',share:'Delen',like:'Vind ik leuk',recommended:'Aanbevolen',back_news:'← Terug naar Nieuws',back:'← Terug',starting_soon:'Binnenkort',starts_at:'Begint om',now_playing:'NU',demo_title:'Demo',demo_desc:'Deze site is een demoversie. Sommige functies werken mogelijk nog niet volledig.',demo_gotit:'Begrepen',view_all:'Alles Bekijken',watch_now:'Kijk Nu',read_story:'Lees Verhaal'}
+  en:{nav_home:'Home',nav_news:'News',nav_broadcast:'Broadcast',nav_play:'SNO Play',nav_schedule:'Schedule',nav_careers:'Careers',nav_admin:'Admin',auth_signin:'Sign In',auth_profile:'Profile',auth_signout:'Sign Out',hero_label:'LIVE',hero_desc:'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',hero_btn1:'► Watch Now',hero_btn2:'Read Story',slider_title:'Latest News',section_live:'Live Broadcast',section_schedule:'TV Schedule',section_upcoming:'Upcoming',section_news:'Top Stories',section_play:'Exclusive Originals',live_upnext:'Up Next',live_now:'Live Now',play_subscribe:'Subscribe',play_originals:'Exclusive Originals',schedule_title:'Full Schedule',news_count:'articles',footer_desc:'Global News Network. Bringing you trusted journalism, breaking stories, and in-depth coverage from every corner of the world.',footer_channels:'Channels',footer_company:'Company',footer_support:'Support',about:'About',careers:'Careers',contact:'Contact',advertise:'Advertise',help:'Help Center',access:'Accessibility',privacy:'Privacy Policy',terms:'Terms of Service',listen:'Listen',share:'Share',like:'Like',recommended:'Recommended Stories',back_news:'← Back to News',back:'← Back',starting_soon:'Starting Soon',starts_at:'Starts at',now_playing:'NOW',demo_title:'Under Demo',demo_desc:'This site is currently a demo version. Features may not be fully functional yet. Thank you for your understanding.',demo_gotit:'Got it',view_all:'View All',watch_now:'Watch Now',read_story:'Read Story'},
+  id:{nav_home:'Beranda',nav_news:'Berita',nav_broadcast:'Siaran',nav_play:'SNO Play',nav_schedule:'Jadwal',nav_careers:'Karir',nav_admin:'Admin',auth_signin:'Masuk',auth_profile:'Profil',auth_signout:'Keluar',hero_label:'LANGSUNG',hero_desc:'One Media, For All — jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',hero_btn1:'► Tonton Langsung',hero_btn2:'Baca Berita',slider_title:'Berita Terbaru',section_live:'Siaran Langsung',section_schedule:'Jadwal TV',section_upcoming:'Akan Datang',section_news:'Berita Utama',section_play:'Original Eksklusif',live_upnext:'Selanjutnya',live_now:'Siaran Langsung',play_subscribe:'Berlangganan',play_originals:'Original Eksklusif',schedule_title:'Jadwal Lengkap',news_count:'artikel',footer_desc:'Jaringan Berita Global. Menghadirkan jurnalisme tepercaya, berita terkini, dan liputan mendalam dari setiap sudut dunia.',footer_channels:'Saluran',footer_company:'Perusahaan',footer_support:'Dukungan',about:'Tentang',careers:'Karir',contact:'Kontak',advertise:'Iklan',help:'Pusat Bantuan',access:'Aksesibilitas',privacy:'Kebijakan Privasi',terms:'Ketentuan Layanan',listen:'Dengarkan',share:'Bagikan',like:'Suka',recommended:'Rekomendasi',back_news:'← Kembali ke Berita',back:'← Kembali',starting_soon:'Segera Mulai',starts_at:'Mulai',now_playing:'SEKARANG',demo_title:'Demo',demo_desc:'Situs ini dalam versi demo. Beberapa fitur mungkin belum berfungsi penuh.',demo_gotit:'Mengerti',view_all:'Lihat Semua',watch_now:'Tonton Sekarang',read_story:'Baca Cerita'},
+  nl:{nav_home:'Home',nav_news:'Nieuws',nav_broadcast:'Uitzending',nav_play:'SNO Play',nav_schedule:'Schema',nav_careers:'Carrières',nav_admin:'Admin',auth_signin:'Inloggen',auth_profile:'Profiel',auth_signout:'Uitloggen',hero_label:'LIVE',hero_desc:'One Media, For All — betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',hero_btn1:'► Kijk Live',hero_btn2:'Lees Verhaal',slider_title:'Laatste Nieuws',section_live:'Live Uitzending',section_schedule:'TV Schema',section_upcoming:'Binnenkort',section_news:'Top Verhalen',section_play:'Exclusieve Originals',live_upnext:'Volgende',live_now:'Live Nu',play_subscribe:'Abonneren',play_originals:'Exclusieve Originals',schedule_title:'Volledig Schema',news_count:'artikelen',footer_desc:'Global News Network. Betrouwbare journalistiek, breaking stories en diepgaande verslaggeving vanuit elke hoek van de wereld.',footer_channels:'Kanalen',footer_company:'Bedrijf',footer_support:'Ondersteuning',about:'Over ons',careers:'Carrières',contact:'Contact',advertise:'Adverteren',help:'Helpcentrum',access:'Toegankelijkheid',privacy:'Privacybeleid',terms:'Servicevoorwaarden',listen:'Luister',share:'Delen',like:'Vind ik leuk',recommended:'Aanbevolen',back_news:'← Terug naar Nieuws',back:'← Terug',starting_soon:'Binnenkort',starts_at:'Begint om',now_playing:'NU',demo_title:'Demo',demo_desc:'Deze site is een demoversie. Sommige functies werken mogelijk nog niet volledig.',demo_gotit:'Begrepen',view_all:'Alles Bekijken',watch_now:'Kijk Nu',read_story:'Lees Verhaal'}
 };
 let currentLang=localStorage.getItem('sno_lang')||'en';
 function t(k){let v=LANG[currentLang]?.[k];return v!==undefined?v:(LANG.en[k]||k)}
@@ -1110,14 +1233,15 @@ function openNewsDetail(item){
   }).join('');
   body.innerHTML = paragraphs;
   renderRecommended(item);
-  window.location.hash = '#/news/'+slugify(item.title||'');
+  window.location.hash = '#/news/'+(item.slug||slugify(item.title||''));
   setOgMeta(item);
   openOverlay('news-detail');
+  loadComments(slugify(item.title||''));
 }
 function setOgMeta(item){
   let t = item.title||'SNO News Network';
   let d = item.desc||'One Media, For All — trusted journalism, breaking stories, and in-depth coverage.';
-  let img = item.gambar||'';
+  let img = item.gambar||'SNOTRNSPRNTLOGO.png';
   let url = window.location.href;
   document.querySelector('meta[property="og:title"]').content = t;
   document.querySelector('meta[property="og:description"]').content = d;
@@ -1207,6 +1331,73 @@ function openListenPopup(){
 function closeListenPopup(){
   document.getElementById('listen-popup')?.classList.remove('open');
 }
+let _commentsUnsub = null;
+function loadComments(articleId){
+  let container=document.getElementById('comments-list');
+  if(!container)return;
+  let nameInput=document.getElementById('comment-name');
+  if(nameInput&&currentUser)nameInput.value=currentUser.displayName||'';
+  container.innerHTML='<p style="font-size:13px;color:var(--gray);padding:12px 0">Loading...</p>';
+  if(_commentsUnsub){_commentsUnsub();_commentsUnsub=null}
+  if(fbFirestore){
+    _commentsUnsub=fbFirestore.collection('comments').where('articleId','==',articleId).orderBy('createdAt','desc').onSnapshot(snap=>{
+      let comments=[];snap.forEach(d=>comments.push({id:d.id,...d.data()}));
+      renderComments(comments,articleId);
+      try{localStorage.setItem('sno_comments_'+articleId,JSON.stringify(comments))}catch(e){}
+    },err=>{
+      try{let local=JSON.parse(localStorage.getItem('sno_comments_'+articleId)||'[]');renderComments(local,articleId)}catch(e){renderComments([],articleId)}
+    });
+  } else {
+    try{let local=JSON.parse(localStorage.getItem('sno_comments_'+articleId)||'[]');renderComments(local,articleId)}catch(e){renderComments([],articleId)}
+  }
+}
+function renderComments(comments,articleId){
+  let container=document.getElementById('comments-list');
+  let countEl=document.getElementById('comments-count');
+  if(countEl)countEl.textContent=comments.length;
+  if(!container)return;
+  if(!comments.length){container.innerHTML='<p style="font-size:13px;color:var(--gray);padding:12px 0">No comments yet. Be the first to share your thoughts!</p>';return}
+  container.innerHTML='';
+  comments.forEach(c=>{
+    let d=document.createElement('div');d.className='comment-item';
+    let avatar=(c.name||'A')[0].toUpperCase();
+    let date=c.createdAt?new Date(c.createdAt.seconds?c.createdAt.seconds*1000:c.createdAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}):'';
+    d.innerHTML='<div class="comment-avatar">'+avatar+'</div><div class="comment-body"><div class="comment-meta"><strong>'+(c.name||'Anonymous')+'</strong><span class="label-sm">'+date+'</span></div><p>'+(c.text||'')+'</p></div>';
+    container.appendChild(d);
+  });
+}
+function submitComment(){
+  let articleId=slugify(currentArticle?.title||'');
+  if(!articleId){showToast('No article selected','error');return}
+  let nameInput=document.getElementById('comment-name');
+  let textInput=document.getElementById('comment-text');
+  let name=(nameInput?.value||currentUser?.displayName||'').trim();
+  let text=textInput?.value?.trim();
+  if(!name){showToast('Please enter your name','error');return}
+  if(!text){showToast('Please write a comment','error');return}
+  let comment={articleId,articleTitle:currentArticle?.title||'',name,text,createdAt:new Date()};
+  if(fbFirestore){
+    fbFirestore.collection('comments').add(comment).then(()=>{if(textInput)textInput.value='';document.getElementById('comment-char-count').textContent='0/500';showToast('Comment posted!','success')}).catch(e=>{saveCommentLocal(comment,articleId)});
+  } else {saveCommentLocal(comment,articleId)}
+}
+function saveCommentLocal(comment,articleId){
+  try{
+    let existing=JSON.parse(localStorage.getItem('sno_comments_'+articleId)||'[]');
+    existing.unshift(comment);
+    localStorage.setItem('sno_comments_'+articleId,JSON.stringify(existing));
+    loadComments(articleId);
+    document.getElementById('comment-text').value='';
+    document.getElementById('comment-char-count').textContent='0/500';
+    showToast('Comment saved locally!','success');
+  }catch(e){showToast('Failed to save comment','error')}
+}
+document.addEventListener('input',function(e){
+  if(e.target&&e.target.id==='comment-text'){
+    let len=e.target.value.length;
+    let cc=document.getElementById('comment-char-count');
+    if(cc)cc.textContent=len+'/500';
+  }
+});
 function populateVoices(voices){
   listenVoices = voices;
   let container = document.getElementById('listen-voices'); if(!container) return;
@@ -1275,7 +1466,7 @@ function stopListenUI(){
 
 function openSharePopup(){
   document.getElementById('share-popup').classList.add('open');
-  let url = encodeURIComponent(window.location.href.split('#')[0]+'#/news/'+slugify(currentArticle?.title||''));
+  let url = encodeURIComponent(window.location.href.split('#')[0]+'#/news/'+(currentArticle?.slug||slugify(currentArticle?.title||'')));
   let title = encodeURIComponent(currentArticle?.title||'SNO News');
   document.getElementById('share-twitter').href='https://twitter.com/intent/tweet?text='+title+'&url='+url;
   document.getElementById('share-facebook').href='https://www.facebook.com/sharer/sharer.php?u='+url;
@@ -1312,6 +1503,8 @@ function initPlayPlayer(videoEl, src){
   if(playHls){try{playHls.destroy()}catch(e){};playHls=null}
   if(!videoEl||!src) return;
   playPlayer = videoEl;
+  let muxMatch = src.match(/player\.mux\.com\/([^\/\?#]+)/);
+  if(muxMatch) src = 'https://stream.mux.com/'+muxMatch[1]+'.m3u8';
   if(src.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()){
     let h = new Hls();
     h.loadSource(src);
@@ -1712,7 +1905,8 @@ function renderAdmin(){
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
     {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
     {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'mux_playback_id',p:'Mux Playback ID (for live)'},{k:'video',p:'YouTube embed URL (fallback)'}],col:'settings/hero'},
-    {title:'Upcoming Broadcast',fields:[{k:'title',p:'Broadcast Title'},{k:'desc',p:'Description'},{k:'startTime',p:'Start time (YYYY-MM-DDTHH:mm)'},{k:'active',p:'Active (true/false)'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'YouTube URL'}],col:'upcoming'}
+    {title:'Upcoming Broadcast',fields:[{k:'title',p:'Broadcast Title'},{k:'desc',p:'Description'},{k:'startTime',p:'Start time (YYYY-MM-DDTHH:mm)'},{k:'active',p:'Active (true/false)'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'YouTube URL'}],col:'upcoming'},
+    {title:'Ad Popup',fields:[{k:'title',p:'Ad title'},{k:'mux_playback_id',p:'Mux Playback ID'},{k:'video',p:'Fallback video URL'},{k:'active',p:'Active (true/false)'}],col:'settings/ad'}
   ];
   panels.forEach(p=>{
     let card=document.createElement('div');card.className='admin-card';
@@ -1728,6 +1922,11 @@ function renderAdmin(){
     container.appendChild(card);
     adminList(p.col);
   });
+  // Career applications admin
+  let careerCard=document.createElement('div');careerCard.className='admin-card';
+  careerCard.innerHTML='<h3>Career Applications</h3><div id="career-admin-wrap"></div>';
+  container.appendChild(careerCard);
+  renderCareerAdmin();
 }
 
 function adminSubmit(col){
@@ -1739,7 +1938,8 @@ function adminSubmit(col){
     upnext:['vid','title','desc','dur','time'],
     ticker:['text'],
     'settings/hero':['title1','title2','desc','mux_playback_id','video'],
-    upcoming:['title','desc','startTime','active','mux_playback_id','video']
+    upcoming:['title','desc','startTime','active','mux_playback_id','video'],
+    'settings/ad':['title','mux_playback_id','video','active']
   };
   let data={};
   (fields[col]||[]).forEach(k=>{
@@ -1747,12 +1947,13 @@ function adminSubmit(col){
     if(el&&el.value.trim()){data[k]=el.value.trim();el.value=''}
   });
   if(!Object.keys(data).length){alert('Fill at least one field');return}
-  if(col==='news'){if(!data.time)data.time='Just now';if(!data.cat)data.cat='General';if(!data.color)data.color='linear-gradient(135deg,#0a1a10,#0d5e2e)'}
+  if(col==='news'){if(!data.time)data.time='Just now';if(!data.cat)data.cat='General';if(!data.color)data.color='linear-gradient(135deg,#0a1a10,#0d5e2e)';data.slug=slugify(data.title||'untitled')+'-'+Math.floor(10000+Math.random()*90000)}
   data.createdAt=new Date();
-  let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):fbFirestore.collection(col).doc();
+  let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):col==='settings/ad'?fbFirestore.collection('settings').doc('ad'):fbFirestore.collection(col).doc();
   ref.set(data).then(()=>{
     showToast('Data saved to Firestore!','success');console.log('Saved:',col,data);
     if(col==='settings/hero'){_heroMuxId=data.mux_playback_id||'';_heroVideoUrl=data.video||'';initHlsPlayer(_heroMuxId,_heroVideoUrl);checkBroadcastState()}
+    if(col==='settings/ad')loadAdPopup()
   }).catch(e=>{
     showToast('Firestore error: '+e.message,'error');
     try{let key='sno_backup_'+col;let existing=JSON.parse(localStorage.getItem(key)||'[]');existing.push(data);localStorage.setItem(key,JSON.stringify(existing));showToast('Firestore gagal. Data disimpan lokal (backup)','success')}catch(ex){}
@@ -1771,7 +1972,7 @@ function showToast(msg,type){
 function adminList(col){
   if(!fbFirestore)return;
   let container=document.getElementById('admin-list-'+col);if(!container)return;
-  if(col==='settings/hero'){container.innerHTML='<span style="font-size:11px;color:var(--gray)">Hero settings update in real-time.</span>';return}
+  if(col==='settings/hero'||col==='settings/ad'){container.innerHTML='<span style="font-size:11px;color:var(--gray)">Settings update in real-time.</span>';return}
   fbFirestore.collection(col).onSnapshot(snap=>{
     container.innerHTML='';
     snap.forEach(doc=>{
@@ -1809,11 +2010,138 @@ function acceptCookies(){
   localStorage.setItem('sno_cookie_consent','1');
 }
 
+// ===== CAREERS =====
+const CAREER_ROLES = {
+  LBM:{title:'Live Broadcasting Management',desc:'Managing and broadcasting live shows.'},
+  B1:{title:'Builder',desc:'Building and managing SNO assets, such as the Soulth Media Centre Map.'},
+  B2:{title:'3D Modeler',desc:'Creating detailed 3D models for SNO experiences.'},
+  GD:{title:'Graphic Designer',desc:'Creating promotional and announcement posters.'},
+  A:{title:'Administrator',desc:'Handling support tickets, career applications, and partnerships.'},
+  PS:{title:'Product Support',desc:'Handling product support tickets, system errors, and live assistance.'},
+  C:{title:'Commentator',desc:'Providing commentary during live broadcasts.'},
+  NCM:{title:'News Coverage Management',desc:'Creating and publishing news about Roblox, entertainment industry, and major events.'}
+};
+const CAREER_QUESTIONS = {
+  LBM:['How would you handle a live broadcast when technical issues occur mid-stream?','Describe your experience with streaming/broadcasting tools (OBS, etc.).','How would you keep viewers engaged during a broadcast?'],
+  B1:['What building tools and platforms are you experienced with?','Describe a complex build project you\'ve completed.','How do you handle feedback and revisions on your builds?'],
+  B2:['What 3D modeling software have you used (Blender, Maya, etc.)?','Describe your experience with texturing, UV mapping, and optimization.','How do you balance quality with performance in your models?'],
+  GD:['What design tools do you use (Photoshop, Illustrator, etc.)?','Walk us through your design process from concept to final.','How do you maintain brand consistency across different designs?'],
+  A:['How would you handle a frustrated user in a support ticket?','Describe your experience with conflict resolution in online communities.','How would you handle a policy violation report fairly?'],
+  PS:['How would you troubleshoot a common product issue step by step?','Describe your experience with customer or player support.','How would you explain a complex error to a non-technical user?'],
+  C:['How do you prepare before a live commentary session?','Describe your experience with live commentary or public speaking.','How do you handle unexpected moments during a broadcast?'],
+  NCM:['How do you verify news sources before publishing?','Describe your experience with news writing or content creation.','How would you cover a breaking news story under time pressure?']
+};
+let _careerAppUnsub = null;
+function openCareers(){renderCareerListings();document.getElementById('career-form-wrap').style.display='none';openOverlay('careers')}
+function renderCareerListings(){
+  let c=document.getElementById('career-listings');if(!c)return;
+  let html='<div class="career-grid">';
+  Object.entries(CAREER_ROLES).forEach(([code,role])=>{
+    html+='<div class="career-card" onclick="showCareerForm(\''+code+'\')"><span class="career-code">['+code+']</span><h3>'+role.title+'</h3><p>'+role.desc+'</p><button class="btn btn-primary btn-sm" style="width:100%;justify-content:center">Apply Now →</button></div>';
+  });
+  html+='</div>';c.innerHTML=html;
+}
+function showCareerForm(code){
+  let role=CAREER_ROLES[code];if(!role)return;
+  document.getElementById('career-role-name').textContent=role.title;
+  document.getElementById('cf-jobcode').value=code;
+  document.getElementById('cf-name').value=currentUser?.displayName||'';
+  document.getElementById('cf-discord').value='';document.getElementById('cf-roblox').value='';document.getElementById('cf-experience').value='';
+  let qc=document.getElementById('cf-questions');let qs=CAREER_QUESTIONS[code]||[];qc.innerHTML='';
+  qs.forEach((q,i)=>{let d=document.createElement('div');d.className='career-q';d.innerHTML='<label>'+(i+1)+'. '+q+'</label><textarea id="cf-q'+i+'" placeholder="Your answer..."></textarea>';qc.appendChild(d)});
+  document.getElementById('career-form-wrap').style.display='block';
+  document.getElementById('career-form-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function submitCareerApp(){
+  let name=document.getElementById('cf-name').value.trim(),discord=document.getElementById('cf-discord').value.trim(),roblox=document.getElementById('cf-roblox').value.trim(),exp=document.getElementById('cf-experience').value.trim(),jc=document.getElementById('cf-jobcode').value;
+  if(!name){showToast('Please enter your name','error');return}if(!discord){showToast('Discord username required','error');return}if(!roblox){showToast('Roblox username required','error');return}
+  let qs=CAREER_QUESTIONS[jc]||[];let ans={};let valid=true;
+  qs.forEach((q,i)=>{let v=document.getElementById('cf-q'+i)?.value?.trim();if(!v){showToast('Answer question '+(i+1),'error');valid=false}ans['q'+(i+1)]=v});
+  if(!valid)return;
+  let data={name,discord,roblox,experience:exp,jobCode:jc,answers:ans,status:'pending',createdAt:new Date()};
+  if(fbFirestore){
+    fbFirestore.collection('careers_applications').add(data).then(()=>{showToast('Application submitted! Check back for training.','success');document.getElementById('career-form-wrap').style.display='none';renderCareerListings()}).catch(e=>{try{let x=JSON.parse(localStorage.getItem('sno_career_apps')||'[]');x.push(data);localStorage.setItem('sno_career_apps',JSON.stringify(x));showToast('Saved locally.','success');document.getElementById('career-form-wrap').style.display='none'}catch(ex){showToast('Failed to save','error')}});
+  } else {try{let x=JSON.parse(localStorage.getItem('sno_career_apps')||'[]');x.push(data);localStorage.setItem('sno_career_apps',JSON.stringify(x));showToast('Saved locally.','success');document.getElementById('career-form-wrap').style.display='none'}catch(e){showToast('Failed to save','error')}}
+}
+function renderCareerAdmin(){let c=document.getElementById('career-admin-wrap');if(!c)return;
+  if(!fbFirestore){c.innerHTML='<p style="font-size:13px;color:var(--gray)">Firestore not available.</p>';try{let x=JSON.parse(localStorage.getItem('sno_career_apps')||'[]');renderCareerInbox(c,x)}catch(e){};return}
+  if(_careerAppUnsub)_careerAppUnsub();
+  _careerAppUnsub=fbFirestore.collection('careers_applications').orderBy('createdAt','desc').onSnapshot(snap=>{let a=[];snap.forEach(d=>a.push({id:d.id,...d.data()}));renderCareerInbox(c,a);try{localStorage.setItem('sno_career_apps',JSON.stringify(a))}catch(e){}},err=>{try{let x=JSON.parse(localStorage.getItem('sno_career_apps')||'[]');renderCareerInbox(c,x)}catch(e){renderCareerInbox(c,[])}});
+}
+function renderCareerInbox(c,a){
+  if(!c)return;if(!a.length){c.innerHTML='<p style="font-size:13px;color:var(--gray)">No applications yet.</p>';return}c.innerHTML='';
+  a.forEach((app,i)=>{
+    let d=document.createElement('div');d.className='career-inbox-item';let role=CAREER_ROLES[app.jobCode];let sc=app.status||'pending';
+    d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px"><strong>'+(app.name||'Unknown')+'</strong><span class="status '+sc+'">'+(sc).toUpperCase()+'</span></div><div style="font-size:12px;color:var(--gray)">['+(app.jobCode||'?')+'] '+(role?.title||'')+'</div><button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="toggleCareerDetail(\''+(app.id||'local'+i)+'\')">View Details</button><div class="career-inbox-detail" id="career-detail-'+(app.id||'local'+i)+'"></div>';
+    c.appendChild(d);let el=document.getElementById('career-detail-'+(app.id||'local'+i));if(el)buildCareerDetail(el,app);
+  });
+}
+function buildCareerDetail(el,app){
+  let role=CAREER_ROLES[app.jobCode];let qs=CAREER_QUESTIONS[app.jobCode]||[];let ah='';
+  qs.forEach((q,i)=>{let a=app.answers?.['q'+(i+1)]||'';ah+='<p style="font-size:12px;margin-bottom:8px;background:rgba(255,255,255,.03);padding:10px;border-radius:6px"><strong style="color:var(--gray2);display:block;margin-bottom:4px">Q'+(i+1)+': '+q+'</strong><span style="color:var(--white)">'+(a||'<em style="color:var(--gray)">No answer</em>')+'</span></p>'});
+  el.innerHTML='<div class="field"><strong>Discord:</strong><span>'+(app.discord||'-')+'</span></div><div class="field"><strong>Roblox:</strong><span>'+(app.roblox||'-')+'</span></div><div class="field"><strong>Experience:</strong><span>'+(app.experience||'-')+'</span></div><div class="field"><strong>Role:</strong><span>['+(app.jobCode||'')+'] '+(role?.title||'')+'</span></div><div style="margin-top:8px"><strong style="font-size:12px;color:var(--gray2)">Application Answers</strong>'+ah+'</div><div class="career-training-form"><h4 style="font-size:13px;margin-bottom:4px;font-family:\'Telegraf\',sans-serif;font-weight:600">Training / Scenario</h4><input type="text" id="ct-scenario-'+(app.id||'')+'" placeholder="Scenario question to send..." value="'+(app.trainingScenario||'')+'"><textarea id="ct-answer-'+(app.id||'')+'" placeholder="Applicant\'s answer (fill after review)">'+(app.trainingAnswer||'')+'</textarea><div class="career-training-score"><input type="number" id="ct-score-'+(app.id||'')+'" placeholder="Score" min="0" max="100" value="'+(app.trainingScore||'')+'"><span>% — pass ≥ 70</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="saveCareerTraining(\''+(app.id||'')+'\')">Save Training</button><button class="btn btn-sm '+(app.status==='accepted'?'btn-primary':'btn-outline')+'" onclick="setCareerStatus(\''+(app.id||'')+'\',\'accepted\')">✓ Accept</button><button class="btn btn-sm btn-danger" onclick="setCareerStatus(\''+(app.id||'')+'\',\'rejected\')">× Reject</button></div></div>';
+}
+function saveCareerTraining(id){
+  if(!fbFirestore||!id){showToast('Firestore required','error');return}
+  let scenario=document.getElementById('ct-scenario-'+id)?.value?.trim()||'';
+  let answer=document.getElementById('ct-answer-'+id)?.value?.trim()||'';
+  let score=document.getElementById('ct-score-'+id)?.value||'';
+  let updates={trainingScenario:scenario,trainingAnswer:answer,trainingScore:score};
+  if(score&&parseInt(score)>=70)updates.status='training';
+  fbFirestore.collection('careers_applications').doc(id).update(updates).then(()=>showToast('Training saved!','success')).catch(e=>showToast('Error: '+e.message,'error'));
+}
+function setCareerStatus(id,status){
+  if(!fbFirestore||!id){showToast('Firestore required','error');return}
+  fbFirestore.collection('careers_applications').doc(id).update({status}).then(()=>showToast('Status: '+status,'success')).catch(e=>showToast('Error: '+e.message,'error'));
+}
+function toggleCareerDetail(id){let el=document.getElementById('career-detail-'+id);if(el)el.classList.toggle('open')}
+
+// ===== AD POPUP =====
+let _adHls = null;
+function loadAdPopup(){
+  let popup = document.getElementById('ad-popup');
+  if(!popup) return;
+  if(!fbFirestore){popup.classList.remove('show');return}
+  fbFirestore.collection('settings').doc('ad').get().then(doc=>{
+    if(!doc.exists){popup.classList.remove('show');return}
+    let d = doc.data();
+    if(d.active!=='true'&&d.active!==true){popup.classList.remove('show');return}
+    document.getElementById('ad-popup-title').textContent = d.title||'Ad';
+    let video = document.getElementById('ad-popup-video');
+    if(!video) return;
+    if(_adHls){try{_adHls.destroy()}catch(e){};_adHls=null}
+    let src = d.mux_playback_id||d.video||'';
+    if(!src){popup.classList.remove('show');return}
+    if(src.includes('.m3u8') || !src.includes('youtube')){
+      let muxMatch = src.match(/player\.mux\.com\/([^\/\?#]+)/);
+      if(muxMatch) src = 'https://stream.mux.com/'+muxMatch[1]+'.m3u8';
+      if(src.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()){
+        video.style.display = 'block';
+        let h = new Hls(); h.loadSource(src); h.attachMedia(video); _adHls = h;
+        video.play().catch(()=>{});
+      } else if(src.includes('.m3u8') && video.canPlayType('application/vnd.apple.mpegurl')){
+        video.style.display = 'block'; video.src = src; video.play().catch(()=>{});
+      } else if(src && !src.includes('.m3u8')){
+        video.style.display = 'block'; video.src = src; video.play().catch(()=>{});
+      } else {popup.classList.remove('show');return}
+    } else {popup.classList.remove('show');return}
+    setTimeout(()=>popup.classList.add('show'), 3000);
+  }).catch(()=>{popup.classList.remove('show')});
+}
+function closeAdPopup(){
+  document.getElementById('ad-popup')?.classList.remove('show');
+  if(_adHls){try{_adHls.destroy()}catch(e){};_adHls=null}
+  let v = document.getElementById('ad-popup-video');
+  if(v){v.pause();v.src=''}
+  localStorage.setItem('sno_ad_closed','1');
+}
+
 applyLang(currentLang);
 renderAdmin();
 loadAllData();
 checkBroadcastState();
 renderNewsSlider();
+loadAdPopup();
 
 // ===== HASH ROUTING =====
 function slugify(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').substring(0,80)}
@@ -1821,11 +2149,26 @@ function openNewsByHash(){
   let hash = window.location.hash.replace('#/news/','');
   if(!hash) return;
   let all = newsData.length ? newsData : STATIC.news;
-  let item = all.find(n => slugify(n.title||'') === hash);
+  let item = all.find(n => n.slug === hash) || all.find(n => slugify(n.title||'') === hash);
   if(item) openNewsDetail(item);
+  else showToast('Article "'+hash+'" not found','error');
 }
 window.addEventListener('hashchange', openNewsByHash);
 if(window.location.hash.startsWith('#/news/')) openNewsByHash();
+// ===== PATHNAME ROUTING (for generated pages & 404.html fallback) =====
+function routeByPathname(){
+  let p = window.location.pathname.replace(/\/+$/,'');
+  // Handle both /news/slug and /SNO/news/slug (GitHub Pages subpath)
+  let m = p.match(/(?:\/news|\/SNO\/news)\/(.+)/);
+  if(m){
+    let slug = m[1].replace(/\.html$/,'');
+    let all = newsData.length ? newsData : STATIC.news;
+    let item = all.find(n => n.slug === slug) || all.find(n => slugify(n.title||'') === slug);
+    if(item) setTimeout(()=>openNewsDetail(item), 200);
+    else showToast('Article not found','error');
+  }
+}
+routeByPathname();
 </script>
 </body>
 </html>
