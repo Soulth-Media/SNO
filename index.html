@@ -169,6 +169,8 @@ nav a.play-link:hover{opacity:1}
 .admin-list-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:6px;font-size:12px;gap:8px}
 .admin-list-item .del-btn{background:none;border:none;color:#ff4444;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:background .2s}
 .admin-list-item .del-btn:hover{background:rgba(255,68,68,.15)}
+.admin-list-item .edit-btn{background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:background .2s}
+.admin-list-item .edit-btn:hover{background:rgba(0,212,84,.15)}
 
 /* Profile */
 .overlay-content.profile{max-width:500px;margin:0 auto;padding:40px 28px;text-align:center}
@@ -227,6 +229,9 @@ footer a:hover{color:var(--white)}
 .article-hero-overlay{position:absolute;bottom:0;left:0;right:0;padding:60px 32px 28px;background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,transparent 100%)}
 .article-hero-overlay .label{display:inline-block;margin-bottom:8px;background:rgba(0,212,84,.15);padding:4px 10px;border-radius:4px;font-size:9px}
 .article-hero-overlay h1{font-size:clamp(28px,4vw,52px);line-height:.9;max-width:800px}
+.reading-progress{position:sticky;top:60px;z-index:10;width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:0 0 2px 2px;overflow:hidden}
+.reading-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#b3ffd4);transition:width .1s linear;border-radius:0 0 2px 2px}
+.reading-time{font-size:12px;color:var(--gray);margin-bottom:20px;display:flex;align-items:center;gap:6px}
 .article-meta{display:flex;justify-content:space-between;align-items:center;padding:16px 0 24px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);gap:16px;flex-wrap:wrap}
 .writer-info{display:flex;align-items:center;gap:12px}
 .writer-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Coolvetica',sans-serif;font-size:18px;color:var(--black);flex-shrink:0}
@@ -254,6 +259,12 @@ footer a:hover{color:var(--white)}
 .sno-player-vol{font-size:13px}
 .sno-player-vol-slider{width:50px;height:3px;-webkit-appearance:none;background:rgba(255,255,255,.2);border-radius:2px;outline:none;flex-shrink:0}
 .sno-player-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:#fff;cursor:pointer}
+.sno-player-cc,.sno-player-fav{font-size:11px;font-weight:700}
+.sno-player-speed-wrap{position:relative;flex-shrink:0}
+.sno-player-speed-menu{position:absolute;bottom:100%;right:0;background:rgba(20,20,25,.95);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px;display:none;flex-direction:column;gap:2px;z-index:10;min-width:60px;backdrop-filter:blur(8px)}
+.sno-player-speed-menu.open{display:flex}
+.sno-player-speed-menu button{background:none;border:none;color:#fff;font-size:12px;padding:4px 12px;cursor:pointer;border-radius:4px;text-align:center}
+.sno-player-speed-menu button:hover{background:rgba(0,212,84,.15)}
 
 /* ===== SNO PLAY UNIQUE THEME ===== */
 .play-overlay{--play-accent:#00e85a;--play-bg:#0c0c0e;--play-card-bg:#141416;--play-card-border:rgba(255,255,255,.06);background:var(--play-bg)}
@@ -302,6 +313,9 @@ footer a:hover{color:var(--white)}
 .play-card:hover .play-card-overlay{opacity:1}
 .play-card-overlay .label-sm{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--play-accent)}
 .play-card-overlay h4{font-family:'Coolvetica',sans-serif;font-size:16px}
+.play-card-fav{position:absolute;top:8px;right:8px;background:none;border:none;color:#fff;font-size:16px;cursor:pointer;z-index:2;text-shadow:0 2px 8px rgba(0,0,0,.6);transition:transform .2s;padding:4px}
+.play-card-fav:hover{transform:scale(1.2)}
+.play-card-fav[data-fav="true"]{color:#ff4444}
 
 .play-no-results{padding:80px 28px;text-align:center;color:var(--gray)}
 
@@ -423,15 +437,16 @@ footer a:hover{color:var(--white)}
 .mobile-nav-overlay{position:fixed;inset:0;z-index:199;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
 .mobile-nav-overlay.show{opacity:1;pointer-events:auto}
 /* ===== AD POPUP ===== */
-.ad-popup{position:fixed;bottom:80px;left:20px;z-index:500;width:200px;background:rgba(8,8,8,.95);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;backdrop-filter:blur(12px);transform:translateX(-120%);transition:transform .6s cubic-bezier(.16,1,.3,1);box-shadow:0 8px 40px rgba(0,0,0,.6)}
-.ad-popup.show{transform:translateX(0)}
+.ad-popup{position:fixed;bottom:20px;right:20px;z-index:500;width:260px;transform:translateY(120%);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.ad-popup.show{transform:translateY(0)}
+.ad-popup-inner{background:rgba(8,8,8,.95);border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 40px rgba(0,0,0,.6)}
 .ad-popup video{width:100%;display:block;aspect-ratio:16/9;background:#000;border-radius:0}
-.ad-popup-close{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:12px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .2s}
+.ad-popup-close{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:12px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .2s}
 .ad-popup-close:hover{background:#ff3333}
-.ad-popup-title{display:block;padding:6px 10px;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:.5px;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.04)}
-.ad-popup-label{position:absolute;bottom:4px;left:4px;font-size:8px;font-weight:600;text-transform:uppercase;background:rgba(0,0,0,.8);padding:2px 6px;border-radius:3px;color:var(--gray2);z-index:2}
+.ad-popup-title{display:block;padding:6px 10px;font-size:9px;font-weight:600;text-transform:uppercase;color:var(--accent);letter-spacing:.5px;background:rgba(0,0,0,.5);text-align:center;border-bottom:1px solid rgba(255,255,255,.04)}
 @media(max-width:600px){
-  .ad-popup{width:150px;bottom:60px;left:12px}
+  .ad-popup{width:180px}
+  .ad-popup-title{font-size:7px}
 }
 /* ===== CAREERS ===== */
 .career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
@@ -674,8 +689,21 @@ footer a:hover{color:var(--white)}
               <div class="sno-player-progress" id="sno-player-progress"><div class="sno-player-fill" id="sno-player-fill"></div></div>
             </div>
             <span class="sno-player-time" id="sno-player-time">0:00 / 0:00</span>
+            <button class="sno-player-btn" id="sno-cc-btn" onclick="toggleSubtitles()" title="Subtitles">CC</button>
+            <div class="sno-player-speed-wrap">
+              <button class="sno-player-btn" id="sno-speed-btn" onclick="cycleSpeed()" title="Playback speed">1x</button>
+              <div class="sno-player-speed-menu" id="sno-speed-menu">
+                <button onclick="setSpeed(0.5)">0.5x</button>
+                <button onclick="setSpeed(1)">1x</button>
+                <button onclick="setSpeed(1.5)">1.5x</button>
+                <button onclick="setSpeed(2)">2x</button>
+              </div>
+            </div>
             <button class="sno-player-btn sno-player-vol" id="sno-vol-btn" onclick="toggleMutePlayer()">♪</button>
             <input type="range" class="sno-player-vol-slider" id="sno-vol-slider" min="0" max="1" step="0.05" value="1" oninput="setVolumePlayer(this.value)">
+            <button class="sno-player-btn" id="sno-fav-btn" onclick="toggleFavPlay()" title="Favorites">♡</button>
+            <button class="sno-player-btn" id="sno-share-btn" onclick="sharePlay()" title="Share">↗</button>
+            <button class="sno-player-btn" id="sno-fs-btn" onclick="toggleFullscreen()" title="Full screen">▢</button>
           </div>
         </div>
         <div class="play-hero-info">
@@ -730,6 +758,7 @@ footer a:hover{color:var(--white)}
     <div class="overlay-header-left"><button class="overlay-back-btn" onclick="closeOverlay('news-detail')" data-i18n="back_news">← Back to News</button><img class="logo" src="SNOTRNSPRNTLOGO.png" alt="SNO" style="height:24px"></div>
   </div>
   <div class="overlay-content">
+    <div class="reading-progress"><div class="reading-progress-bar" id="reading-progress-bar"></div></div>
     <article>
       <div class="article-hero">
         <img id="detail-image" src="" alt="" onerror="this.style.display='none'">
@@ -744,6 +773,7 @@ footer a:hover{color:var(--white)}
           <div>
             <span class="writer-name" id="detail-writer"></span>
             <span class="writer-date" id="detail-date"></span>
+            <span class="reading-time" id="detail-readtime">⏱ <span id="readtime-text"></span></span>
           </div>
         </div>
         <div class="article-actions">
@@ -890,7 +920,7 @@ footer a:hover{color:var(--white)}
   <div class="ad-popup-inner">
     <span class="ad-popup-title" id="ad-popup-title">Ad</span>
     <button class="ad-popup-close" onclick="closeAdPopup()">×</button>
-    <video id="ad-popup-video" muted playsinline></video>
+                <video id="ad-popup-video" muted playsinline loop></video>
   </div>
 </div>
 
@@ -936,7 +966,7 @@ let fbApp, fbAuth, fbFirestore;
 let authMode = 'login', currentUser = null, isAdmin = false;
 let overlayStack = [];
 let unsubscribers = [];
-let newsData = [];
+let newsData = []; window._newsDataLoaded = false;
 let _scheduleData = [];
 let _heroMuxId = '';
 let _heroVideoUrl = '';
@@ -1076,6 +1106,7 @@ function closeOverlay(name){
     if(window.location.hash.startsWith('#/news/')) history.pushState('','','#');
     if(synth && synth.speaking){synth.cancel();stopListenUI()}
     if(_commentsUnsub){_commentsUnsub();_commentsUnsub=null}
+    if(window._readingScrollCleanup){try{window._readingScrollCleanup();window._readingScrollCleanup=null}catch(e){}}
     // Reset OG meta
     document.querySelector('meta[property="og:title"]').content = 'SNO — News Network';
     document.querySelector('meta[property="og:description"]').content = 'One Media, For All — trusted journalism, breaking stories, and in-depth coverage from every corner of the world.';
@@ -1218,7 +1249,7 @@ function openNewsDetail(item){
   document.getElementById('detail-category').textContent = item.cat||'General';
   document.getElementById('detail-title').textContent = item.title||'';
   document.getElementById('detail-writer').textContent = 'By '+(item.writer||'Staff');
-  document.getElementById('detail-date').textContent = (item.time||'Just now')+' · '+(item.createdAt?new Date(item.createdAt.seconds?item.createdAt.seconds*1000:item.createdAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'');
+  document.getElementById('detail-date').textContent = item.time||(item.createdAt?new Date(item.createdAt.seconds?item.createdAt.seconds*1000:item.createdAt).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}):'Just now');
   document.getElementById('detail-avatar').textContent = (item.writer||'S')[0].toUpperCase();
   let likes = getLikes(item.title||item.id);
   document.getElementById('like-count').textContent = likes;
@@ -1232,6 +1263,27 @@ function openNewsDetail(item){
     return '<p>'+p+'</p>';
   }).join('');
   body.innerHTML = paragraphs;
+  // Reading time
+  let wordCount = content.split(/\s+/).filter(w=>w.length>0).length;
+  let readTime = Math.max(1, Math.round(wordCount / 200));
+  document.getElementById('readtime-text').textContent = readTime+' min read · '+wordCount+' words';
+  // Progress bar
+  setTimeout(()=>{
+    let container = document.getElementById('overlay-news-detail');
+    if(!container)return;
+    let scroller = container.querySelector('.overlay-content');
+    if(!scroller)return;
+    let progressBar = document.getElementById('reading-progress-bar');
+    let onScroll = ()=>{
+      let scrollTop = scroller.scrollTop;
+      let scrollHeight = scroller.scrollHeight - scroller.clientHeight;
+      if(scrollHeight>0){let pct=Math.min(100,(scrollTop/scrollHeight)*100);progressBar.style.width=pct+'%'}else progressBar.style.width='0%';
+    };
+    scroller.addEventListener('scroll', onScroll);
+    // Store cleanup
+    if(window._readingScrollCleanup){try{window._readingScrollCleanup()}catch(e){}}
+    window._readingScrollCleanup = ()=>{scroller.removeEventListener('scroll', onScroll);progressBar.style.width='0%'};
+  }, 100);
   renderRecommended(item);
   window.location.hash = '#/news/'+(item.slug||slugify(item.title||''));
   setOgMeta(item);
@@ -1503,6 +1555,16 @@ function initPlayPlayer(videoEl, src){
   if(playHls){try{playHls.destroy()}catch(e){};playHls=null}
   if(!videoEl||!src) return;
   playPlayer = videoEl;
+  // Load subtitles
+  let existingTracks = videoEl.querySelectorAll('track');
+  existingTracks.forEach(t=>t.remove());
+  let ccBtn = document.getElementById('sno-cc-btn');
+  if(ccBtn){ccBtn.textContent='CC';ccBtn.style.color='#fff'}
+  if(currentPlay?.subs){
+    let track = document.createElement('track');
+    track.kind='subtitles'; track.label='English'; track.srclang='en'; track.src=currentPlay.subs;
+    videoEl.appendChild(track);
+  }
   let muxMatch = src.match(/player\.mux\.com\/([^\/\?#]+)/);
   if(muxMatch) src = 'https://stream.mux.com/'+muxMatch[1]+'.m3u8';
   if(src.includes('.m3u8') && typeof Hls !== 'undefined' && Hls.isSupported()){
@@ -1564,6 +1626,100 @@ function updatePlayerUI(){
 }
 setInterval(updatePlayerUI, 250);
 
+// ===== PLAY FEATURES: Fullscreen, Subtitles, Speed, Favorites, Share =====
+function toggleFullscreen(){
+  let el = document.getElementById('sno-player');
+  if(!el) return;
+  if(document.fullscreenElement) document.exitFullscreen();
+  else el.requestFullscreen().catch(()=>{});
+}
+function toggleSubtitles(){
+  if(!playPlayer) return;
+  let btn = document.getElementById('sno-cc-btn');
+  let tracks = playPlayer.textTracks;
+  if(!tracks||!tracks.length){
+    // Try to load subtitles from item data
+    let src = currentPlay?.subs||'';
+    if(src){
+      let track = document.createElement('track');
+      track.kind='subtitles'; track.label='English'; track.srclang='en'; track.src=src;
+      playPlayer.appendChild(track);
+      btn.textContent='CC';
+      showToast('Subtitles loaded','success');
+    } else showToast('No subtitles available','error');
+    return;
+  }
+  let active = false;
+  for(let i=0;i<tracks.length;i++){
+    if(tracks[i].mode==='showing'){tracks[i].mode='hidden';active=false}
+    else{tracks[i].mode='showing';active=true}
+  }
+  btn.textContent = active?'CC':'cc';
+  btn.style.color = active?'var(--accent)':'#fff';
+}
+function cycleSpeed(){
+  if(!playPlayer) return;
+  let menu = document.getElementById('sno-speed-menu');
+  if(menu) menu.classList.toggle('open');
+}
+function setSpeed(v){
+  if(!playPlayer) return;
+  playPlayer.playbackRate = v;
+  document.getElementById('sno-speed-btn').textContent = v+'x';
+  document.getElementById('sno-speed-menu')?.classList.remove('open');
+}
+document.addEventListener('click', function(e){
+  let menu = document.getElementById('sno-speed-menu');
+  if(menu && !e.target.closest('.sno-player-speed-wrap')) menu.classList.remove('open');
+});
+function toggleFavPlay(){
+  if(!currentPlay) return;
+  let key = currentPlay.title||currentPlay.id||'';
+  if(!key) return;
+  let favs = getPlayFavs();
+  let btn = document.getElementById('sno-fav-btn');
+  if(favs.includes(key)){
+    favs = favs.filter(f=>f!==key);
+    btn.textContent='♡';
+    showToast('Removed from favorites','success');
+  } else {
+    favs.push(key);
+    btn.textContent='♥';
+    btn.style.color='#ff4444';
+    showToast('Added to favorites!','success');
+  }
+  localStorage.setItem('sno_play_favs', JSON.stringify(favs));
+  renderPlayRows(_playData);
+}
+function getPlayFavs(){
+  try{return JSON.parse(localStorage.getItem('sno_play_favs')||'[]')}catch(e){return []}
+}
+function updateFavBtn(){
+  if(!currentPlay) return;
+  let key = currentPlay.title||currentPlay.id||'';
+  let btn = document.getElementById('sno-fav-btn');
+  if(!btn) return;
+  if(getPlayFavs().includes(key)){btn.textContent='♥';btn.style.color='#ff4444'}
+  else{btn.textContent='♡';btn.style.color='#fff'}
+}
+function toggleFavFromCard(title){
+  if(!title) return;
+  let favs = getPlayFavs();
+  if(favs.includes(title)) favs = favs.filter(f=>f!==title);
+  else favs.push(title);
+  localStorage.setItem('sno_play_favs', JSON.stringify(favs));
+  renderPlayRows(_playData);
+  updateFavBtn();
+}
+function sharePlay(){
+  if(!currentPlay) return;
+  let t = currentPlay.title||'SNO Play';
+  let d = currentPlay.desc||'Watch on SNO Play';
+  let url = window.location.href.split('#')[0]+'#/play/'+(currentPlay.slug||slugify(currentPlay.title||''));
+  if(navigator.share) navigator.share({title:t,text:d,url:url}).catch(()=>{});
+  else {navigator.clipboard.writeText(url).then(()=>showToast('Link copied!','success')).catch(()=>showToast('Share: '+url,'success'))}
+}
+
 function openPlayDetail(item){
   currentPlay = item;
   let overlay = document.getElementById('overlay-play');
@@ -1579,6 +1735,7 @@ function openPlayDetail(item){
   if(tag) tag.textContent = item.tag||'SNO Original';
   if(bg && item.gambar) bg.style.backgroundImage = 'url('+item.gambar+')';
   if(!overlay.classList.contains('open')) openOverlay('play');
+  setTimeout(updateFavBtn, 300);
 }
 
 // ===== PLAY ROWS (Netflix-style) =====
@@ -1588,7 +1745,9 @@ function renderPlayRows(data){
   if(!rows) return;
   let items = data && data.length ? data : STATIC.play;
   if(!items || !items.length){rows.innerHTML='<p style="color:var(--gray);padding:20px">No content yet.</p>';return}
+  let favs = getPlayFavs();
   let categories = [
+    {title:'Favorites',filter:(i)=>favs.includes(i.title||i.id||'')},
     {title:'Exclusive Originals',filter:(item)=>true},
     {title:'Trending Now',filter:(i)=>i.tag&&i.tag.match(/trending|hot|popular/i)},
     {title:'Recently Added',filter:(i,idx,a)=>idx>=a.length-4}
@@ -1617,7 +1776,7 @@ function renderPlayRows(data){
     catItems.forEach(item=>{
       let card = document.createElement('div');card.className='play-card';
       let img = item.gambar ? item.gambar : '';
-      card.innerHTML = '<img class="play-card-img" src="'+img+'" loading="lazy" onerror="this.style.display=\'none\'"><div class="play-card-body"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4><p>'+(item.desc||'')+'</p></div><div class="play-card-overlay"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4></div>';
+      card.innerHTML = '<img class="play-card-img" src="'+img+'" loading="lazy" onerror="this.style.display=\'none\'"><div class="play-card-body"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4><p>'+(item.desc||'')+'</p></div><div class="play-card-overlay"><span class="label-sm">'+(item.tag||'')+'</span><h4>'+(item.title||'')+'</h4><button class="play-card-fav" onclick="event.stopPropagation();toggleFavFromCard(\''+(item.title||'').replace(/'/g,"\\'")+'\')">'+(favs.includes(item.title||item.id||'')?'♥':'♡')+'</button></div>';
       card.onclick = ()=>openPlayDetail(item);
       scroll.appendChild(card);
     });
@@ -1807,8 +1966,8 @@ function loadAllData(){
     const collections = {
       news: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
-        newsData = data;
-        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' '+t('news_count');console.log('News loaded from Firestore:',data.length)}else fallbackNews();
+        newsData = data; window._newsDataLoaded = true;
+        if(data.length){renderGrid('news-grid',data,'news');renderGrid('news-grid-full',data,'news');renderNewsSlider(data);document.getElementById('news-count').textContent=data.length+' '+t('news_count');console.log('News loaded from Firestore:',data.length);if(window.location.hash.startsWith('#/news/'))openNewsByHash()}else fallbackNews();
       },
       schedule: (snap)=>{
         let data=[];snap.forEach(d=>data.push({id:d.id,...d.data()}));
@@ -1840,8 +1999,8 @@ function loadAllData(){
         let localKey='sno_backup_'+name;
         let localData=[];
         try{localData=JSON.parse(localStorage.getItem(localKey)||'[]')}catch(ex){}
-        if(localData.length){
-          if(name==='news'){renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' '+t('news_count')+' (backup)'}
+          if(localData.length){
+            if(name==='news'){window._newsDataLoaded=true;renderGrid('news-grid',localData,'news');renderGrid('news-grid-full',localData,'news');renderNewsSlider(localData);document.getElementById('news-count').textContent=localData.length+' '+t('news_count')+' (backup)'}
           else if(name==='schedule'){_scheduleData=localData;renderGrid('schedule-grid',localData,'schedule');renderGrid('schedule-grid-full',localData,'schedule');renderTicker();updateHeroWithSchedule()}
           else if(name==='upnext'){renderGrid('upnext-list',localData,'upnext');renderGrid('upnext-list-full',localData,'upnext')}
           else if(name==='play'){renderPlayRows(localData)}
@@ -1871,7 +2030,7 @@ function loadAllData(){
 }
 
 function fallbackNews(){
-  newsData = STATIC.news;
+  newsData = STATIC.news; window._newsDataLoaded = true;
   renderGrid('news-grid',STATIC.news,'news');
   renderGrid('news-grid-full',STATIC.news,'news');
   renderNewsSlider(STATIC.news);
@@ -1899,9 +2058,9 @@ function renderAdmin(){
   } else statusEl.innerHTML='<span style="color:#aaa">Firestore: </span><span style="color:#ff4444">● Not initialized</span>';
   container.appendChild(statusEl);
   const panels = [
-    {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Short description'},{k:'isi',p:'Full article content'},{k:'writer',p:'Writer name'},{k:'time',p:'Time (e.g. 2h ago)'},{k:'color',p:'Color fallback'}],col:'news'},
+    {title:'News Articles',fields:[{k:'gambar',p:'Image URL (optional)'},{k:'cat',p:'Category'},{k:'title',p:'Title'},{k:'desc',p:'Short description'},{k:'isi',p:'Full article content'},{k:'writer',p:'Writer name'},{k:'color',p:'Color fallback'}],col:'news'},
     {title:'Schedule',fields:[{k:'time',p:'Time'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag (Live/New)'}],col:'schedule'},
-    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'url',p:'Video URL (Mux .m3u8 / .mp4)'},{k:'vid',p:'YouTube ID (fallback)'},{k:'gambar',p:'Image URL (background)'},{k:'color',p:'Color'}],col:'play'},
+    {title:'Play Content',fields:[{k:'icon',p:'Icon (emoji)'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'tag',p:'Tag'},{k:'url',p:'Video URL (Mux .m3u8 / .mp4)'},{k:'vid',p:'YouTube ID (fallback)'},{k:'gambar',p:'Image URL (background)'},{k:'subs',p:'Subtitles VTT URL (optional)'},{k:'color',p:'Color'}],col:'play'},
     {title:'Up Next Videos',fields:[{k:'vid',p:'YouTube ID'},{k:'title',p:'Title'},{k:'desc',p:'Description'},{k:'dur',p:'Duration'},{k:'time',p:'Time'}],col:'upnext'},
     {title:'Ticker',fields:[{k:'text',p:'Ticker text'}],col:'ticker'},
     {title:'Hero Section',fields:[{k:'title1',p:'Title line 1'},{k:'title2',p:'Title line 2'},{k:'desc',p:'Description'},{k:'mux_playback_id',p:'Mux Playback ID (for live)'},{k:'video',p:'YouTube embed URL (fallback)'}],col:'settings/hero'},
@@ -1931,8 +2090,9 @@ function renderAdmin(){
 
 function adminSubmit(col){
   if(!fbFirestore||!isAdmin){alert('Configure Firebase and sign in as admin!');return}
+  let isUpdate = _editingCol === col && _editingId;
   let fields={
-    news:['gambar','cat','title','desc','isi','writer','time','color'],
+      news:['gambar','cat','title','desc','isi','writer','color'],
     schedule:['time','title','desc','tag'],
     play:['icon','title','desc','tag','url','vid','gambar','color'],
     upnext:['vid','title','desc','dur','time'],
@@ -1944,14 +2104,19 @@ function adminSubmit(col){
   let data={};
   (fields[col]||[]).forEach(k=>{
     let el=document.getElementById('af-'+col+'-'+k);
-    if(el&&el.value.trim()){data[k]=el.value.trim();el.value=''}
+    if(el&&el.value.trim()){data[k]=el.value.trim();if(!isUpdate)el.value=''}
   });
   if(!Object.keys(data).length){alert('Fill at least one field');return}
-  if(col==='news'){if(!data.time)data.time='Just now';if(!data.cat)data.cat='General';if(!data.color)data.color='linear-gradient(135deg,#0a1a10,#0d5e2e)';data.slug=slugify(data.title||'untitled')+'-'+Math.floor(10000+Math.random()*90000)}
-  data.createdAt=new Date();
-  let ref=col==='settings/hero'?fbFirestore.collection('settings').doc('hero'):col==='settings/ad'?fbFirestore.collection('settings').doc('ad'):fbFirestore.collection(col).doc();
-  ref.set(data).then(()=>{
-    showToast('Data saved to Firestore!','success');console.log('Saved:',col,data);
+  if(col==='news'&&!isUpdate){if(!data.cat)data.cat='General';if(!data.color)data.color='linear-gradient(135deg,#0a1a10,#0d5e2e)';data.slug=slugify(data.title||'untitled')+'-'+Math.floor(10000+Math.random()*90000);data.time=new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+  if(!isUpdate)data.createdAt=new Date();
+  let ref;
+  if(col==='settings/hero') ref=fbFirestore.collection('settings').doc('hero');
+  else if(col==='settings/ad') ref=fbFirestore.collection('settings').doc('ad');
+  else if(isUpdate) ref=fbFirestore.collection(col).doc(_editingId);
+  else ref=fbFirestore.collection(col).doc();
+  (isUpdate?ref.set(data,{merge:true}):ref.set(data)).then(()=>{
+    showToast(isUpdate?'Article updated!':'Data saved to Firestore!','success');console.log('Saved:',col,data);
+    if(isUpdate) resetEditMode();
     if(col==='settings/hero'){_heroMuxId=data.mux_playback_id||'';_heroVideoUrl=data.video||'';initHlsPlayer(_heroMuxId,_heroVideoUrl);checkBroadcastState()}
     if(col==='settings/ad')loadAdPopup()
   }).catch(e=>{
@@ -1979,12 +2144,44 @@ function adminList(col){
       let d=doc.data();
       let text=d.title||d.text||d.time||'(no title)';
       let div=document.createElement('div');div.className='admin-list-item';
-      div.innerHTML='<span>'+text.substring(0,50)+'</span><button class="del-btn" onclick="adminDelete(\''+col+'\',\''+doc.id+'\')">×</button>';
+      div.innerHTML='<span>'+text.substring(0,50)+'</span><div style="display:flex;gap:4px"><button class="edit-btn" onclick="adminEdit(\''+col+'\',\''+doc.id+'\')">✎</button><button class="del-btn" onclick="adminDelete(\''+col+'\',\''+doc.id+'\')">×</button></div>';
       container.appendChild(div);
     });
   }, err=>{
     container.innerHTML='<span style="font-size:11px;color:var(--gray)">⚠ Firestore blocked by adblocker — data not loading</span>';
   });
+}
+
+let _editingCol = null, _editingId = null;
+function resetEditMode(){
+  _editingCol=null;_editingId=null;
+  document.querySelectorAll('.admin-card .btn').forEach(btn=>{
+    if(btn.dataset.origText){btn.textContent=btn.dataset.origText;delete btn.dataset.origText}
+    btn.onclick=function(){let m=btn.getAttribute('onclick')?.match(/'([^']+)'/);if(m)adminSubmit(m[1])};
+  });
+}
+function adminEdit(col, id){
+  if(!fbFirestore||!isAdmin)return;
+  fbFirestore.collection(col).doc(id).get().then(doc=>{
+    if(!doc.exists){showToast('Document not found','error');return}
+    let d = doc.data();
+    _editingCol = col; _editingId = id;
+    let fields = {
+    news:['gambar','cat','title','desc','isi','writer','color'],
+      schedule:['time','title','desc','tag'],
+    play:['icon','title','desc','tag','url','vid','gambar','subs','color'],
+      upnext:['vid','title','desc','dur','time'],
+      ticker:['text'],
+      upcoming:['title','desc','startTime','active','mux_playback_id','video']
+    };
+    (fields[col]||[]).forEach(k=>{
+      let el=document.getElementById('af-'+col+'-'+k);
+      if(el) el.value = d[k]||'';
+    });
+    let btn = document.querySelector('#admin-list-'+col)?.closest('.admin-card')?.querySelector('.btn');
+    if(btn){btn.textContent='✎ Update';btn.onclick=function(){adminSubmit(col)};btn.dataset.origText='Add to '+(col.includes('/')?col.replace('settings/',''):col)}
+    showToast('Edit mode: fill changes & click Update','success');
+  }).catch(e=>showToast('Error: '+e.message,'error'));
 }
 
 function adminDelete(col,id){
@@ -2148,27 +2345,37 @@ function slugify(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^
 function openNewsByHash(){
   let hash = window.location.hash.replace('#/news/','');
   if(!hash) return;
+  // Wait until real data has loaded (Firestore or fallback)
+  if(!window._newsDataLoaded){
+    if(!window._newsRetry){window._newsRetry=0}
+    if(window._newsRetry<10){window._newsRetry++;setTimeout(openNewsByHash,500);return}
+  }
+  window._newsRetry=0;
   let all = newsData.length ? newsData : STATIC.news;
   let item = all.find(n => n.slug === hash) || all.find(n => slugify(n.title||'') === hash);
   if(item) openNewsDetail(item);
   else showToast('Article "'+hash+'" not found','error');
 }
 window.addEventListener('hashchange', openNewsByHash);
-if(window.location.hash.startsWith('#/news/')) openNewsByHash();
+// Don't run hash routing immediately — wait for Firestore to load
 // ===== PATHNAME ROUTING (for generated pages & 404.html fallback) =====
 function routeByPathname(){
   let p = window.location.pathname.replace(/\/+$/,'');
-  // Handle both /news/slug and /SNO/news/slug (GitHub Pages subpath)
   let m = p.match(/(?:\/news|\/SNO\/news)\/(.+)/);
   if(m){
     let slug = m[1].replace(/\.html$/,'');
+    if(!window._newsDataLoaded){
+      if(!window._pathRetry){window._pathRetry=0}
+      if(window._pathRetry<10){window._pathRetry++;setTimeout(routeByPathname,500);return}
+    }
+    window._pathRetry=0;
     let all = newsData.length ? newsData : STATIC.news;
     let item = all.find(n => n.slug === slug) || all.find(n => slugify(n.title||'') === slug);
     if(item) setTimeout(()=>openNewsDetail(item), 200);
     else showToast('Article not found','error');
   }
 }
-routeByPathname();
+setTimeout(routeByPathname, 300);
 </script>
 </body>
 </html>
